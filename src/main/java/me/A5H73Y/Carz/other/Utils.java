@@ -10,9 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
-import java.util.Random;
-
 public class Utils {
 
     /**
@@ -68,17 +65,17 @@ public class Utils {
                 || player.isOp())
             return true;
 
-        player.sendMessage(Utils.getTranslation("Message.NoPermission").replace("%PERMISSION%", permission.getPermission()));
+        player.sendMessage(Utils.getTranslation("NoPermission").replace("%PERMISSION%", permission.getPermission()));
         return false;
     }
 
     /**
      * Remove all instances of minecarts from across all worlds
      */
-    public static void destroyAllCars(){
-        for (World world : Bukkit.getWorlds()){
-            for (Entity entity : world.getEntities()){
-                if (entity instanceof Minecart){
+    public static void destroyAllCars() {
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                if (entity instanceof Minecart) {
                     entity.remove();
                 }
             }
@@ -143,6 +140,15 @@ public class Utils {
             return text;
         }
         return text.substring(0, 1).toUpperCase().concat(text.substring(1).toLowerCase());
+    }
+
+    /**
+     * Return the standardised heading used for Carz
+     * @param headingText
+     * @return standardised Carz heading
+     */
+    public static String getStandardHeading(String headingText){
+        return "-- " + ChatColor.BLUE + ChatColor.BOLD + headingText + ChatColor.RESET + " --";
     }
 
     /**

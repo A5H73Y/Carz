@@ -16,7 +16,7 @@ public class Validation {
      * @param cart
      * @return boolean
      */
-    public static boolean isACarzVehicle(Vehicle cart){
+    public static boolean isACarzVehicle(Vehicle cart) {
         if (!(cart instanceof Minecart))
             return false;
 
@@ -63,7 +63,7 @@ public class Validation {
             return false;
         }
 
-        if (Utils.hasPermission(player, Permissions.UPGRADE))
+        if (!Utils.hasPermission(player, Permissions.UPGRADE))
             return false;
 
         double currentSpeed = Carz.getInstance().getCarController().getUpgradeController().getCarSpeed(player.getVehicle().getEntityId());

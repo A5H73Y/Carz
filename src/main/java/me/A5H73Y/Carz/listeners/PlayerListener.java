@@ -3,10 +3,8 @@ package me.A5H73Y.Carz.listeners;
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Permissions;
 import me.A5H73Y.Carz.other.Utils;
-import me.A5H73Y.Carz.other.Validation;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -17,7 +15,7 @@ public class PlayerListener implements Listener {
 
     private final Carz carz;
 
-    public PlayerListener(Carz carz){
+    public PlayerListener(Carz carz) {
         this.carz = carz;
     }
 

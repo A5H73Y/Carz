@@ -16,19 +16,13 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Arrays;
-import java.util.List;
-
 public class SignListener implements Listener {
 
     private final Carz carz;
 
-    public SignListener(Carz carz){
+    public SignListener(Carz carz) {
         this.carz = carz;
     }
-
-    private List<String> validCommands = Arrays.asList("refuel", "purchase", "upgrade");
-
 
     @EventHandler
     public void onSignCreate(SignChangeEvent event) {
@@ -40,11 +34,17 @@ public class SignListener implements Listener {
         if (!Utils.hasPermission(player, Permissions.CREATE_SIGN))
             return;
 
-        if (!validCommands.contains(event.getLine(1).toLowerCase())) {
-            player.sendMessage(Utils.getTranslation("Error.UnknownSignCommand"));
-            player.sendMessage(Utils.getTranslation("Help.SignCommands"));
-            event.setCancelled(true);
-            return;
+        // if it's a valid command, break, otherwise it's unknown, so cancel
+        switch (event.getLine(1).toLowerCase()) {
+            case "refuel":
+            case "purchase":
+            case "upgrade":
+                break;
+            default:
+                player.sendMessage(Utils.getTranslation("Error.UnknownSignCommand"));
+                player.sendMessage(Utils.getTranslation("Help.SignCommands"));
+                event.setCancelled(true);
+                return;
         }
 
         String title = Utils.standardizeText(event.getLine(1));
@@ -80,7 +80,7 @@ public class SignListener implements Listener {
         if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase("[carz]"))
             return;
 
-        if (!Utils.hasStrictPermission(event.getPlayer(), Permissions.ADMIN)){
+        if (!Utils.hasStrictPermission(event.getPlayer(), Permissions.ADMIN)) {
             event.getPlayer().sendMessage(Utils.getTranslation("SignProtected"));
             event.setCancelled(true);
         } else {
@@ -107,31 +107,31 @@ public class SignListener implements Listener {
         event.setCancelled(true);
         Player player = event.getPlayer();
 
-        switch (lines[1]) {
-            case "Refuel":
+        switch (lines[1].toLowerCase()) {
+            case "refuel":
                 if (!Validation.canPurchaseFuel(player))
                     return;
 
                 Vehicle car = (Vehicle) player.getVehicle();
                 carz.getFuelController().refuel(car.getEntityId());
                 player.sendMessage(Utils.getTranslation("Refuelled"));
-
                 break;
-            case "Purchase":
+
+            case "purchase":
                 if (!Validation.canPurchaseCar(player))
                     return;
 
                 Utils.givePlayerOwnedCar(player);
                 player.sendMessage(Utils.getTranslation("Purchased"));
-
                 break;
-            case "Upgrade":
+
+            case "upgrade":
                 if (!Validation.canPurchaseUpgrade(player))
                     return;
 
                 carz.getCarController().getUpgradeController().upgradeCarSpeed(player);
-
                 break;
+
             default:
                 player.sendMessage(Utils.getTranslation("Error.UnknownSignCommand"));
         }

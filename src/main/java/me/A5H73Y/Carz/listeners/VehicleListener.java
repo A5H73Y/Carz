@@ -1,7 +1,6 @@
 package me.A5H73Y.Carz.listeners;
 
 import me.A5H73Y.Carz.Carz;
-import me.A5H73Y.Carz.other.MetaInfo;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.Validation;
 import org.bukkit.*;
@@ -21,7 +20,7 @@ public class VehicleListener implements Listener {
 
     private final Carz carz;
 
-    public VehicleListener(Carz carz){
+    public VehicleListener(Carz carz) {
         this.carz = carz;
     }
 
@@ -51,13 +50,12 @@ public class VehicleListener implements Listener {
         playerVelocity.setX((player.getEyeLocation().getDirection().getX() / 140.0D) * carSpeed);
         playerVelocity.setZ((player.getEyeLocation().getDirection().getZ() / 140.0D) * carSpeed);
 
-        if (event.getVehicle().getLocation().getBlock().isLiquid()) {
-            if (carz.getSettings().isDestroyInLiquid()) {
-                carz.getCarController().destroyCar(event.getVehicle());
-                player.playEffect(player.getLocation(), Effect.EXTINGUISH, null);
-                player.sendMessage(Utils.getTranslation("LiquidDamage"));
-                return;
-            }
+        if (event.getVehicle().getLocation().getBlock().isLiquid() &&
+                carz.getSettings().isDestroyInLiquid()) {
+            carz.getCarController().destroyCar(event.getVehicle());
+            player.playEffect(player.getLocation(), Effect.EXTINGUISH, null);
+            player.sendMessage(Utils.getTranslation("LiquidDamage"));
+            return;
         }
 
         Minecart minecart = (Minecart) event.getVehicle();
@@ -76,7 +74,7 @@ public class VehicleListener implements Listener {
     }
 
     @EventHandler
-    public void onVehicleEnter(VehicleEnterEvent event){
+    public void onVehicleEnter(VehicleEnterEvent event) {
         if (!(event.getEntered() instanceof Player))
             return;
 
@@ -95,7 +93,7 @@ public class VehicleListener implements Listener {
                 event.setCancelled(true);
                 return;
             } else {
-                player.sendMessage(Utils.getTranslation("Message.CarUnlocked"));
+                player.sendMessage(Utils.getTranslation("CarUnlocked"));
             }
         }
 
@@ -103,14 +101,15 @@ public class VehicleListener implements Listener {
             carz.getFuelController().displayFuelLevel(player);
         }
 
-        if (carz.getConfig().getBoolean("Key.GiveOnCarEnter") && !player.getInventory().contains(Material.STICK)){
-            player.sendMessage(Utils.getTranslation("Message.KeyReceived"));
+        if (carz.getConfig().getBoolean("Key.GiveOnCarEnter") &&
+                !player.getInventory().contains(Material.STICK)) {
+            player.sendMessage(Utils.getTranslation("KeyReceived"));
             player.getInventory().addItem(new ItemStack(Material.STICK));
         }
     }
 
     @EventHandler
-    public void onEngineStart(PlayerInteractEvent event){
+    public void onEngineStart(PlayerInteractEvent event) {
         if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR)))
             return;
 
@@ -129,15 +128,15 @@ public class VehicleListener implements Listener {
         Player player = event.getPlayer();
         Minecart minecart = (Minecart) event.getPlayer().getVehicle();
 
-        if (carz.getCarController().isDriving(player.getName())){
+        if (carz.getCarController().isDriving(player.getName())) {
             carz.getCarController().removeDriver(player.getName());
             minecart.setMaxSpeed(0D);
-            player.sendMessage(Utils.getTranslation("Message.EngineStop"));
+            player.sendMessage(Utils.getTranslation("EngineStop"));
 
         } else {
             carz.getCarController().addDriver(player.getName(), player.getVehicle().getEntityId());
             minecart.setMaxSpeed(1000D);
-            player.sendMessage(Utils.getTranslation("Message.EngineStart"));
+            player.sendMessage(Utils.getTranslation("EngineStart"));
         }
     }
 
@@ -153,7 +152,7 @@ public class VehicleListener implements Listener {
     }
 
     @EventHandler
-    public void onVehicleExit(VehicleExitEvent event){
+    public void onVehicleExit(VehicleExitEvent event) {
         if (!(event.getExited() instanceof Player)) {
             return;
         }
@@ -165,10 +164,10 @@ public class VehicleListener implements Listener {
 
         if (carz.getCarController().isDriving(player.getName())) {
             carz.getCarController().removeDriver(player.getName());
-            player.sendMessage(Utils.getTranslation("Message.EngineStop"));
+            player.sendMessage(Utils.getTranslation("EngineStop"));
 
             if (carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), player.getName())) {
-                player.sendMessage(Utils.getTranslation("Message.CarLocked"));
+                player.sendMessage(Utils.getTranslation("CarLocked"));
             }
         }
     }

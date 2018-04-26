@@ -10,7 +10,7 @@ public class CarController {
     private final Carz carz;
 
     // Players currently inside a Carz vehicle, not necessarily the owner
-    private Set<String> playersDriving = new HashSet<>();
+    private final Set<String> playersDriving = new HashSet<>();
 
     // Vehicle ID with it's corresponding Owner's name
     private Map<Integer, String> ownership = new HashMap<>();

@@ -1,9 +1,7 @@
 package me.A5H73Y.Carz.controllers;
 
 import me.A5H73Y.Carz.Carz;
-import me.A5H73Y.Carz.enums.PurchaseType;
 import me.A5H73Y.Carz.other.Utils;
-import me.A5H73Y.Carz.other.Validation;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 
@@ -12,7 +10,7 @@ import java.util.Map;
 
 public class UpgradeController {
 
-    private Map<Integer, Double> carSpeed = new HashMap<>();
+    private final Map<Integer, Double> carSpeed = new HashMap<>();
 
     /**
      * Check to see if the entity ID has been registered as a car
@@ -45,10 +43,16 @@ public class UpgradeController {
         int carId = player.getVehicle().getEntityId();
         upgradeCarSpeed(carId);
         player.playEffect(player.getLocation(), Effect.ZOMBIE_CHEW_WOODEN_DOOR, null);
-        player.sendMessage(Utils.getTranslation("Message.UpgradeSpeed")
+        player.sendMessage(Utils.getTranslation("UpgradeSpeed")
                 .replace("%SPEED%", getCarSpeed(carId).toString()));
     }
 
+    /**
+     * Apply a speed upgrade to the vehicle
+     * The current speed of the car will be increased by the upgrade speed
+     * until the current speed reaches the maximum upgrade limit.
+     * @param carID
+     */
     private void upgradeCarSpeed(int carID) {
         Double currentSpeed = getCarSpeed(carID);
         Double upgradeBy = Carz.getInstance().getSettings().getUpgradeSpeed();

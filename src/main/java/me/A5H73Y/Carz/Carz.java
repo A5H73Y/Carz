@@ -24,7 +24,7 @@ public class Carz extends JavaPlugin {
         return instance;
     }
 
-    public void onEnable(){
+    public void onEnable() {
         instance = this;
 
         getCommand("carz").setExecutor(new CarzCommands(this));
@@ -41,7 +41,7 @@ public class Carz extends JavaPlugin {
         getLogger().info("Carz enabled");
     }
 
-    public void onDisable(){
+    public void onDisable() {
         Utils.destroyAllCars();
     }
 

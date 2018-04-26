@@ -3,6 +3,7 @@ package me.A5H73Y.Carz.commands;
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Commands;
 import me.A5H73Y.Carz.enums.Permissions;
+import me.A5H73Y.Carz.other.Help;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.Validation;
 import org.bukkit.ChatColor;
@@ -31,8 +32,14 @@ public class CarzCommands implements CommandExecutor {
 
             Player player = (Player)sender;
 
-            if (args.length >= 1) {
-                if (args[0].equalsIgnoreCase("spawn")) {
+            if (args.length < 1) {
+                player.sendMessage(Carz.getPrefix() + " proudly created by " + ChatColor.AQUA + "A5H73Y");
+                player.sendMessage(Utils.getTranslation("Commands"));
+                return false;
+            }
+
+            switch (args[0].toLowerCase()) {
+                case "spawn":
                     if (!Utils.commandEnabled(player, Commands.SPAWN))
                         return false;
 
@@ -41,8 +48,9 @@ public class CarzCommands implements CommandExecutor {
 
                     Utils.spawnCar(player.getLocation());
                     player.sendMessage(Utils.getTranslation("Spawned"));
+                    break;
 
-                } else if (args[0].equalsIgnoreCase("purchase")) {
+                case "purchase":
                     if (!Utils.commandEnabled(player, Commands.PURCHASE))
                         return false;
 
@@ -51,11 +59,13 @@ public class CarzCommands implements CommandExecutor {
 
                     Utils.givePlayerOwnedCar(player);
                     player.sendMessage(Utils.getTranslation("Purchased"));
+                    break;
 
-                } else if (args[0].equalsIgnoreCase("fuel")) {
+                case "fuel":
                     carz.getFuelController().displayFuelLevel(player);
+                    break;
 
-                } else if (args[0].equalsIgnoreCase("refuel")) {
+                case "refuel":
                     if (!Utils.commandEnabled(player, Commands.REFUEL))
                         return false;
 
@@ -64,8 +74,9 @@ public class CarzCommands implements CommandExecutor {
 
                     carz.getFuelController().refuel(player.getVehicle().getEntityId());
                     player.sendMessage(Utils.getTranslation("Refuelled"));
+                    break;
 
-                } else if (args[0].equalsIgnoreCase("upgrade")) {
+                case "upgrade":
                     if (!Utils.commandEnabled(player, Commands.UPGRADE))
                         return false;
 
@@ -73,27 +84,17 @@ public class CarzCommands implements CommandExecutor {
                         return false;
 
                     carz.getCarController().getUpgradeController().upgradeCarSpeed(player);
+                    break;
 
-                } else if (args[0].equalsIgnoreCase("cmds")) {
-                    FileConfiguration config = carz.getConfig();
-                    player.sendMessage("== Carz Commands ==");
+                case "cmds":
+                    Help.displayCommands(player);
+                    break;
 
-                    if (config.getBoolean("Fuel.Enable")) {
-                        player.sendMessage("/carz fuel");
-                        if (config.getBoolean("Command.Refuel")) player.sendMessage("/carz refuel");
-                    }
-                    if (config.getBoolean("Command.Spawn")) player.sendMessage("/carz spawn"); //TODO if admin
-                    if (config.getBoolean("Command.Purchase")) player.sendMessage("/carz purchase");
-                    if (config.getBoolean("Command.Upgrade")) player.sendMessage("/carz upgrade");
-                } else {
+                default:
                     player.sendMessage(Utils.getTranslation("Error.UnknownCommand"));
                     player.sendMessage(Utils.getTranslation("Commands"));
-                }
-            } else {
-                player.sendMessage("Plugin proudly created by " + ChatColor.AQUA + "A5H73Y");
-                player.sendMessage(Utils.getTranslation("Commands"));
             }
         }
-        return false;
+        return true;
     }
 }

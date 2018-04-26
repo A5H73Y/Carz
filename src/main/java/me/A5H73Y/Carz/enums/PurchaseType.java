@@ -7,7 +7,7 @@ public enum PurchaseType {
     UPGRADE("Upgrade"),
     FUEL("Refuel");
 
-    String purchaseKey;
+    final String purchaseKey;
 
     PurchaseType(String purchaseKey) {
         this.purchaseKey = purchaseKey;

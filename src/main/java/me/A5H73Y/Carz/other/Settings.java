@@ -1,7 +1,6 @@
 package me.A5H73Y.Carz.other;
 
 import me.A5H73Y.Carz.Carz;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 public class Settings {
@@ -12,10 +11,6 @@ public class Settings {
         this.carz = carz;
         
         setupConfig();
-    }
-
-    public String getPluginText() {
-        return Utils.colour(carz.getConfig().getString("Message.Prefix"));
     }
 
     public Material getKey() {
@@ -41,7 +36,7 @@ public class Settings {
     /**
      * Initialise the configuration options on startup
      */
-    private void setupConfig(){
+    private void setupConfig() {
         carz.getConfig().options().header("==== Carz Config ==== #");
 
         carz.getConfig().addDefault("Key.Material", "STICK");
@@ -89,6 +84,7 @@ public class Settings {
         carz.getConfig().addDefault("Message.Error.NoPermission", "You do not have permission: &b%PERMISSION%");
         carz.getConfig().addDefault("Message.Error.SignProtected", "This sign is protected!");
         carz.getConfig().addDefault("Message.Error.UnknownCommand", "Unknown Command!");
+        carz.getConfig().addDefault("Message.Error.UnknownSignCommand", "Unknown Sign Command!");
         carz.getConfig().addDefault("Message.Error.CommandDisabled", "This command has been disabled!");
         carz.getConfig().addDefault("Message.Error.InCar", "You are already in a car!");
         carz.getConfig().addDefault("Message.Error.NotInCar", "You are not in a car!");

@@ -11,7 +11,7 @@ public enum Permissions {
 
     CREATE_SIGN("Carz.CreateSign");
 
-    private String permission;
+    private final String permission;
 
     Permissions(String permission) {
         this.permission = permission;

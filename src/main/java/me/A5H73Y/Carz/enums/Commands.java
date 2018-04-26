@@ -6,7 +6,7 @@ public enum Commands {
     REFUEL("Command.Refuel"),
     UPGRADE("Command.Upgrade");
 
-    String configPath;
+    final String configPath;
 
     Commands(String configPath) {
         this.configPath = configPath;
