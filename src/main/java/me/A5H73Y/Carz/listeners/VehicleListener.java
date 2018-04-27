@@ -122,7 +122,8 @@ public class VehicleListener implements Listener {
         if (carz.getConfig().getBoolean("UsePermission") && !event.getPlayer().hasPermission("Carz.Start"))
             return;
 
-        if (event.getPlayer().getInventory().getItemInMainHand().getType() != carz.getSettings().getKey())
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() != carz.getSettings().getKey() &&
+                carz.getConfig().getBoolean("Key.RequireCarzKey"))
             return;
 
         Player player = event.getPlayer();

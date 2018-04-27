@@ -39,6 +39,11 @@ public class CarController {
         return playersDriving.contains(playerName);
     }
 
+    /**
+     * Register a new car
+     * Set the default car speed, and start the fuel management
+     * @param carID
+     */
     public void registerNewCar(Integer carID) {
         if (upgradeController.isCarRegistered(carID))
             return;
@@ -47,6 +52,11 @@ public class CarController {
         carz.getFuelController().registerCar(carID);
     }
 
+    /**
+     * Completely remove a car
+     * Eject a player, remove the ownership and fuel management
+     * @param car
+     */
     public void destroyCar(Vehicle car) {
         car.eject();
         car.remove();

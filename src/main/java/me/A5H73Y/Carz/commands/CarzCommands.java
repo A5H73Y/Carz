@@ -30,7 +30,7 @@ public class CarzCommands implements CommandExecutor {
                 return false;
             }
 
-            Player player = (Player)sender;
+            Player player = (Player) sender;
 
             if (args.length < 1) {
                 player.sendMessage(Carz.getPrefix() + " proudly created by " + ChatColor.AQUA + "A5H73Y");
@@ -72,8 +72,7 @@ public class CarzCommands implements CommandExecutor {
                     if (!Validation.canPurchaseFuel(player))
                         return false;
 
-                    carz.getFuelController().refuel(player.getVehicle().getEntityId());
-                    player.sendMessage(Utils.getTranslation("Refuelled"));
+                    carz.getFuelController().refuel(player.getVehicle().getEntityId(), player);
                     break;
 
                 case "upgrade":

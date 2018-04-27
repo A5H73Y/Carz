@@ -48,7 +48,6 @@ public class Settings {
         carz.getConfig().addDefault("Key.RequireCarzKey", true);
 
         carz.getConfig().addDefault("Speed.Start", 50.0);
-        carz.getConfig().addDefault("Speed.Upgrade.Enable", true); //TODO update in code
         carz.getConfig().addDefault("Speed.Upgrade.Increment", 25.0);
         carz.getConfig().addDefault("Speed.Upgrade.Max", 200.0);
 
@@ -68,7 +67,6 @@ public class Settings {
 
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
-        carz.getConfig().addDefault("Other.GlowingCarz", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");

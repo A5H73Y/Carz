@@ -8,6 +8,7 @@ import me.A5H73Y.Carz.listeners.SignListener;
 import me.A5H73Y.Carz.controllers.CarController;
 import me.A5H73Y.Carz.controllers.FuelController;
 import me.A5H73Y.Carz.other.Settings;
+import me.A5H73Y.Carz.other.Updater;
 import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -39,6 +40,7 @@ public class Carz extends JavaPlugin {
         economyController = new EconomyController(this);
 
         getLogger().info("Carz enabled");
+        updatePlugin();
     }
 
     public void onDisable() {
@@ -65,6 +67,8 @@ public class Carz extends JavaPlugin {
         return Utils.getTranslation("Prefix", false);
     }
 
-
-    // if (usePermissions) if (!hasPermission) return; if (useEconomy) if(!haveMoney) return;
+    private void updatePlugin() {
+        if (instance.getConfig().getBoolean("Other.UpdateCheck"))
+            new Updater(this, 42269, this.getFile(), Updater.UpdateType.DEFAULT, true);
+    }
 }

@@ -23,6 +23,10 @@ public class FuelController {
         GAUGE_SCALE = Carz.getInstance().getConfig().getInt("Fuel.GaugeScale");
     }
 
+    public boolean isFuelEnabled() {
+        return USE_FUEL;
+    }
+
     public Integer getFuelLevel(Integer carID) {
         Integer amount = fuelLevel.get(carID);
 

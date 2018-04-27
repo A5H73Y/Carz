@@ -108,8 +108,7 @@ public class SignListener implements Listener {
                     return;
 
                 Vehicle car = (Vehicle) player.getVehicle();
-                carz.getFuelController().refuel(car.getEntityId());
-                player.sendMessage(Utils.getTranslation("Refuelled"));
+                carz.getFuelController().refuel(car.getEntityId(), player);
                 break;
 
             case "purchase":
