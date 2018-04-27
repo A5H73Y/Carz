@@ -13,11 +13,16 @@ public enum PurchaseType {
         this.purchaseKey = purchaseKey;
     }
 
-    public String getPurchaseKey() {
-        return this.purchaseKey;
+    public double getCost() {
+        return Carz.getInstance().getConfig().getDouble("Economy.Cost." + this.purchaseKey, 0.0);
     }
 
-    public double getCost() {
-        return Carz.getInstance().getConfig().getDouble("Economy.Cost." + this.purchaseKey, 0);
+    public static PurchaseType fromString(String purchaseKey) {
+        for (PurchaseType type : PurchaseType.values()) {
+            if (type.purchaseKey.equals(purchaseKey)) {
+                return type;
+            }
+        }
+        throw new IllegalArgumentException("PurchaseType of " + purchaseKey + " not found.");
     }
 }

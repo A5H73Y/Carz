@@ -46,7 +46,7 @@ public class Utils {
      * @return boolean
      */
     public static boolean hasPermission(Player player, Permissions permission) {
-        if (!Carz.getInstance().getConfig().getBoolean("UsePermission"))
+        if (!Carz.getInstance().getConfig().getBoolean("Other.UsePermissions"))
             return true;
 
         return hasStrictPermission(player, permission);
@@ -65,7 +65,7 @@ public class Utils {
                 || player.isOp())
             return true;
 
-        player.sendMessage(Utils.getTranslation("NoPermission").replace("%PERMISSION%", permission.getPermission()));
+        player.sendMessage(Utils.getTranslation("Error.NoPermission").replace("%PERMISSION%", permission.getPermission()));
         return false;
     }
 

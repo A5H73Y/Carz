@@ -12,6 +12,7 @@ public class FuelController {
 
     private final double MAX_FUEL;
     private final boolean USE_FUEL;
+    private final int GAUGE_SCALE;
 
     // map of car ID with fuel level (0 - 100)
     private final Map<Integer, Integer> fuelLevel = new HashMap<>();
@@ -19,10 +20,19 @@ public class FuelController {
     public FuelController() {
         USE_FUEL = Carz.getInstance().getConfig().getBoolean("Fuel.Enable");
         MAX_FUEL = Carz.getInstance().getConfig().getDouble("Fuel.StartAmount");
+        GAUGE_SCALE = Carz.getInstance().getConfig().getInt("Fuel.GaugeScale");
     }
 
     public Integer getFuelLevel(Integer carID) {
-        return fuelLevel.get(carID);
+        Integer amount = fuelLevel.get(carID);
+
+        // if the car has not been started, the amount will not exist, so we can fill it here
+        if (amount == null) {
+            refuel(carID);
+            amount = fuelLevel.get(carID);
+        }
+
+        return amount;
     }
 
     /**
@@ -82,9 +92,8 @@ public class FuelController {
      */
     private String formattedFuelLevel(Integer carID) {
         StringBuilder sb = new StringBuilder();
-        int fuelWidth = 50;
-        double fuelRemaining = Math.floor((getFuelLevel(carID) / MAX_FUEL) * fuelWidth);
-        double fuelMissing = fuelWidth - fuelRemaining;
+        double fuelRemaining = Math.floor((getFuelLevel(carID) / MAX_FUEL) * GAUGE_SCALE);
+        double fuelMissing = GAUGE_SCALE - fuelRemaining;
 
         sb.append(ChatColor.RED + "E ");
         sb.append(ChatColor.WHITE);

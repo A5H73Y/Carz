@@ -26,13 +26,16 @@ public class SignListener implements Listener {
 
     @EventHandler
     public void onSignCreate(SignChangeEvent event) {
-        if (!ChatColor.stripColor(event.getLine(0)).equalsIgnoreCase("[carz]"))
+        if (!event.getLine(0).equalsIgnoreCase("[carz]"))
             return;
 
         Player player = event.getPlayer();
 
-        if (!Utils.hasPermission(player, Permissions.CREATE_SIGN))
+        if (!Utils.hasPermission(player, Permissions.CREATE_SIGN)) {
+            event.getBlock().breakNaturally();
+            event.setCancelled(true);
             return;
+        }
 
         // if it's a valid command, break, otherwise it's unknown, so cancel
         switch (event.getLine(1).toLowerCase()) {
@@ -42,25 +45,17 @@ public class SignListener implements Listener {
                 break;
             default:
                 player.sendMessage(Utils.getTranslation("Error.UnknownSignCommand"));
-                player.sendMessage(Utils.getTranslation("Help.SignCommands"));
+                player.sendMessage(Carz.getPrefix() + "Valid signs: refuel, purchase, upgrade");
+                event.getBlock().breakNaturally();
                 event.setCancelled(true);
                 return;
         }
 
         String title = Utils.standardizeText(event.getLine(1));
-        event.setLine(1, title);
         player.sendMessage(Carz.getPrefix() + title + " sign created");
 
-        /*
-        if (carz.getEconomyController().USE_ECONOMY) {
-            String cost = String.valueOf(PurchaseType.valueOf(title).getCost());
-
-            if (!event.getLine(3).isEmpty() && Utils.isNumber(event.getLine(3))) {
-                cost = event.getLine(3);
-            }
-            event.setLine(3, ChatColor.RED + cost);
-        }*/
-        event.setLine(3, ChatColor.RED + String.valueOf(PurchaseType.valueOf(title).getCost()));
+        event.setLine(0, Carz.getInstance().getSettings().getSignHeader());
+        event.setLine(3, ChatColor.RED + String.valueOf(PurchaseType.fromString(title).getCost()));
     }
 
     @EventHandler

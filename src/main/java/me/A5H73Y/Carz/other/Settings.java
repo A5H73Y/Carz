@@ -17,6 +17,10 @@ public class Settings {
         return Material.getMaterial(carz.getConfig().getString("Key.Material"));
     }
 
+    public String getSignHeader() {
+        return Utils.getTranslation("SignHeader", false);
+    }
+
     public boolean isDestroyInLiquid() {
         return carz.getConfig().getBoolean("Other.DestroyInLiquid");
     }
@@ -55,11 +59,12 @@ public class Settings {
 
         carz.getConfig().addDefault("Fuel.Enable", true);
         carz.getConfig().addDefault("Fuel.StartAmount", 1000.0);
+        carz.getConfig().addDefault("Fuel.GaugeScale", 40);
 
         carz.getConfig().addDefault("Economy.Use", true);
-        carz.getConfig().addDefault("Economy.Cost.Purchase", 10);
-        carz.getConfig().addDefault("Economy.Cost.Upgrade", 8);
-        carz.getConfig().addDefault("Economy.Cost.Refuel", 2);
+        carz.getConfig().addDefault("Economy.Cost.Purchase", 10.0);
+        carz.getConfig().addDefault("Economy.Cost.Upgrade", 8.0);
+        carz.getConfig().addDefault("Economy.Cost.Refuel", 2.0);
 
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
@@ -67,6 +72,7 @@ public class Settings {
         carz.getConfig().addDefault("Other.UsePermissions", true);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");
+        carz.getConfig().addDefault("Message.SignHeader", "&0[&bCarz&0]");
         carz.getConfig().addDefault("Message.Spawned", "Car Spawned!");
         carz.getConfig().addDefault("Message.Purchased", "Car purchased!");
         carz.getConfig().addDefault("Message.Refuelled", "Car Refuelled!");

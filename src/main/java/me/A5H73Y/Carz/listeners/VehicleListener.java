@@ -102,9 +102,9 @@ public class VehicleListener implements Listener {
         }
 
         if (carz.getConfig().getBoolean("Key.GiveOnCarEnter") &&
-                !player.getInventory().contains(Material.STICK)) {
+                !player.getInventory().contains(carz.getSettings().getKey())) {
             player.sendMessage(Utils.getTranslation("KeyReceived"));
-            player.getInventory().addItem(new ItemStack(Material.STICK));
+            player.getInventory().addItem(new ItemStack(carz.getSettings().getKey()));
         }
     }
 
@@ -122,7 +122,7 @@ public class VehicleListener implements Listener {
         if (carz.getConfig().getBoolean("UsePermission") && !event.getPlayer().hasPermission("Carz.Start"))
             return;
 
-        if (event.getPlayer().getInventory().getItemInMainHand().getType() != Material.STICK) //TODO config
+        if (event.getPlayer().getInventory().getItemInMainHand().getType() != carz.getSettings().getKey())
             return;
 
         Player player = event.getPlayer();
