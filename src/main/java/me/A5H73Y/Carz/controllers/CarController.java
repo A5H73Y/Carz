@@ -62,7 +62,8 @@ public class CarController {
      */
     public void destroyCar(Vehicle car) {
         removeOwnership(car.getEntityId());
-        removeDriver(car.getPassenger().getName());
+        //TODO improve this (1.7)
+        try {removeDriver(car.getPassenger().getName());} catch (NoSuchMethodError ex) {}
         carz.getFuelController().deregisterCar(car.getEntityId());
         createDamageEffect(car);
         car.eject();
