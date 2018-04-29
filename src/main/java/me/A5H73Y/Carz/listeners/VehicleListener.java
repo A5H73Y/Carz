@@ -65,11 +65,6 @@ public class VehicleListener implements Listener {
             playerVelocity.setY(0.1D);
 
         event.getVehicle().setVelocity(playerVelocity);
-
-        //TODO if smoke particle
-        Location loc = event.getVehicle().getLocation().add(0, -0.6, 0);
-        event.getVehicle().getWorld().spawnParticle(Particle.REDSTONE, loc, 1);
-
         carz.getFuelController().decreaseFuel(carId);
     }
 

@@ -4,6 +4,7 @@ import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +24,15 @@ public class UpgradeController {
     }
 
     public Double getCarSpeed(Integer carID) {
-        return carSpeed.get(carID);
+        Double speed = carSpeed.get(carID);
+
+        // if the car has not been started, the speed will not exist, so we can default it here
+        if (speed == null) {
+            setDefaultCarSpeed(carID);
+            speed = carSpeed.get(carID);
+        }
+
+        return speed;
     }
 
     /**
@@ -45,6 +54,8 @@ public class UpgradeController {
         player.playEffect(player.getLocation(), Effect.ZOMBIE_CHEW_WOODEN_DOOR, null);
         player.sendMessage(Utils.getTranslation("UpgradeSpeed")
                 .replace("%SPEED%", getCarSpeed(carId).toString()));
+
+        Carz.getInstance().getCarController().createUpgradeEffect((Vehicle) player.getVehicle());
     }
 
     /**

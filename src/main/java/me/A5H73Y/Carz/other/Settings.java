@@ -57,7 +57,7 @@ public class Settings {
         carz.getConfig().addDefault("Command.Upgrade", true);
 
         carz.getConfig().addDefault("Fuel.Enable", true);
-        carz.getConfig().addDefault("Fuel.StartAmount", 1000.0);
+        carz.getConfig().addDefault("Fuel.StartAmount", 3000.0);
         carz.getConfig().addDefault("Fuel.GaugeScale", 40);
 
         carz.getConfig().addDefault("Economy.Use", true);
@@ -68,12 +68,13 @@ public class Settings {
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
+        carz.getConfig().addDefault("Other.UseEffects", true);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");
         carz.getConfig().addDefault("Message.SignHeader", "&0[&bCarz&0]");
         carz.getConfig().addDefault("Message.Spawned", "Car Spawned!");
         carz.getConfig().addDefault("Message.Purchased", "Car purchased!");
-        carz.getConfig().addDefault("Message.Refuelled", "Car Refuelled!");
+        carz.getConfig().addDefault("Message.Refuel", "Car Refuelled!");
         carz.getConfig().addDefault("Message.EngineStart", "You switch the engine on.");
         carz.getConfig().addDefault("Message.EngineStop", "You switch the engine off.");
         carz.getConfig().addDefault("Message.CarLocked", "You lock the car.");
