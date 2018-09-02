@@ -21,7 +21,7 @@ public class Validation {
             return false;
 
         Material material = cart.getLocation().getBlock().getType();
-        return (material != Material.POWERED_RAIL) && (material != Material.RAILS) && (material != Material.DETECTOR_RAIL);
+        return (material != XMaterial.RAIL.parseMaterial()) && (material != Material.POWERED_RAIL) && (material != Material.DETECTOR_RAIL);
     }
 
     /**

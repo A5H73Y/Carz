@@ -2,7 +2,9 @@ package me.A5H73Y.Carz.listeners;
 
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Permissions;
+import me.A5H73Y.Carz.other.DelayTasks;
 import me.A5H73Y.Carz.other.Utils;
+import me.A5H73Y.Carz.other.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,7 +29,7 @@ public class PlayerListener implements Listener {
         if (Utils.getMaterialInPlayersHand(event.getPlayer()) != Material.MINECART)
             return;
 
-        if (event.getClickedBlock().getType() == Material.RAILS
+        if (event.getClickedBlock().getType() == XMaterial.RAIL.parseMaterial()
                 || event.getClickedBlock().getType() == Material.POWERED_RAIL
                 || event.getClickedBlock().getType() == Material.DETECTOR_RAIL)
             return;
@@ -35,6 +37,9 @@ public class PlayerListener implements Listener {
         Player player = event.getPlayer();
 
         if (!Utils.hasPermission(player, Permissions.PLACE))
+            return;
+
+        if (!DelayTasks.getInstance().delayPlayer(player, 3))
             return;
 
         ItemStack carInHand = Utils.getItemStackInPlayersHand(player);

@@ -10,6 +10,7 @@ import me.A5H73Y.Carz.controllers.FuelController;
 import me.A5H73Y.Carz.other.Settings;
 import me.A5H73Y.Carz.other.Updater;
 import me.A5H73Y.Carz.other.Utils;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carz extends JavaPlugin {
@@ -40,6 +41,7 @@ public class Carz extends JavaPlugin {
         economyController = new EconomyController(this);
 
         getLogger().info("Carz enabled");
+        new Metrics(this);
         updatePlugin();
     }
 

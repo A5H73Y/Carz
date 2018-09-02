@@ -63,7 +63,7 @@ public class SignListener implements Listener {
         if (event.getAction() != Action.LEFT_CLICK_BLOCK)
             return;
 
-        if ((event.getClickedBlock().getType() != Material.SIGN_POST)
+        if ((event.getClickedBlock().getType() != Material.SIGN)
                 && (event.getClickedBlock().getType() != Material.WALL_SIGN))
             return;
 
@@ -89,7 +89,7 @@ public class SignListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
-        if ((event.getClickedBlock().getType() != Material.SIGN_POST)
+        if ((event.getClickedBlock().getType() != Material.SIGN)
                 && (event.getClickedBlock().getType() != Material.WALL_SIGN))
             return;
 

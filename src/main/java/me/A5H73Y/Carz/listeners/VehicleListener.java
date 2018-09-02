@@ -1,8 +1,10 @@
 package me.A5H73Y.Carz.listeners;
 
 import me.A5H73Y.Carz.Carz;
+import me.A5H73Y.Carz.other.DelayTasks;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.Validation;
+import me.A5H73Y.Carz.other.XMaterial;
 import org.bukkit.*;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -61,7 +63,8 @@ public class VehicleListener implements Listener {
         Minecart minecart = (Minecart) event.getVehicle();
         Material materialBelow = minecart.getLocation().subtract(0,1,0).getBlock().getType();
 
-        if (materialBelow == Material.STEP || materialBelow == Material.DOUBLE_STEP)
+        //TODO fix double steps
+        if (materialBelow == XMaterial.BRICK_SLAB.parseMaterial() || materialBelow == XMaterial.STONE_BRICK_SLAB.parseMaterial())
             playerVelocity.setY(0.1D);
 
         event.getVehicle().setVelocity(playerVelocity);
@@ -105,7 +108,7 @@ public class VehicleListener implements Listener {
 
     @EventHandler
     public void onEngineStart(PlayerInteractEvent event) {
-        if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR)))
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
             return;
 
         if (!event.getPlayer().isInsideVehicle())
@@ -119,6 +122,9 @@ public class VehicleListener implements Listener {
 
         if (Utils.getMaterialInPlayersHand(event.getPlayer()) != carz.getSettings().getKey() &&
                 carz.getConfig().getBoolean("Key.RequireCarzKey"))
+            return;
+
+        if (!DelayTasks.getInstance().delayPlayer(event.getPlayer(), 1))
             return;
 
         Player player = event.getPlayer();

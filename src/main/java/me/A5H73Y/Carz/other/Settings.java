@@ -79,7 +79,7 @@ public class Settings {
         carz.getConfig().addDefault("Message.EngineStop", "You switch the engine off.");
         carz.getConfig().addDefault("Message.CarLocked", "You lock the car.");
         carz.getConfig().addDefault("Message.CarUnlocked", "You unlock the car");
-        carz.getConfig().addDefault("Message.Commands", "To Display all commands enter /carz cmds");
+        carz.getConfig().addDefault("Message.Commands", "To Display all commands enter &f/carz cmds");
         carz.getConfig().addDefault("Message.PlayerCar", "%PLAYER%'s car");
         carz.getConfig().addDefault("Message.FuelEmpty", "This car has run out of fuel!");
         carz.getConfig().addDefault("Message.KeyReceived", "You receive a key");

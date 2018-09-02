@@ -3,6 +3,7 @@ package me.A5H73Y.Carz.commands;
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Commands;
 import me.A5H73Y.Carz.enums.Permissions;
+import me.A5H73Y.Carz.other.DelayTasks;
 import me.A5H73Y.Carz.other.Help;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.Validation;
@@ -10,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class CarzCommands implements CommandExecutor {
@@ -33,7 +33,7 @@ public class CarzCommands implements CommandExecutor {
             Player player = (Player) sender;
 
             if (args.length < 1) {
-                player.sendMessage(Carz.getPrefix() + " proudly created by " + ChatColor.AQUA + "A5H73Y");
+                player.sendMessage(Carz.getPrefix() + "proudly created by " + ChatColor.AQUA + "A5H73Y");
                 player.sendMessage(Utils.getTranslation("Commands"));
                 return false;
             }
@@ -44,6 +44,9 @@ public class CarzCommands implements CommandExecutor {
                         return false;
 
                     if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
+                        return false;
+
+                    if (!DelayTasks.getInstance().delayPlayer(player, 4))
                         return false;
 
                     Utils.spawnCar(player.getLocation());
