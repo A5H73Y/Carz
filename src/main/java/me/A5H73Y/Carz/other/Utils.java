@@ -10,6 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class Utils {
 
     /**
@@ -206,5 +210,58 @@ public class Utils {
 
     public static void reduceItemStackInPlayersHand(Player player) {
         getItemStackInPlayersHand(player).setAmount(getItemStackInPlayersHand(player).getAmount() - 1);
+    }
+
+    /**
+     * Lookup the matching Material
+     * Use the 1.13 API to lookup the Material,
+     * It will fall back to XMaterial if it fails to find it
+     * @param materialName
+     * @return matching Material
+     */
+    public static Material lookupMaterial(String materialName) {
+        Material material = Material.getMaterial(materialName);
+
+        if (material == null) {
+            material = XMaterial.fromString(materialName).parseMaterial();
+        }
+
+        return material;
+    }
+
+    /**
+     * Used for logging plugin events, varying in severity.
+     * 0 - Info; 1 - Warn; 2 - Severe.
+     *
+     * @param message
+     * @param severity (0 - 2)
+     */
+    public static void log(String message, int severity) {
+        switch (severity) {
+            case 1:
+                Carz.getInstance().getLogger().warning(message);
+                break;
+            case 2:
+                Carz.getInstance().getLogger().severe("! " + message);
+                break;
+            case 0:
+            default:
+                Carz.getInstance().getLogger().info(message);
+                break;
+        }
+    }
+
+    public static Set<Material> convertToValidMaterials(List<String> rawMaterials) {
+        Set<Material> validMaterials = new HashSet<>();
+
+        for (String rawMaterial : rawMaterials) {
+            Material material = Utils.lookupMaterial(rawMaterial);
+            if (material != null) {
+                validMaterials.add(material);
+            } else {
+                Utils.log("Material '" + rawMaterial + "' is invalid", 2);
+            }
+        }
+        return validMaterials;
     }
 }

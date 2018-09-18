@@ -18,12 +18,16 @@ import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import java.util.Set;
+
 public class VehicleListener implements Listener {
 
     private final Carz carz;
+    private final Set<Material> climbBlocks;
 
     public VehicleListener(Carz carz) {
         this.carz = carz;
+        this.climbBlocks = Utils.convertToValidMaterials(carz.getConfig().getStringList("ClimbBlocks"));
     }
 
     @EventHandler
@@ -63,8 +67,7 @@ public class VehicleListener implements Listener {
         Minecart minecart = (Minecart) event.getVehicle();
         Material materialBelow = minecart.getLocation().subtract(0,1,0).getBlock().getType();
 
-        //TODO fix double steps
-        if (materialBelow == XMaterial.BRICK_SLAB.parseMaterial() || materialBelow == XMaterial.STONE_BRICK_SLAB.parseMaterial())
+        if (climbBlocks.contains(materialBelow))
             playerVelocity.setY(0.1D);
 
         event.getVehicle().setVelocity(playerVelocity);

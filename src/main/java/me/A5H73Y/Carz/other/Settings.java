@@ -3,6 +3,8 @@ package me.A5H73Y.Carz.other;
 import me.A5H73Y.Carz.Carz;
 import org.bukkit.Material;
 
+import java.util.ArrayList;
+
 public class Settings {
 
     private Carz carz;
@@ -65,6 +67,8 @@ public class Settings {
         carz.getConfig().addDefault("Economy.Cost.Upgrade", 8.0);
         carz.getConfig().addDefault("Economy.Cost.Refuel", 2.0);
 
+        carz.getConfig().addDefault("ClimbBlocks", new ArrayList<String>());
+
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
@@ -78,13 +82,14 @@ public class Settings {
         carz.getConfig().addDefault("Message.EngineStart", "You switch the engine on.");
         carz.getConfig().addDefault("Message.EngineStop", "You switch the engine off.");
         carz.getConfig().addDefault("Message.CarLocked", "You lock the car.");
-        carz.getConfig().addDefault("Message.CarUnlocked", "You unlock the car");
+        carz.getConfig().addDefault("Message.CarUnlocked", "You unlock the car.");
         carz.getConfig().addDefault("Message.Commands", "To Display all commands enter &f/carz cmds");
         carz.getConfig().addDefault("Message.PlayerCar", "%PLAYER%'s car");
         carz.getConfig().addDefault("Message.FuelEmpty", "This car has run out of fuel!");
-        carz.getConfig().addDefault("Message.KeyReceived", "You receive a key");
+        carz.getConfig().addDefault("Message.KeyReceived", "You receive a key.");
         carz.getConfig().addDefault("Message.LiquidDamage", "Your car has been destroyed by liquid!");
         carz.getConfig().addDefault("Message.UpgradeSpeed", "New top speed: %SPEED%");
+        carz.getConfig().addDefault("Message.ConfigReloaded", "The config has been reloaded.");
 
         carz.getConfig().addDefault("Message.Error.NoPermission", "You do not have permission: &b%PERMISSION%");
         carz.getConfig().addDefault("Message.Error.SignProtected", "This sign is protected!");
@@ -94,7 +99,7 @@ public class Settings {
         carz.getConfig().addDefault("Message.Error.InCar", "You are already in a car!");
         carz.getConfig().addDefault("Message.Error.NotInCar", "You are not in a car!");
         carz.getConfig().addDefault("Message.Error.HaveCar", "You already have a car!");
-        carz.getConfig().addDefault("Message.Error.FuelDisabled", "Fuel is disabled");
+        carz.getConfig().addDefault("Message.Error.FuelDisabled", "Fuel is disabled.");
         carz.getConfig().addDefault("Message.Error.PurchaseFailed", "Purchase failed. Cost: %COST%");
         carz.getConfig().addDefault("Message.Error.FullyUpgraded", "Your car is already fully upgraded!");
         carz.getConfig().addDefault("Message.Error.Owned", "This car is owned by someone else!");

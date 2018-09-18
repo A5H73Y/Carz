@@ -2,6 +2,7 @@ package me.A5H73Y.Carz.other;
 
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Commands;
+import me.A5H73Y.Carz.enums.Permissions;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -25,6 +26,9 @@ public class Help {
 
         if (config.getBoolean(Commands.UPGRADE.getConfigPath()))
             displayCommandUsage(player, "upgrade", "Upgrade your car");
+
+        if (Utils.hasStrictPermission(player, Permissions.ADMIN))
+            displayCommandUsage(player, "reload", "Reload the config");
     }
 
     /**

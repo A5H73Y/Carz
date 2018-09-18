@@ -88,6 +88,14 @@ public class CarzCommands implements CommandExecutor {
                     carz.getCarController().getUpgradeController().upgradeCarSpeed(player);
                     break;
 
+                case "reload":
+                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
+                        return false;
+
+                    carz.reloadConfig();
+                    player.sendMessage(Utils.getTranslation("ConfigReloaded"));
+                    break;
+
                 case "cmds":
                     Help.displayCommands(player);
                     break;
