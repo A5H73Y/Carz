@@ -35,6 +35,10 @@ public class UpgradeController {
         return speed;
     }
 
+    public void removeCar(Integer carID) {
+        carSpeed.remove(carID);
+    }
+
     /**
      * Set the vehicles speed to the start speed
      * @param carID

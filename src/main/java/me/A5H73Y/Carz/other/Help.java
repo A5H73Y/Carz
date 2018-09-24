@@ -21,14 +21,18 @@ public class Help {
         if (config.getBoolean(Commands.SPAWN.getConfigPath()) && player.isOp())
             displayCommandUsage(player, "spawn", "Spawn a car at your location");
 
-        if (config.getBoolean(Commands.PURCHASE.getConfigPath()))
+        if (config.getBoolean(Commands.PURCHASE.getConfigPath())) {
             displayCommandUsage(player, "purchase", "Purchase a car");
+            displayCommandUsage(player, "stash", "Stash your owned car back into your inventory");
+        }
 
         if (config.getBoolean(Commands.UPGRADE.getConfigPath()))
             displayCommandUsage(player, "upgrade", "Upgrade your car");
 
-        if (Utils.hasStrictPermission(player, Permissions.ADMIN))
+        if (Utils.hasStrictPermission(player, Permissions.ADMIN)) {
             displayCommandUsage(player, "reload", "Reload the config");
+            displayCommandUsage(player, "addCB", "Add a ClimbBlock to the list");
+        }
     }
 
     /**

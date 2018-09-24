@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.A5H73Y</groupId>
     <artifactId>Carz</artifactId>
-    <version>6.1</version>
+    <version>6.2</version>
     <packaging>jar</packaging>
 
     <name>Carz</name>
@@ -33,6 +33,10 @@
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
+        <!--<repository>-->
+            <!--<id>sk89q-repo</id>-->
+            <!--<url>http://maven.sk89q.com/repo/</url>-->
+        <!--</repository>-->
         <repository>
             <id>bstats-repo</id>
             <url>http://repo.bstats.org/content/repositories/releases/</url>
@@ -61,6 +65,11 @@
             <version>1.6</version>
             <scope>provided</scope>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.sk89q</groupId>-->
+            <!--<artifactId>worldguard</artifactId>-->
+            <!--<version>6.1</version>-->
+        <!--</dependency>-->
         <!-- bStats -->
         <dependency>
             <groupId>org.bstats</groupId>

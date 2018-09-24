@@ -1,12 +1,18 @@
 package me.A5H73Y.Carz.controllers;
 
 import me.A5H73Y.Carz.Carz;
+import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class CarController {
 
@@ -62,12 +68,26 @@ public class CarController {
      */
     public void destroyCar(Vehicle car) {
         removeOwnership(car.getEntityId());
+        upgradeController.removeCar(car.getEntityId());
         //TODO improve this (1.7)
-        try {removeDriver(car.getPassenger().getName());} catch (NoSuchMethodError ex) {}
+        tryAndRemovePlayerFromCar(car);
         carz.getFuelController().deregisterCar(car.getEntityId());
         createDamageEffect(car);
         car.eject();
         car.remove();
+    }
+
+    /**
+     * Pain in the arse method because getPassengers() would break <1.13
+     * @param car
+     */
+    private void tryAndRemovePlayerFromCar(Vehicle car) {
+        try {
+            if (car == null || car.getPassenger() == null)
+                return;
+
+            removeDriver(car.getPassenger().getName());
+        } catch (NoSuchMethodError ex) {}
     }
 
     // --- Ownership methods ---
@@ -112,5 +132,27 @@ public class CarController {
 
     public void createUpgradeEffect(Vehicle car) {
         createEffect(car.getLocation(), Effect.MOBSPAWNER_FLAMES, 1);
+    }
+
+    public void stashCar(Player player) {
+        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
+            player.sendMessage(Carz.getPrefix() + "You need to be inside your owned car!");
+            return;
+        }
+
+        stashCar(player, (Vehicle) player.getVehicle());
+    }
+
+    public void stashCar(Player player, Vehicle vehicle) {
+        if (vehicle == null)
+            return;
+
+        if (!isCarOwnedByPlayer(vehicle.getEntityId(), player.getName())) {
+            return;
+        }
+
+        removeDriver(player.getName());
+        destroyCar(vehicle);
+        Utils.givePlayerOwnedCar(player);
     }
 }

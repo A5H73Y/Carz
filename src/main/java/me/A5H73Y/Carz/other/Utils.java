@@ -220,6 +220,7 @@ public class Utils {
      * @return matching Material
      */
     public static Material lookupMaterial(String materialName) {
+        materialName = materialName.toUpperCase();
         Material material = Material.getMaterial(materialName);
 
         if (material == null) {
@@ -263,5 +264,25 @@ public class Utils {
             }
         }
         return validMaterials;
+    }
+
+    public static void addClimbBlock(Player player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(Carz.getPrefix() + "Invalid syntax: /ns addcb (material)");
+            return;
+        }
+
+        Material material = Utils.lookupMaterial(args[1]);
+
+        if (material == null) {
+            player.sendMessage(Carz.getPrefix() + args[1] + " is not a valid Material!");
+            return;
+        }
+
+        List<String> materials = Carz.getInstance().getConfig().getStringList("ClimbBlocks.Materials");
+        materials.add(material.name());
+        Carz.getInstance().getConfig().set("ClimbBlocks.Materials", materials);
+        Carz.getInstance().saveConfig();
+        player.sendMessage(Carz.getPrefix() + material.name() + " added to ClimbBlocks!");
     }
 }

@@ -4,17 +4,16 @@ import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.other.DelayTasks;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.Validation;
-import me.A5H73Y.Carz.other.XMaterial;
-import org.bukkit.*;
-import org.bukkit.entity.*;
+import org.bukkit.Effect;
+import org.bukkit.Material;
+import org.bukkit.entity.Minecart;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.vehicle.VehicleEnterEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
-import org.bukkit.event.vehicle.VehicleUpdateEvent;
+import org.bukkit.event.vehicle.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -23,11 +22,15 @@ import java.util.Set;
 public class VehicleListener implements Listener {
 
     private final Carz carz;
-    private final Set<Material> climbBlocks;
+    private Set<Material> climbBlocks;
 
     public VehicleListener(Carz carz) {
         this.carz = carz;
-        this.climbBlocks = Utils.convertToValidMaterials(carz.getConfig().getStringList("ClimbBlocks"));
+        reloadClimbBlocks();
+    }
+
+    public void reloadClimbBlocks() {
+        this.climbBlocks = Utils.convertToValidMaterials(carz.getConfig().getStringList("ClimbBlocks.Materials"));
     }
 
     @EventHandler
@@ -50,12 +53,6 @@ public class VehicleListener implements Listener {
             return;
         }
 
-        Vector playerVelocity = event.getVehicle().getVelocity();
-        double carSpeed = carz.getCarController().getUpgradeController().getCarSpeed(carId);
-
-        playerVelocity.setX((player.getEyeLocation().getDirection().getX() / 140.0D) * carSpeed);
-        playerVelocity.setZ((player.getEyeLocation().getDirection().getZ() / 140.0D) * carSpeed);
-
         if (event.getVehicle().getLocation().getBlock().isLiquid() &&
                 carz.getSettings().isDestroyInLiquid()) {
             carz.getCarController().destroyCar(event.getVehicle());
@@ -64,11 +61,17 @@ public class VehicleListener implements Listener {
             return;
         }
 
+        Vector playerVelocity = event.getVehicle().getVelocity();
+        double carSpeed = carz.getCarController().getUpgradeController().getCarSpeed(carId);
+
+        playerVelocity.setX((player.getEyeLocation().getDirection().getX() / 140.0D) * carSpeed);
+        playerVelocity.setZ((player.getEyeLocation().getDirection().getZ() / 140.0D) * carSpeed);
+
         Minecart minecart = (Minecart) event.getVehicle();
         Material materialBelow = minecart.getLocation().subtract(0,1,0).getBlock().getType();
 
         if (climbBlocks.contains(materialBelow))
-            playerVelocity.setY(0.1D);
+            playerVelocity.setY(playerVelocity.getY() + carz.getSettings().getClimbBlockStrength());
 
         event.getVehicle().setVelocity(playerVelocity);
         carz.getFuelController().decreaseFuel(carId);
@@ -96,6 +99,8 @@ public class VehicleListener implements Listener {
             } else {
                 player.sendMessage(Utils.getTranslation("CarUnlocked"));
             }
+        } else if (carz.getSettings().isOnlyOwnedCarsDrive()) {
+            return;
         }
 
         if (carz.getFuelController().getFuelLevel(carID) != null) {
@@ -123,6 +128,10 @@ public class VehicleListener implements Listener {
         if (carz.getConfig().getBoolean("UsePermission") && !event.getPlayer().hasPermission("Carz.Start"))
             return;
 
+        if (carz.getSettings().isOnlyOwnedCarsDrive() &&
+                !carz.getCarController().isCarOwned(event.getPlayer().getVehicle().getEntityId()))
+            return;
+
         if (Utils.getMaterialInPlayersHand(event.getPlayer()) != carz.getSettings().getKey() &&
                 carz.getConfig().getBoolean("Key.RequireCarzKey"))
             return;
@@ -146,14 +155,22 @@ public class VehicleListener implements Listener {
     }
 
     @EventHandler
-    public void onCarDeath(EntityDeathEvent event) {
-        if (!(event.getEntity() instanceof Minecart))
+    public void onCarDeath(VehicleDestroyEvent event) {
+        if (!(event.getAttacker() instanceof Player))
             return;
 
-        if (!Validation.isACarzVehicle((Vehicle) event.getEntity()))
+        if (!Validation.isACarzVehicle(event.getVehicle()))
             return;
 
-        carz.getCarController().destroyCar((Vehicle) event.getEntity());
+        if (!carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), event.getAttacker().getName())) {
+            event.setCancelled(true);
+            event.getAttacker().sendMessage(Carz.getPrefix() + "This vehicle is owned by another player!");
+            return;
+        }
+
+        event.setCancelled(true);
+        carz.getCarController().stashCar((Player) event.getAttacker(), event.getVehicle());
+//        carz.getCarController().destroyCar(event.getVehicle());
     }
 
     @EventHandler

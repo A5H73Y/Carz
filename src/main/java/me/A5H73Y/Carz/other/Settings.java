@@ -27,6 +27,10 @@ public class Settings {
         return carz.getConfig().getBoolean("Other.DestroyInLiquid");
     }
 
+    public boolean isOnlyOwnedCarsDrive() {
+        return carz.getConfig().getBoolean("Other.OnlyOwnedCarsDrive");
+    }
+
     public Double getStartSpeed() {
         return carz.getConfig().getDouble("Speed.Start");
     }
@@ -37,6 +41,10 @@ public class Settings {
 
     public Double getUpgradeMaxSpeed() {
         return carz.getConfig().getDouble("Speed.Upgrade.Max");
+    }
+
+    public Double getClimbBlockStrength() {
+        return carz.getConfig().getDouble("ClimbBlocks.Strength");
     }
 
     /**
@@ -67,12 +75,14 @@ public class Settings {
         carz.getConfig().addDefault("Economy.Cost.Upgrade", 8.0);
         carz.getConfig().addDefault("Economy.Cost.Refuel", 2.0);
 
-        carz.getConfig().addDefault("ClimbBlocks", new ArrayList<String>());
+        carz.getConfig().addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
+        carz.getConfig().addDefault("ClimbBlocks.Strength", 0.05D);
 
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
+        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");
         carz.getConfig().addDefault("Message.SignHeader", "&0[&bCarz&0]");

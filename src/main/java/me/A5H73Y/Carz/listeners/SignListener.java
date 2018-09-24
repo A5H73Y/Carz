@@ -96,7 +96,9 @@ public class SignListener implements Listener {
         Sign sign = (Sign) event.getClickedBlock().getState();
         String[] lines = sign.getLines();
 
-        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase("[carz]"))
+        String signHeader = ChatColor.stripColor(Utils.colour(Carz.getInstance().getSettings().getSignHeader()));
+
+        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(signHeader))
             return;
 
         event.setCancelled(true);

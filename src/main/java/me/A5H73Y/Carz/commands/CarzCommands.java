@@ -88,6 +88,21 @@ public class CarzCommands implements CommandExecutor {
                     carz.getCarController().getUpgradeController().upgradeCarSpeed(player);
                     break;
 
+                case "stash":
+                    if (!Utils.commandEnabled(player, Commands.PURCHASE))
+                        return false;
+
+                    carz.getCarController().stashCar(player);
+                    break;
+
+                case "addcb":
+                case "addclimbblock":
+                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
+                        return false;
+
+                    Utils.addClimbBlock(player, args);
+                    break;
+
                 case "reload":
                     if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
                         return false;

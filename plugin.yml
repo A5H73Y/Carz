@@ -1,9 +1,10 @@
 name: Carz
-version: 6.1
+version: 6.2
 description: Drive in Minecraft
 softdepend: [Vault]
 author: A5H73Y
 main: me.A5H73Y.Carz.Carz
+api-version: 1.13
 commands:
   carz:
     description: Carz commands
