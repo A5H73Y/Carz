@@ -3,16 +3,27 @@ package me.A5H73Y.Carz.other;
 import me.A5H73Y.Carz.Carz;
 import org.bukkit.Material;
 
-import java.util.ArrayList;
+import java.util.Set;
 
 public class Settings {
 
     private Carz carz;
 
+    private Set<Material> climbBlocks;
+
     public Settings(Carz carz) {
         this.carz = carz;
         
         setupConfig();
+        reloadClimbBlocks();
+    }
+
+    public void reloadClimbBlocks() {
+        this.climbBlocks = Utils.convertToValidMaterials(carz.getConfig().getStringList("ClimbBlocks.Materials"));
+    }
+
+    public Set<Material> getClimbBlocks() {
+        return this.climbBlocks;
     }
 
     public Material getKey() {

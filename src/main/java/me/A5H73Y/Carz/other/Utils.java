@@ -224,7 +224,11 @@ public class Utils {
         Material material = Material.getMaterial(materialName);
 
         if (material == null) {
-            material = XMaterial.fromString(materialName).parseMaterial();
+            XMaterial lookup = XMaterial.fromString(materialName);
+
+            if (lookup != null) {
+                material = lookup.parseMaterial();
+            }
         }
 
         return material;
@@ -283,6 +287,7 @@ public class Utils {
         materials.add(material.name());
         Carz.getInstance().getConfig().set("ClimbBlocks.Materials", materials);
         Carz.getInstance().saveConfig();
+        Carz.getInstance().getSettings().reloadClimbBlocks();
         player.sendMessage(Carz.getPrefix() + material.name() + " added to ClimbBlocks!");
     }
 }

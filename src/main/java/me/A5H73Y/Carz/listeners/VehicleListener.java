@@ -23,15 +23,9 @@ import java.util.Set;
 public class VehicleListener implements Listener {
 
     private final Carz carz;
-    private Set<Material> climbBlocks;
 
     public VehicleListener(Carz carz) {
         this.carz = carz;
-        reloadClimbBlocks();
-    }
-
-    public void reloadClimbBlocks() {
-        this.climbBlocks = Utils.convertToValidMaterials(carz.getConfig().getStringList("ClimbBlocks.Materials"));
     }
 
     @EventHandler
@@ -71,7 +65,7 @@ public class VehicleListener implements Listener {
         Minecart minecart = (Minecart) event.getVehicle();
         Material materialBelow = minecart.getLocation().subtract(0,1,0).getBlock().getType();
 
-        if (climbBlocks.contains(materialBelow))
+        if (carz.getSettings().getClimbBlocks().contains(materialBelow))
             playerVelocity.setY(playerVelocity.getY() + carz.getSettings().getClimbBlockStrength());
 
         event.getVehicle().setVelocity(playerVelocity);
