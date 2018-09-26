@@ -1,6 +1,7 @@
 package me.A5H73Y.Carz.controllers;
 
 import me.A5H73Y.Carz.Carz;
+import me.A5H73Y.Carz.enums.Permissions;
 import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -147,7 +148,7 @@ public class CarController {
         if (vehicle == null)
             return;
 
-        if (!isCarOwnedByPlayer(vehicle.getEntityId(), player.getName())) {
+        if (!isCarOwnedByPlayer(vehicle.getEntityId(), player.getName()) && !Utils.hasStrictPermission(player, Permissions.ADMIN)) {
             return;
         }
 

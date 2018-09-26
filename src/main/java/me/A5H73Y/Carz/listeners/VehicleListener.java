@@ -1,6 +1,7 @@
 package me.A5H73Y.Carz.listeners;
 
 import me.A5H73Y.Carz.Carz;
+import me.A5H73Y.Carz.enums.Permissions;
 import me.A5H73Y.Carz.other.DelayTasks;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.Validation;
@@ -38,7 +39,7 @@ public class VehicleListener implements Listener {
         if (!(event.getVehicle().getPassenger() instanceof Player))
             return;
 
-        if (!Validation.isACarzVehicle(event.getVehicle()))
+        if (!(event.getVehicle() instanceof Minecart))
             return;
 
         Player player = (Player) event.getVehicle().getPassenger();
@@ -159,18 +160,22 @@ public class VehicleListener implements Listener {
         if (!(event.getAttacker() instanceof Player))
             return;
 
-        if (!Validation.isACarzVehicle(event.getVehicle()))
+        if (!(event.getVehicle() instanceof Minecart))
             return;
 
-        if (!carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), event.getAttacker().getName())) {
-            event.setCancelled(true);
+        if (!carz.getCarController().isCarOwned(event.getVehicle().getEntityId()))
+            return;
+
+        event.setCancelled(true);
+
+        if (!carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), event.getAttacker().getName()) &&
+                !Utils.hasStrictPermission((Player) event.getAttacker(), Permissions.ADMIN)) {
+
             event.getAttacker().sendMessage(Carz.getPrefix() + "This vehicle is owned by another player!");
             return;
         }
 
-        event.setCancelled(true);
         carz.getCarController().stashCar((Player) event.getAttacker(), event.getVehicle());
-//        carz.getCarController().destroyCar(event.getVehicle());
     }
 
     @EventHandler
@@ -179,18 +184,19 @@ public class VehicleListener implements Listener {
             return;
         }
 
-        if (!Validation.isACarzVehicle(event.getVehicle()))
+        if (!(event.getVehicle() instanceof Minecart))
             return;
 
         Player player = (Player) event.getExited();
 
-        if (carz.getCarController().isDriving(player.getName())) {
-            carz.getCarController().removeDriver(player.getName());
-            player.sendMessage(Utils.getTranslation("EngineStop"));
+        if (!carz.getCarController().isDriving(player.getName()))
+            return;
 
-            if (carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), player.getName())) {
-                player.sendMessage(Utils.getTranslation("CarLocked"));
-            }
+        carz.getCarController().removeDriver(player.getName());
+        player.sendMessage(Utils.getTranslation("EngineStop"));
+
+        if (carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), player.getName())) {
+            player.sendMessage(Utils.getTranslation("CarLocked"));
         }
     }
 }
