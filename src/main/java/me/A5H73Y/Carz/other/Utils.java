@@ -283,11 +283,7 @@ public class Utils {
             return;
         }
 
-        List<String> materials = Carz.getInstance().getConfig().getStringList("ClimbBlocks.Materials");
-        materials.add(material.name());
-        Carz.getInstance().getConfig().set("ClimbBlocks.Materials", materials);
-        Carz.getInstance().saveConfig();
-        Carz.getInstance().getSettings().reloadClimbBlocks();
+        Carz.getInstance().getSettings().addClimbBlock(material);
         player.sendMessage(Carz.getPrefix() + material.name() + " added to ClimbBlocks!");
     }
 }

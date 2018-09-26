@@ -40,13 +40,9 @@ public class Carz extends JavaPlugin {
         fuelController = new FuelController();
         economyController = new EconomyController(this);
 
-        getLogger().info("Carz enabled");
+        getLogger().info("Enabled Carz v" + getDescription().getVersion());
         new Metrics(this);
         updatePlugin();
-    }
-
-    public void onDisable() {
-        Utils.destroyAllCars();
     }
 
     public FuelController getFuelController() {
