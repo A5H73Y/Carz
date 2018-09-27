@@ -56,6 +56,9 @@ public class VehicleListener implements Listener {
             return;
         }
 
+        if (event.getVehicle().getFallDistance() > 1F && !carz.getSettings().isControlCarsWhileFalling())
+            return;
+
         Vector playerVelocity = event.getVehicle().getVelocity();
         double carSpeed = carz.getCarController().getUpgradeController().getCarSpeed(carId);
 
@@ -63,7 +66,7 @@ public class VehicleListener implements Listener {
         playerVelocity.setZ((player.getEyeLocation().getDirection().getZ() / 140.0D) * carSpeed);
 
         Minecart minecart = (Minecart) event.getVehicle();
-        Material materialBelow = minecart.getLocation().subtract(0,1,0).getBlock().getType();
+        Material materialBelow = minecart.getLocation().subtract(0, 1, 0).getBlock().getType();
 
         if (carz.getSettings().getClimbBlocks().contains(materialBelow))
             playerVelocity.setY(playerVelocity.getY() + carz.getSettings().getClimbBlockStrength());
@@ -98,7 +101,7 @@ public class VehicleListener implements Listener {
             return;
         }
 
-        if (carz.getFuelController().getFuelLevel(carID) != null) {
+        if (carz.getFuelController().isFuelEnabled()) {
             carz.getFuelController().displayFuelLevel(player);
         }
 
@@ -163,7 +166,7 @@ public class VehicleListener implements Listener {
         event.setCancelled(true);
 
         if (!carz.getCarController().isCarOwnedByPlayer(event.getVehicle().getEntityId(), event.getAttacker().getName()) &&
-                !Utils.hasStrictPermission((Player) event.getAttacker(), Permissions.ADMIN)) {
+                !Utils.hasStrictPermission((Player) event.getAttacker(), Permissions.ADMIN, false)) {
 
             event.getAttacker().sendMessage(Carz.getPrefix() + "This vehicle is owned by another player!");
             return;

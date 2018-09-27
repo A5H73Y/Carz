@@ -64,12 +64,18 @@ public class Utils {
      * @return
      */
     public static boolean hasStrictPermission(Player player, Permissions permission) {
+        return hasStrictPermission(player, permission, true);
+    }
+
+    public static boolean hasStrictPermission(Player player, Permissions permission, boolean displayMessage) {
         if (player.hasPermission(permission.getPermission())
                 || player.hasPermission(Permissions.ALL.getPermission())
                 || player.isOp())
             return true;
 
-        player.sendMessage(Utils.getTranslation("Error.NoPermission").replace("%PERMISSION%", permission.getPermission()));
+        if (displayMessage) {
+            player.sendMessage(Utils.getTranslation("Error.NoPermission").replace("%PERMISSION%", permission.getPermission()));
+        }
         return false;
     }
 

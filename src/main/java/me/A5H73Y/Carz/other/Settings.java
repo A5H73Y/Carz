@@ -47,6 +47,10 @@ public class Settings {
         return carz.getConfig().getBoolean("Other.OnlyOwnedCarsDrive");
     }
 
+    public boolean isControlCarsWhileFalling() {
+        return carz.getConfig().getBoolean("Other.ControlCarsWhileFalling");
+    }
+
     public Double getStartSpeed() {
         return carz.getConfig().getDouble("Speed.Start");
     }
@@ -105,11 +109,12 @@ public class Settings {
         carz.getConfig().addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
         carz.getConfig().addDefault("ClimbBlocks.Strength", 0.05D);
 
+        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
+        carz.getConfig().addDefault("Other.ControlCarsWhileFalling", true);
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
-        carz.getConfig().addDefault("Other.UpdateCheck", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
-        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
+        carz.getConfig().addDefault("Other.UpdateCheck", true);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");
         carz.getConfig().addDefault("Message.SignHeader", "&0[&bCarz&0]");
