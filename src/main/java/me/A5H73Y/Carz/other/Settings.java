@@ -144,7 +144,7 @@ public class Settings {
         carz.getConfig().addDefault("Message.Error.FuelDisabled", "Fuel is disabled.");
         carz.getConfig().addDefault("Message.Error.PurchaseFailed", "Purchase failed. Cost: %COST%");
         carz.getConfig().addDefault("Message.Error.FullyUpgraded", "Your car is already fully upgraded!");
-        carz.getConfig().addDefault("Message.Error.Owned", "This car is owned by someone else!");
+        carz.getConfig().addDefault("Message.Error.Owned", "This car is owned by %PLAYER%!");
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();

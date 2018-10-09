@@ -90,11 +90,16 @@ public class VehicleListener implements Listener {
         Integer carID = event.getVehicle().getEntityId();
 
         if (carz.getCarController().isCarOwned(carID)) {
-            if (!carz.getCarController().isCarOwnedByPlayer(carID, player.getName())) {
-                player.sendMessage(Utils.getTranslation("Error.Owned"));
+            String owner = carz.getCarController().getOwner(carID);
+            boolean isOwner = owner.equals(player.getName());
+            if (!isOwner && !Utils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
+                player.sendMessage(Utils.getTranslation("Error.Owned").replace("%PLAYER%", owner));
                 event.setCancelled(true);
                 return;
             } else {
+                if (!isOwner) {
+                    player.sendMessage(Utils.getTranslation("Error.Owned").replace("%PLAYER%", owner));
+                }
                 player.sendMessage(Utils.getTranslation("CarUnlocked"));
             }
         } else if (carz.getSettings().isOnlyOwnedCarsDrive()) {

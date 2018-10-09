@@ -9,7 +9,8 @@ public enum Permissions {
     UPGRADE("Carz.Upgrade"),
     PLACE("Carz.Place"),
 
-    CREATE_SIGN("Carz.CreateSign");
+    CREATE_SIGN("Carz.CreateSign"),
+    BYPASS_OWNER("Carz.BypassOwner");
 
     private final String permission;
 
