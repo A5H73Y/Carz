@@ -11,6 +11,7 @@ import me.A5H73Y.Carz.other.Settings;
 import me.A5H73Y.Carz.other.Updater;
 import me.A5H73Y.Carz.other.Utils;
 import org.bstats.bukkit.Metrics;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carz extends JavaPlugin {
@@ -40,6 +41,8 @@ public class Carz extends JavaPlugin {
         fuelController = new FuelController();
         economyController = new EconomyController(this);
 
+        setupBountifulAPI();
+
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
         new Metrics(this);
         updatePlugin();
@@ -68,5 +71,21 @@ public class Carz extends JavaPlugin {
     private void updatePlugin() {
         if (instance.getConfig().getBoolean("Other.UpdateCheck"))
             new Updater(this, 42269, this.getFile(), Updater.UpdateType.DEFAULT, true);
+    }
+
+    private void setupBountifulAPI() {
+        if (!getConfig().getBoolean("Other.BountifulAPI.Enabled"))
+            return;
+
+        Plugin bountifulAPI = getServer().getPluginManager().getPlugin("BountifulAPI");
+
+        if (bountifulAPI != null && bountifulAPI.isEnabled()) {
+            Utils.log("[BountifulAPI] Successfully linked. Version: " + bountifulAPI.getDescription().getVersion(), 0);
+            settings.setUsingBountiful(true);
+        } else {
+            Utils.log("[BountifulAPI] Plugin is missing, disabling config option.", 1);
+            getConfig().set("Other.BountifulAPI.Enabled", false);
+            saveConfig();
+        }
     }
 }

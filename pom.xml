@@ -33,6 +33,10 @@
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
+        <repository>
+            <id>horgeon-repo</id>
+            <url>https://repo.horgeon.fr/repository/maven-releases/</url>
+        </repository>
         <!--<repository>-->
             <!--<id>sk89q-repo</id>-->
             <!--<url>http://maven.sk89q.com/repo/</url>-->
@@ -63,6 +67,13 @@
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <!--Bountiful API-->
+        <dependency>
+            <groupId>com.connorlinfoot</groupId>
+            <artifactId>BountifulAPI</artifactId>
+            <version>1.6.2</version>
             <scope>provided</scope>
         </dependency>
         <!--<dependency>-->

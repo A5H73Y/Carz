@@ -11,6 +11,7 @@ public class Settings {
     private Carz carz;
 
     private Set<Material> climbBlocks;
+    private boolean bountiful = false;
 
     public Settings(Carz carz) {
         this.carz = carz;
@@ -67,6 +68,14 @@ public class Settings {
         return carz.getConfig().getDouble("ClimbBlocks.Strength");
     }
 
+    public boolean isUsingBountiful() {
+        return bountiful;
+    }
+
+    public void setUsingBountiful(boolean bountiful) {
+        this.bountiful = bountiful;
+    }
+
     public void addClimbBlock(Material material) {
         if (material == null)
             return;
@@ -115,6 +124,8 @@ public class Settings {
         carz.getConfig().addDefault("Other.UsePermissions", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
+
+        carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");
         carz.getConfig().addDefault("Message.SignHeader", "&0[&bCarz&0]");
