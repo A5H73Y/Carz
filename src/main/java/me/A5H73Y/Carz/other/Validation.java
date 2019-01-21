@@ -54,7 +54,7 @@ public class Validation {
      * @return boolean
      */
     public static boolean canPurchaseUpgrade(Player player) {
-        if (!player.isInsideVehicle()) {
+        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
             player.sendMessage(Utils.getTranslation("Error.NotInCar"));
             return false;
         }
@@ -83,7 +83,7 @@ public class Validation {
      * @return boolean
      */
     public static boolean canPurchaseFuel(Player player) {
-        if (!player.isInsideVehicle()) {
+        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
             player.sendMessage(Utils.getTranslation("Error.NotInCar"));
             return false;
         }

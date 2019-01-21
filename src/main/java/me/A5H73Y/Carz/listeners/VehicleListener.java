@@ -114,7 +114,7 @@ public class VehicleListener implements Listener {
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
             return;
 
-        if (!event.getPlayer().isInsideVehicle())
+        if (!event.getPlayer().isInsideVehicle() || !(event.getPlayer().getVehicle() instanceof Minecart))
             return;
 
         if (!Validation.isACarzVehicle((Vehicle) event.getPlayer().getVehicle()))

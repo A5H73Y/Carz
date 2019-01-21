@@ -3,6 +3,7 @@ package me.A5H73Y.Carz.other;
 import me.A5H73Y.Carz.Carz;
 import org.bukkit.Material;
 
+import java.util.List;
 import java.util.Set;
 
 public class Settings {
@@ -127,5 +128,16 @@ public class Settings {
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();
+    }
+
+    public void addClimbBlock(Material material) {
+        if (material == null)
+            return;
+
+        List<String> materials = Carz.getInstance().getConfig().getStringList("ClimbBlocks.Materials");
+        materials.add(material.name());
+        Carz.getInstance().getConfig().set("ClimbBlocks.Materials", materials);
+        Carz.getInstance().saveConfig();
+        Carz.getInstance().getSettings().reloadClimbBlocks();
     }
 }

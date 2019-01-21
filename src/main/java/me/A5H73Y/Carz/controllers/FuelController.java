@@ -3,6 +3,7 @@ package me.A5H73Y.Carz.controllers;
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -50,7 +51,7 @@ public class FuelController {
             return;
         }
 
-        if (!player.isInsideVehicle()) {
+        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
             player.sendMessage(Utils.getTranslation("Error.NotInCar"));
             return;
         }
