@@ -1,7 +1,7 @@
 name: Carz
 version: 6.3
 description: Drive in Minecraft
-softdepend: [Vault]
+softdepend: [Vault, BountifulAPI]
 author: A5H73Y
 main: me.A5H73Y.Carz.Carz
 api-version: 1.13

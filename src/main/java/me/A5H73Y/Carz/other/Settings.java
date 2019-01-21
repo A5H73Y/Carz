@@ -11,6 +11,7 @@ public class Settings {
     private Carz carz;
 
     private Set<Material> climbBlocks;
+    private boolean bountiful = false;
 
     public Settings(Carz carz) {
         this.carz = carz;
@@ -20,11 +21,15 @@ public class Settings {
     }
 
     public void reloadClimbBlocks() {
-        this.climbBlocks = Utils.convertToValidMaterials(carz.getConfig().getStringList("ClimbBlocks.Materials"));
+        this.climbBlocks = Utils.convertToValidMaterials(getRawClimbBlocks());
     }
 
     public Set<Material> getClimbBlocks() {
         return this.climbBlocks;
+    }
+
+    public List<String> getRawClimbBlocks() {
+        return carz.getConfig().getStringList("ClimbBlocks.Materials");
     }
 
     public Material getKey() {
@@ -43,6 +48,10 @@ public class Settings {
         return carz.getConfig().getBoolean("Other.OnlyOwnedCarsDrive");
     }
 
+    public boolean isControlCarsWhileFalling() {
+        return carz.getConfig().getBoolean("Other.ControlCarsWhileFalling");
+    }
+
     public Double getStartSpeed() {
         return carz.getConfig().getDouble("Speed.Start");
     }
@@ -57,6 +66,25 @@ public class Settings {
 
     public Double getClimbBlockStrength() {
         return carz.getConfig().getDouble("ClimbBlocks.Strength");
+    }
+
+    public boolean isUsingBountiful() {
+        return bountiful;
+    }
+
+    public void setUsingBountiful(boolean bountiful) {
+        this.bountiful = bountiful;
+    }
+
+    public void addClimbBlock(Material material) {
+        if (material == null)
+            return;
+
+        List<String> materials = getRawClimbBlocks();
+        materials.add(material.name());
+        carz.getConfig().set("ClimbBlocks.Materials", materials);
+        carz.saveConfig();
+        reloadClimbBlocks();
     }
 
     /**
@@ -90,11 +118,14 @@ public class Settings {
         carz.getConfig().addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
         carz.getConfig().addDefault("ClimbBlocks.Strength", 0.05D);
 
+        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
+        carz.getConfig().addDefault("Other.ControlCarsWhileFalling", true);
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
-        carz.getConfig().addDefault("Other.UpdateCheck", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
-        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
+        carz.getConfig().addDefault("Other.UpdateCheck", true);
+
+        carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
 
         carz.getConfig().addDefault("Message.Prefix", "&0[&bCarz&0]&7 ");
         carz.getConfig().addDefault("Message.SignHeader", "&0[&bCarz&0]");
@@ -124,7 +155,7 @@ public class Settings {
         carz.getConfig().addDefault("Message.Error.FuelDisabled", "Fuel is disabled.");
         carz.getConfig().addDefault("Message.Error.PurchaseFailed", "Purchase failed. Cost: %COST%");
         carz.getConfig().addDefault("Message.Error.FullyUpgraded", "Your car is already fully upgraded!");
-        carz.getConfig().addDefault("Message.Error.Owned", "This car is owned by someone else!");
+        carz.getConfig().addDefault("Message.Error.Owned", "This car is owned by %PLAYER%!");
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();

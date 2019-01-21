@@ -29,7 +29,7 @@ public class Help {
         if (config.getBoolean(Commands.UPGRADE.getConfigPath()))
             displayCommandUsage(player, "upgrade", "Upgrade your car");
 
-        if (Utils.hasStrictPermission(player, Permissions.ADMIN)) {
+        if (Utils.hasStrictPermission(player, Permissions.ADMIN, false)) {
             displayCommandUsage(player, "reload", "Reload the config");
             displayCommandUsage(player, "addCB", "Add a ClimbBlock to the list");
         }
