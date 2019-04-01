@@ -160,15 +160,4 @@ public class Settings {
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();
     }
-
-    public void addClimbBlock(Material material) {
-        if (material == null)
-            return;
-
-        List<String> materials = Carz.getInstance().getConfig().getStringList("ClimbBlocks.Materials");
-        materials.add(material.name());
-        Carz.getInstance().getConfig().set("ClimbBlocks.Materials", materials);
-        Carz.getInstance().saveConfig();
-        Carz.getInstance().getSettings().reloadClimbBlocks();
-    }
 }
