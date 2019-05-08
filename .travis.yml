@@ -10,12 +10,11 @@ cache:
 before_deploy:
   - git config --local user.name "A5H73Y"
   - git config --local user.email "skater.ash@hotmail.com"
-  - export TRAVIS_TAG="Carz-${TRAVIS_TAG:-$(date +'%Y%m%d')}"
-  - git tag $TRAVIS_TAG
+  - export GIT_TAG=Carz-SNAPSHOT.$TRAVIS_BUILD_NUMBER
+  - git tag $GIT_TAG -a -m "Generated from TravisCI for build $TRAVIS_BUILD_NUMBER"
 deploy:
   provider: releases
   github_token: $PAT
   file: "target/Carz.jar"
   skip_cleanup: true
   api_key: $PAT
-  overwrite: true
