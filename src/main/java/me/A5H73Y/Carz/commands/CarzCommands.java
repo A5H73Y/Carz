@@ -119,7 +119,8 @@ public class CarzCommands implements CommandExecutor {
                         return false;
                     }
 
-                    carz.getSettings().reload();
+//                    carz.getSettings().reload();
+                    carz.reloadConfig();
                     player.sendMessage(Utils.getTranslation("ConfigReloaded"));
                     break;
 
