@@ -1,0 +1,20 @@
+sudo: false
+language: java
+jdk:
+  - oraclejdk8
+notifications:
+  email: false
+cache:
+  directories:
+    - $HOME/.m2
+before_deploy:
+  - git config --local user.name "A5H73Y"
+  - git config --local user.email "skater.ash@hotmail.com"
+  - export TRAVIS_TAG="Carz-${TRAVIS_TAG:-$(date +'%Y%m%d')}"
+  - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  github_token: $PAT
+  file: "target/Carz.jar"
+  skip_cleanup: true
+  api_key: $PAT

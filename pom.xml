@@ -5,11 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>me.A5H73Y</groupId>
     <artifactId>Carz</artifactId>
-    <version>6.3</version>
+    <version>7.0</version>
     <packaging>jar</packaging>
 
     <name>Carz</name>
     <description>Drive in Minecraft.</description>
+    <url>https://a5h73y.github.io/Carz/</url>
 
     <issueManagement>
         <url>https://github.com/A5H73Y/Carz/issues</url>
@@ -79,6 +80,13 @@
             <version>1.4</version>
             <scope>compile</scope>
         </dependency>
+
+        <!-- Updater -->
+        <dependency>
+            <groupId>com.googlecode.json-simple</groupId>
+            <artifactId>json-simple</artifactId>
+            <version>1.1.1</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -146,4 +154,12 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-a5h73y-repo</id>
+            <name>A5H73Y-repo</name>
+            <url>https://api.bintray.com/maven/a5h73y/repo/Carz/;publish=1</url>
+        </repository>
+    </distributionManagement>
 </project>
