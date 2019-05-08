@@ -63,8 +63,7 @@ public class SignListener implements Listener {
         if (event.getAction() != Action.LEFT_CLICK_BLOCK)
             return;
 
-        if ((event.getClickedBlock().getType() != Material.SIGN)
-                && (event.getClickedBlock().getType() != Material.WALL_SIGN))
+        if (!(event.getClickedBlock().getBlockData() instanceof Sign))
             return;
 
         if (!Carz.getInstance().getConfig().getBoolean("Carz.SignProtection"))
@@ -89,8 +88,7 @@ public class SignListener implements Listener {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
             return;
 
-        if ((event.getClickedBlock().getType() != Material.SIGN)
-                && (event.getClickedBlock().getType() != Material.WALL_SIGN))
+        if (!(event.getClickedBlock().getBlockData() instanceof Sign))
             return;
 
         Sign sign = (Sign) event.getClickedBlock().getState();

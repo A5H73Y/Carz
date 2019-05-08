@@ -44,7 +44,7 @@ public class PlayerListener implements Listener {
 
         ItemStack carInHand = Utils.getItemStackInPlayersHand(player);
 
-        if (carInHand.getItemMeta().hasDisplayName()) {
+        if (carInHand.hasItemMeta() && carInHand.getItemMeta().hasDisplayName()) {
             if (carInHand.getItemMeta().getDisplayName().contains(player.getName())) {
                 Utils.spawnOwnedCar(event.getClickedBlock().getLocation(), player);
             } else {

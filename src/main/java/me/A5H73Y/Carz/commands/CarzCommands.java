@@ -40,25 +40,30 @@ public class CarzCommands implements CommandExecutor {
 
             switch (args[0].toLowerCase()) {
                 case "spawn":
-                    if (!Utils.commandEnabled(player, Commands.SPAWN))
+                    if (!Utils.commandEnabled(player, Commands.SPAWN)) {
                         return false;
+                    }
 
-                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
+                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN)) {
                         return false;
+                    }
 
-                    if (!DelayTasks.getInstance().delayPlayer(player, 4))
+                    if (!DelayTasks.getInstance().delayPlayer(player, 4)) {
                         return false;
+                    }
 
                     Utils.spawnCar(player.getLocation());
                     player.sendMessage(Utils.getTranslation("Spawned"));
                     break;
 
                 case "purchase":
-                    if (!Utils.commandEnabled(player, Commands.PURCHASE))
+                    if (!Utils.commandEnabled(player, Commands.PURCHASE)) {
                         return false;
+                    }
 
-                    if (!Validation.canPurchaseCar(player))
+                    if (!Validation.canPurchaseCar(player)) {
                         return false;
+                    }
 
                     Utils.givePlayerOwnedCar(player);
                     player.sendMessage(Utils.getTranslation("Purchased"));
@@ -69,45 +74,52 @@ public class CarzCommands implements CommandExecutor {
                     break;
 
                 case "refuel":
-                    if (!Utils.commandEnabled(player, Commands.REFUEL))
+                    if (!Utils.commandEnabled(player, Commands.REFUEL)) {
                         return false;
+                    }
 
-                    if (!Validation.canPurchaseFuel(player))
+                    if (!Validation.canPurchaseFuel(player)) {
                         return false;
+                    }
 
                     carz.getFuelController().refuel(player.getVehicle().getEntityId(), player);
                     break;
 
                 case "upgrade":
-                    if (!Utils.commandEnabled(player, Commands.UPGRADE))
+                    if (!Utils.commandEnabled(player, Commands.UPGRADE)) {
                         return false;
+                    }
 
-                    if (!Validation.canPurchaseUpgrade(player))
+                    if (!Validation.canPurchaseUpgrade(player)) {
                         return false;
+                    }
 
                     carz.getCarController().getUpgradeController().upgradeCarSpeed(player);
                     break;
 
                 case "stash":
-                    if (!Utils.commandEnabled(player, Commands.PURCHASE))
+                    if (!Utils.commandEnabled(player, Commands.PURCHASE)) {
                         return false;
+                    }
 
                     carz.getCarController().stashCar(player);
                     break;
 
                 case "addcb":
                 case "addclimbblock":
-                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
+                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN)) {
                         return false;
+                    }
 
                     Utils.addClimbBlock(player, args);
                     break;
 
                 case "reload":
-                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN))
+                    if (!Utils.hasStrictPermission(player, Permissions.ADMIN)) {
                         return false;
+                    }
 
-                    carz.reloadConfig();
+                    carz.getSettings().reload();
                     player.sendMessage(Utils.getTranslation("ConfigReloaded"));
                     break;
 
