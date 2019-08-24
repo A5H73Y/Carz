@@ -1,11 +1,11 @@
 package me.A5H73Y.Carz.other;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import me.A5H73Y.Carz.Carz;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DelayTasks {
 

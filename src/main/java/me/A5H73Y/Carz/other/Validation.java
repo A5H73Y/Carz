@@ -11,6 +11,15 @@ import org.bukkit.entity.Vehicle;
 public class Validation {
 
     /**
+     * Validate if the input is a populated String
+     * @param input
+     * @return whether the input is a valid String
+     */
+    public static boolean isStringValid(String input) {
+        return input != null && input.trim().length() != 0;
+    }
+
+    /**
      * Validate that the vehicle is a valid Carz vehicle
      * Checks to see if the vehicle is a Minecart that isn't on rails
      * @param cart

@@ -1,8 +1,8 @@
 package me.A5H73Y.Carz.other;
 
-import org.bukkit.Material;
-
 import java.util.HashMap;
+
+import org.bukkit.Material;
 
 /**
  * Utility class to make upgrading to 1.13 easier

@@ -1,12 +1,12 @@
 package me.A5H73Y.Carz;
 
 import me.A5H73Y.Carz.commands.CarzCommands;
+import me.A5H73Y.Carz.controllers.CarController;
 import me.A5H73Y.Carz.controllers.EconomyController;
-import me.A5H73Y.Carz.listeners.VehicleListener;
+import me.A5H73Y.Carz.controllers.FuelController;
 import me.A5H73Y.Carz.listeners.PlayerListener;
 import me.A5H73Y.Carz.listeners.SignListener;
-import me.A5H73Y.Carz.controllers.CarController;
-import me.A5H73Y.Carz.controllers.FuelController;
+import me.A5H73Y.Carz.listeners.VehicleListener;
 import me.A5H73Y.Carz.other.Settings;
 import me.A5H73Y.Carz.other.Updater;
 import me.A5H73Y.Carz.other.Utils;
@@ -41,7 +41,7 @@ public class Carz extends JavaPlugin {
         fuelController = new FuelController();
         economyController = new EconomyController(this);
 
-        setupBountifulAPI();
+        setupBountifulApi();
 
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
         new Metrics(this);
@@ -69,18 +69,21 @@ public class Carz extends JavaPlugin {
     }
 
     private void updatePlugin() {
-        if (instance.getConfig().getBoolean("Other.UpdateCheck"))
+        if (instance.getConfig().getBoolean("Other.UpdateCheck")) {
             new Updater(this, 42269, this.getFile(), Updater.UpdateType.DEFAULT, true);
+        }
     }
 
-    private void setupBountifulAPI() {
-        if (!getConfig().getBoolean("Other.BountifulAPI.Enabled"))
+    private void setupBountifulApi() {
+        if (!getConfig().getBoolean("Other.BountifulAPI.Enabled")) {
             return;
+        }
 
-        Plugin bountifulAPI = getServer().getPluginManager().getPlugin("BountifulAPI");
+        Plugin bountifulApi = getServer().getPluginManager().getPlugin("BountifulAPI");
 
-        if (bountifulAPI != null && bountifulAPI.isEnabled()) {
-            Utils.log("[BountifulAPI] Successfully linked. Version: " + bountifulAPI.getDescription().getVersion(), 0);
+        if (bountifulApi != null && bountifulApi.isEnabled()) {
+            Utils.log("[BountifulAPI] Successfully linked. Version: "
+                    + bountifulApi.getDescription().getVersion(), 0);
             settings.setUsingBountiful(true);
         } else {
             Utils.log("[BountifulAPI] Plugin is missing, disabling config option.", 1);

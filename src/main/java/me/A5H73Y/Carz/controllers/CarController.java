@@ -1,5 +1,10 @@
 package me.A5H73Y.Carz.controllers;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Permissions;
 import me.A5H73Y.Carz.other.Utils;
@@ -9,11 +14,6 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 public class CarController {
 
@@ -50,20 +50,21 @@ public class CarController {
     }
 
     /**
-     * Register a new car
+     * Register a new car.
      * Set the default car speed, and start the fuel management
      * @param carID
      */
     public void registerNewCar(Integer carID) {
-        if (upgradeController.isCarRegistered(carID))
+        if (upgradeController.isCarRegistered(carID)) {
             return;
+        }
 
         upgradeController.setDefaultCarSpeed(carID);
         carz.getFuelController().registerCar(carID);
     }
 
     /**
-     * Completely remove a car
+     * Completely remove a car.
      * Eject a player, remove the ownership and fuel management
      * @param car
      */
@@ -84,11 +85,13 @@ public class CarController {
      */
     private void tryAndRemovePlayerFromCar(Vehicle car) {
         try {
-            if (car == null || car.getPassenger() == null)
+            if (car == null || car.getPassenger() == null) {
                 return;
+            }
 
             removeDriver(car.getPassenger().getName());
-        } catch (NoSuchMethodError ex) {}
+        } catch (NoSuchMethodError ignored) {
+        }
     }
 
     // --- Ownership methods ---
@@ -113,8 +116,9 @@ public class CarController {
     }
 
     public void createEffect(Location location, Effect effect, final int repeat) {
-        if (!carz.getConfig().getBoolean("Other.UseEffects"))
+        if (!carz.getConfig().getBoolean("Other.UseEffects")) {
             return;
+        }
 
         new BukkitRunnable() {
             int amount = repeat;

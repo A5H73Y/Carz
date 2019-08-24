@@ -5,12 +5,15 @@ import me.A5H73Y.Carz.enums.Permissions;
 import me.A5H73Y.Carz.other.DelayTasks;
 import me.A5H73Y.Carz.other.Utils;
 import me.A5H73Y.Carz.other.XMaterial;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class PlayerListener implements Listener {
@@ -30,8 +33,8 @@ public class PlayerListener implements Listener {
             return;
 
         if (event.getClickedBlock().getType() == XMaterial.RAIL.parseMaterial()
-                || event.getClickedBlock().getType() == Material.POWERED_RAIL
-                || event.getClickedBlock().getType() == Material.DETECTOR_RAIL)
+                || event.getClickedBlock().getType() == XMaterial.POWERED_RAIL.parseMaterial()
+                || event.getClickedBlock().getType() == XMaterial.DETECTOR_RAIL.parseMaterial())
             return;
 
         Player player = event.getPlayer();

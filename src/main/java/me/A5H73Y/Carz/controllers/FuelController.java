@@ -1,13 +1,13 @@
 package me.A5H73Y.Carz.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class FuelController {
 

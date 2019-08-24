@@ -1,51 +1,60 @@
 package me.A5H73Y.Carz.other;
 
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.connorlinfoot.bountifulapi.BountifulAPI;
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.enums.Commands;
 import me.A5H73Y.Carz.enums.Permissions;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 public class Utils {
 
     /**
-     * Lookup and return the translation of a key
-     * This will add the Carz prefix by default
-     * @param string
-     * @return translation
+     * Get translation of string key.
+     * The string parameter will be matched to an entry in the Strings.yml
+     * The boolean will determine whether to display the Carz prefix
+     *
+     * @param translationKey to translate
+     * @param prefix display Parkour prefix
+     * @return String of appropriate translation
      */
-    public static String getTranslation(String string) {
-        return getTranslation(string, true);
-    }
-
-    /**
-     * Lookup and return the translation of a key
-     * You have to option to specify if the prefix should display
-     * @param string
-     * @param prefix
-     * @return translation
-     */
-    public static String getTranslation(String string, boolean prefix) {
-        if (string == null || string.isEmpty())
+    public static String getTranslation(String translationKey, boolean prefix) {
+        if (!Validation.isStringValid(translationKey)) {
             return "Invalid translation.";
+        }
 
-        String translated = Carz.getInstance().getConfig().getString("Message." + string);
-        translated = translated != null ? colour(translated) : "String not found: " + string;
+        String translated = Carz.getInstance().getSettings().getStringsConfig().getString("Message." + translationKey);
+        translated = translated != null ? colour(translated) : "String not found: " + translationKey;
         return prefix ? Carz.getPrefix().concat(translated) : translated;
     }
 
     /**
-     * Check if the player has the specified permission
-     * This will return true if the permissions are disabled
+     * Override method, but with a default of an enabled Carz prefix.
+     *
+     * @param translationKey to translate
+     * @return String of appropriate translation
+     */
+    public static String getTranslation(String translationKey) {
+        return getTranslation(translationKey, true);
+    }
+
+
+    /**
+     * Check if the player has the specified permission.
+     * This will return true if permissions are disabled
      * @param player
      * @param permission
      * @return boolean
@@ -58,16 +67,24 @@ public class Utils {
     }
 
     /**
-     * Check if the player has the specified permission
-     * This will strictly check if the player has permission / op
+     * Check if the player has the specified permission.
+     * The player will be sent a message if they don't have the permission.
      * @param player
      * @param permission
-     * @return
+     * @return hasPermission
      */
     public static boolean hasStrictPermission(Player player, Permissions permission) {
         return hasStrictPermission(player, permission, true);
     }
 
+    /**
+     * Check if the player has the specified permission.
+     * This will strictly check if the player has permission / op.
+     * @param player
+     * @param permission
+     * @param displayMessage
+     * @return hasPermission
+     */
     public static boolean hasStrictPermission(Player player, Permissions permission, boolean displayMessage) {
         if (player.hasPermission(permission.getPermission())
                 || player.hasPermission(Permissions.ALL.getPermission())
@@ -75,13 +92,14 @@ public class Utils {
             return true;
 
         if (displayMessage) {
-            player.sendMessage(Utils.getTranslation("Error.NoPermission").replace("%PERMISSION%", permission.getPermission()));
+            player.sendMessage(Utils.getTranslation("Error.NoPermission")
+                    .replace("%PERMISSION%", permission.getPermission()));
         }
         return false;
     }
 
     /**
-     * Remove all instances of minecarts from across all worlds
+     * Destroy all Minecarts on the server.
      */
     public static void destroyAllCars() {
         for (World world : Bukkit.getWorlds()) {
@@ -94,7 +112,7 @@ public class Utils {
     }
 
     /**
-     * Spawn a vehicle at the given location
+     * Spawn a vehicle at the given location.
      * If a player is provided, they will be declared the owner
      * @param location
      * @param player
@@ -102,6 +120,9 @@ public class Utils {
     public static void spawnOwnedCar(Location location, Player player) {
         location.add(0, 1, 0);
         Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
+//        TODO make configurable
+//        BlockData data = Bukkit.createBlockData(Material.WET_SPONGE);
+//        spawnedCar.setDisplayBlockData(data);
 
         if (player != null) {
             Carz.getInstance().getCarController().declareOwnership(spawnedCar.getEntityId(), player.getName());
@@ -109,7 +130,7 @@ public class Utils {
     }
 
     /**
-     * Spawn a owner-less vehicle at the given location
+     * Spawn an owner-less vehicle at the given location.
      * @param location
      */
     public static void spawnCar(Location location) {
@@ -117,7 +138,7 @@ public class Utils {
     }
 
     /**
-     * Place an Minecart in the player's inventory with their name on it
+     * Place an Minecart in the player's inventory with their name on it.
      * @param player
      */
     public static void givePlayerOwnedCar(Player player) {
@@ -131,7 +152,7 @@ public class Utils {
     }
 
     /**
-     * Translate colour codes of provided message
+     * Translate colour codes of provided message.
      * @param message
      * @return string
      */
@@ -163,7 +184,7 @@ public class Utils {
     }
 
     /**
-     * Check if the argument is numeric
+     * Check if the argument is numeric.
      * "1" - true, "Hi" - false
      *
      * @param text
@@ -187,8 +208,9 @@ public class Utils {
     public static boolean commandEnabled(Player player, Commands command) {
         boolean enabled = Carz.getInstance().getConfig().getBoolean(command.getConfigPath());
 
-        if (!enabled)
+        if (!enabled) {
             player.sendMessage(Utils.getTranslation("Error.CommandDisabled"));
+        }
 
         return enabled;
     }
@@ -196,7 +218,7 @@ public class Utils {
     /**
      * Made because < 1.8
      * @param player
-     * @return
+     * @return ItemStack
      */
     @SuppressWarnings("deprecation")
     public static ItemStack getItemStackInPlayersHand(Player player) {
@@ -211,16 +233,25 @@ public class Utils {
         return stack;
     }
 
+    /**
+     * Get the Material in the player's hand.
+     * @param player
+     * @return Material
+     */
     public static Material getMaterialInPlayersHand(Player player) {
         return getItemStackInPlayersHand(player).getType();
     }
 
+    /**
+     * Reduce the number of item in hand by 1.
+     * @param player
+     */
     public static void reduceItemStackInPlayersHand(Player player) {
         getItemStackInPlayersHand(player).setAmount(getItemStackInPlayersHand(player).getAmount() - 1);
     }
 
     /**
-     * Lookup the matching Material
+     * Lookup the matching Material.
      * Use the 1.13 API to lookup the Material,
      * It will fall back to XMaterial if it fails to find it
      * @param materialName
@@ -263,6 +294,11 @@ public class Utils {
         }
     }
 
+    /**
+     * Convert a list of material names to a unique set of Materials.
+     * @param rawMaterials
+     * @return Set<Material>
+     */
     public static Set<Material> convertToValidMaterials(List<String> rawMaterials) {
         Set<Material> validMaterials = new HashSet<>();
 
@@ -277,6 +313,11 @@ public class Utils {
         return validMaterials;
     }
 
+    /**
+     * Add a ClimbBlock to the list
+     * @param player
+     * @param args
+     */
     public static void addClimbBlock(Player player, String[] args) {
         if (args.length < 2) {
             player.sendMessage(Carz.getPrefix() + "Invalid syntax: /ns addcb (material)");

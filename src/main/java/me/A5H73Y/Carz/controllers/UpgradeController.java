@@ -1,13 +1,13 @@
 package me.A5H73Y.Carz.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import me.A5H73Y.Carz.Carz;
 import me.A5H73Y.Carz.other.Utils;
 import org.bukkit.Effect;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class UpgradeController {
 

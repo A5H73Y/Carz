@@ -15,8 +15,9 @@ public class Help {
 
         if (Carz.getInstance().getFuelController().isFuelEnabled()) {
             displayCommandUsage(player, "fuel", "Display the car's fuel");
-            if (config.getBoolean(Commands.REFUEL.getConfigPath()))
+            if (config.getBoolean(Commands.REFUEL.getConfigPath())) {
                 displayCommandUsage(player, "refuel", "Refuel your car");
+            }
         }
         if (config.getBoolean(Commands.SPAWN.getConfigPath()) && player.isOp())
             displayCommandUsage(player, "spawn", "Spawn a car at your location");
@@ -43,7 +44,7 @@ public class Help {
      * @param description
      */
     private static void displayCommandUsage(Player player, String title, String description) {
-        player.sendMessage(ChatColor.DARK_AQUA + "/carz " + ChatColor.AQUA + title +
-                ChatColor.BLACK + " : " + ChatColor.WHITE + description);
+        player.sendMessage(ChatColor.DARK_AQUA + "/carz " + ChatColor.AQUA + title
+          + ChatColor.BLACK + " : " + ChatColor.WHITE + description);
     }
 }
