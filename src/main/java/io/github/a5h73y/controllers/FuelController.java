@@ -55,7 +55,7 @@ public class FuelController {
 
         Car car = carz.getCarController().getCar(player.getVehicle().getEntityId());
         if (car != null) {
-            player.sendMessage(formattedFuelLevel(car));
+            Carz.getInstance().getBountifulAPI().sendActionBar(player, formattedFuelLevel(car));
         }
     }
 
@@ -95,5 +95,19 @@ public class FuelController {
         sb.append(ChatColor.GREEN);
         sb.append(" F");
         return sb.toString();
+    }
+
+    /**
+     * Calculate the cost multiplier based on remaining fuel.
+     * Scenarios:
+     *  0 / 3000 fuel left = 100% of cost refuel
+     *  1500 / 3000 fuel left = 50% of cost refuel
+     *  2999 / 3000 fuel left = 25% of cost refuel (to avoid exploit)
+     * @param remaining remaining fuel amount
+     * @return cost multiplier
+     */
+    public double determineScaleOfCostMultiplier(double remaining) {
+        double percentRemaining = remaining / MAX_FUEL;
+        return 1 - (Math.floor(percentRemaining * 4) / 4);
     }
 }

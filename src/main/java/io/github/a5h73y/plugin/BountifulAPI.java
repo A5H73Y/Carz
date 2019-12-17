@@ -12,7 +12,7 @@ public class BountifulAPI extends PluginWrapper {
 
 	public void sendTitle(Player player, String message) {
 		if (enabled) {
-			com.connorlinfoot.bountifulapi.BountifulAPI.sendTitle(player, 5, 20, 5, message, null);
+			com.connorlinfoot.bountifulapi.BountifulAPI.sendTitle(player, 10, 40, 10, message, null);
 		} else {
 			player.sendMessage(Carz.getPrefix() + message);
 		}
@@ -20,7 +20,7 @@ public class BountifulAPI extends PluginWrapper {
 
 	public void sendActionBar(Player player, String message) {
 		if (enabled) {
-			com.connorlinfoot.bountifulapi.BountifulAPI.sendActionBar(player, message, 20);
+			com.connorlinfoot.bountifulapi.BountifulAPI.sendActionBar(player, message, 40);
 		} else {
 			player.sendMessage(Carz.getPrefix() + message);
 		}

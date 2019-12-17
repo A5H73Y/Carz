@@ -62,13 +62,9 @@ public class Settings {
         carz.getConfig().addDefault("Command.Upgrade", true);
 
         carz.getConfig().addDefault("Fuel.Enable", true);
+        carz.getConfig().addDefault("Fuel.ScaleCost", true);
         carz.getConfig().addDefault("Fuel.StartAmount", 3000.0);
         carz.getConfig().addDefault("Fuel.GaugeScale", 40);
-
-        carz.getConfig().addDefault("Economy.Use", true);
-        carz.getConfig().addDefault("Economy.Cost.Purchase", 10.0);
-        carz.getConfig().addDefault("Economy.Cost.Upgrade", 8.0);
-        carz.getConfig().addDefault("Economy.Cost.Refuel", 2.0);
 
         carz.getConfig().addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
         carz.getConfig().addDefault("ClimbBlocks.Strength", 0.05D);
@@ -81,6 +77,10 @@ public class Settings {
         carz.getConfig().addDefault("Other.UpdateCheck", true);
 
         carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
+        carz.getConfig().addDefault("Other.Vault.Enabled", true);
+        carz.getConfig().addDefault("Other.Vault.Cost.Purchase", 10.0);
+        carz.getConfig().addDefault("Other.Vault.Cost.Upgrade", 8.0);
+        carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();
@@ -160,7 +160,7 @@ public class Settings {
     }
 
     public String getSignHeader() {
-        return TranslationUtils.getTranslation("SignHeader", false);
+        return TranslationUtils.getTranslation("Carz.SignHeader", false);
     }
 
     public boolean isDestroyInLiquid() {
@@ -173,6 +173,10 @@ public class Settings {
 
     public boolean isControlCarsWhileFalling() {
         return carz.getConfig().getBoolean("Other.ControlCarsWhileFalling");
+    }
+
+    public boolean isFuelScaleCost() {
+        return carz.getConfig().getBoolean("Fuel.ScaleCost");
     }
 
     public Double getStartSpeed() {

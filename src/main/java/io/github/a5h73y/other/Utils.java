@@ -137,6 +137,10 @@ public class Utils {
         }
     }
 
+    public static void log(String message) {
+        log(message, 0);
+    }
+
     /**
      * Convert a list of material names to a unique set of Materials.
      * @param rawMaterials

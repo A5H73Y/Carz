@@ -3,6 +3,7 @@ package io.github.a5h73y.utility;
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.enums.PurchaseType;
+import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Minecart;
@@ -121,6 +122,7 @@ public class ValidationUtils {
 			return false;
 		}
 
-		return Carz.getInstance().getEconomyAPI().processPurchase(player, PurchaseType.FUEL);
+		Car car = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId());
+		return Carz.getInstance().getEconomyAPI().processFuelPurchase(player, car);
 	}
 }

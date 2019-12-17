@@ -1,6 +1,8 @@
 package io.github.a5h73y.plugin;
 
+import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.PurchaseType;
+import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.Utils;
 import io.github.a5h73y.utility.TranslationUtils;
 import net.milkbowl.vault.economy.Economy;
@@ -43,15 +45,15 @@ public class EconomyAPI extends PluginWrapper {
 	}
 
 	/**
-	 * Check to see if the player is able to purchase the parameter
+	 * Check to see if the player is able to purchase the parameter.
 	 * If Economy is disabled this will return true
 	 * If Economy is enabled it will query if the player has sufficient funds
 	 * @param player
-	 * @param type
+	 * @param cost
 	 * @return boolean
 	 */
-	public boolean canPurchase(Player player, PurchaseType type) {
-		return !enabled || economy.has(player, type.getCost());
+	public boolean canPurchase(Player player, double cost) {
+		return !enabled || economy.has(player, cost);
 	}
 
 	/**
@@ -59,11 +61,11 @@ public class EconomyAPI extends PluginWrapper {
 	 * If the validation check fails, no attempt to deduct the money will be made.
 	 * If the attempt is unsuccessful, the amount of money required is displayed to the user.
 	 * @param player
-	 * @param type
-	 * @return boolean
+	 * @param price
+	 * @return purchase successful
 	 */
-	public boolean processPurchase(Player player, PurchaseType type) {
-		boolean success = purchase(player, type);
+	public boolean processPurchase(Player player, double price) {
+		boolean success = purchase(player, price);
 
 		if (!success) {
 			String currencyName = economy.currencyNamePlural() == null
@@ -71,31 +73,52 @@ public class EconomyAPI extends PluginWrapper {
 
 			player.sendMessage(
 					TranslationUtils.getTranslation("Error.PurchaseFailed")
-							.replace("%COST%", type.getCost() + currencyName));
+							.replace("%COST%", price + currencyName));
 		}
 
 		return success;
 	}
 
+	public boolean processPurchase(Player player, PurchaseType type) {
+		return processPurchase(player, type.getCost());
+	}
+
 	/**
-	 * Process the purchase attempt
+	 * Process the purchase attempt.
 	 * If economy is disabled, the purchase will succeed
 	 * If the player passes validation checks, an attempt will be made to withdraw the cost
 	 * from the players bank.
 	 * @param player
-	 * @param type
-	 * @return boolean
+	 * @param cost
+	 * @return purchase successful
 	 */
-	private boolean purchase(Player player, PurchaseType type) {
+	private boolean purchase(Player player, double cost) {
 		if (!enabled) {
 			return true;
 		}
 
-		if (!canPurchase(player, type)) {
+		if (!canPurchase(player, cost)) {
 			return false;
 		}
 
-		EconomyResponse response = economy.withdrawPlayer(player, type.getCost());
+		EconomyResponse response = economy.withdrawPlayer(player, cost);
 		return response.transactionSuccess();
+	}
+
+	/**
+	 * Process the purchase of fuel.
+	 * As the cost could scale to the remaining fuel this must be processed differently.
+	 * @param player
+	 * @param car
+	 * @return purchase successful
+	 */
+	public boolean processFuelPurchase(Player player, Car car) {
+		double cost = PurchaseType.FUEL.getCost();
+
+		if (Carz.getInstance().getSettings().isFuelScaleCost()) {
+			cost = cost * Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(car.getFuel());
+		}
+
+		return processPurchase(player, cost);
 	}
 }

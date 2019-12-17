@@ -260,7 +260,7 @@ public class VehicleListener implements Listener {
         Car car = carz.getCarController().getCar(event.getVehicle().getEntityId());
         car.resetSpeed();
 
-        if (car.getOwner().equals(player.getName())) {
+        if (player.getName().equals(car.getOwner())) {
             TranslationUtils.sendTranslation("Car.CarLocked", player);
         }
     }

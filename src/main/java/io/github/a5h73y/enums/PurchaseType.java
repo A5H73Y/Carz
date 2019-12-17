@@ -24,7 +24,7 @@ public enum PurchaseType {
      * @return
      */
     public double getCost() {
-        return Carz.getInstance().getConfig().getDouble("Economy.Cost." + this.purchaseKey, 0.0);
+        return Carz.getInstance().getConfig().getDouble("Other.Vault.Cost." + this.purchaseKey, 0.0);
     }
 
     /**
