@@ -60,7 +60,7 @@ public class FuelController {
     }
 
     public void refuel(Car car) {
-        car.setFuel(MAX_FUEL);
+        car.setCurrentFuel(MAX_FUEL);
     }
 
     public void refuel(Car car, Player player) {
@@ -75,7 +75,7 @@ public class FuelController {
      */
     private String formattedFuelLevel(Car car) {
         StringBuilder sb = new StringBuilder();
-        double fuelRemaining = Math.floor((car.getFuel() / MAX_FUEL) * GAUGE_SCALE);
+        double fuelRemaining = Math.floor((car.getCurrentFuel() / MAX_FUEL) * GAUGE_SCALE);
         double fuelMissing = GAUGE_SCALE - fuelRemaining;
 
         sb.append(ChatColor.RED);

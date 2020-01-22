@@ -2,11 +2,12 @@ package io.github.a5h73y.controllers;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.model.Car;
-import io.github.a5h73y.model.StandardCar;
+import io.github.a5h73y.model.CarDetails;
 import io.github.a5h73y.other.Utils;
 import io.github.a5h73y.utility.EffectUtils;
 import io.github.a5h73y.utility.PermissionUtils;
@@ -21,6 +22,8 @@ import org.bukkit.entity.Vehicle;
  */
 public class CarController {
 
+    public static final String DEFAULT_CAR = "Default";
+
     private final Carz carz;
 
     // Vehicle ID with it's associated Car
@@ -29,8 +32,24 @@ public class CarController {
     // Players currently inside a Carz vehicle, with the value being Vehicle ID
     private final Map<String, Integer> playersDriving = new HashMap<>();
 
+    private final Map<String, CarDetails> carTypes = new HashMap<>();
+
     public CarController(Carz carz) {
         this.carz = carz;
+        populateCarTypes();
+    }
+
+    private void populateCarTypes() {
+        Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
+
+        for (String carType : allCarTypes) {
+            double startSpeed = carz.getConfig().getDouble("CarTypes." + carType + ".StartMaxSpeed");
+            double maxSpeed = carz.getConfig().getDouble("CarTypes." + carType + ".MaxUpgradeSpeed");
+            double acceleration = carz.getConfig().getDouble("CarTypes." + carType + ".Acceleration");
+            double fuelUsage = carz.getConfig().getDouble("CarTypes." + carType + ".FuelUsage");
+            String fillMaterial = carz.getConfig().getString("CarTypes." + carType + ".FillMaterial");
+            carTypes.put(carType, new CarDetails(startSpeed, maxSpeed, acceleration, fuelUsage, fillMaterial));
+        }
     }
 
     /**
@@ -40,7 +59,7 @@ public class CarController {
      * @param owner is the player the registered owner?
      */
     public void startDriving(String playerName, Integer carId, boolean owner) {
-        Car car = getOrCreateCar(carId, new StandardCar(carId));
+        Car car = getOrCreateCar(carId, DEFAULT_CAR);
         if (owner) {
             car.setOwner(playerName);
         }
@@ -58,8 +77,8 @@ public class CarController {
      * @param carType
      * @return matching or new Car
      */
-    public Car getOrCreateCar(Integer entityId, Car carType) {
-        return entityIdToCar.computeIfAbsent(entityId, k -> carType);
+    public Car getOrCreateCar(Integer entityId, String carType) {
+        return entityIdToCar.computeIfAbsent(entityId, k -> new Car(entityId, carType));
     }
 
     /**
@@ -68,7 +87,7 @@ public class CarController {
      * @param entityId
      */
     public Car getOrCreateCar(Integer entityId) {
-        return getOrCreateCar(entityId, new StandardCar(entityId));
+        return getOrCreateCar(entityId, DEFAULT_CAR);
     }
 
     /**
@@ -168,7 +187,7 @@ public class CarController {
         upgradeCarSpeed(car);
         EffectUtils.playEffect(player, Effect.ZOMBIE_CHEW_WOODEN_DOOR);
         player.sendMessage(TranslationUtils.getTranslation("Car.UpgradeSpeed")
-                .replace("%SPEED%", car.getMaxSpeed().toString()));
+                .replace("%SPEED%", String.valueOf(car.getMaxSpeed())));
 
         EffectUtils.createUpgradeEffect((Vehicle) player.getVehicle());
     }
@@ -180,14 +199,18 @@ public class CarController {
      * @param car
      */
     private void upgradeCarSpeed(Car car) {
-        Double currentSpeed = car.getMaxSpeed();
-        Double upgradeBy = carz.getSettings().getUpgradeSpeed();
-        Double maxSpeed = carz.getSettings().getUpgradeMaxSpeed();
+        double currentMax = car.getCarDetails().getStartMaxSpeed();
+        double maxSpeed = car.getCarDetails().getMaxUpgradeSpeed();
+        double upgradeBy = carz.getSettings().getUpgradeIncrement();
 
-        if ((currentSpeed + upgradeBy) > maxSpeed) {//&& !event.getPlayer().hasPermission("Carz.Admin"))
+        if ((currentMax + upgradeBy) > maxSpeed) {//&& !event.getPlayer().hasPermission("Carz.Admin"))
             return;
         }
 
-        car.setMaxSpeed(currentSpeed + upgradeBy);
+        car.setMaxSpeed(currentMax + upgradeBy);
+    }
+
+    public Map<String, CarDetails> getCarTypes() {
+        return carTypes;
     }
 }

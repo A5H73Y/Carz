@@ -45,7 +45,7 @@ public class Carz extends JavaPlugin {
         setupPlugins();
 
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
-        new Metrics(this);
+        new Metrics(this, 42269);
         updatePlugin();
     }
 

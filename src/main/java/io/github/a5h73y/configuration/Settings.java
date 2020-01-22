@@ -74,6 +74,7 @@ public class Settings {
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
+        carz.getConfig().addDefault("Other.UseAutoTabCompletion", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
 
         carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
@@ -81,6 +82,11 @@ public class Settings {
         carz.getConfig().addDefault("Other.Vault.Cost.Purchase", 10.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Upgrade", 8.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
+
+        carz.getConfig().addDefault("CarTypes.Default.StartMaxSpeed", 1.0);
+        carz.getConfig().addDefault("CarTypes.Default.Acceleration", 1.0);
+        carz.getConfig().addDefault("CarTypes.Default.FuelUsage", 1.0);
+        carz.getConfig().addDefault("CarTypes.Default.FillMaterial", "AIR");
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();
@@ -179,19 +185,19 @@ public class Settings {
         return carz.getConfig().getBoolean("Fuel.ScaleCost");
     }
 
-    public Double getStartSpeed() {
+    public double getStartSpeed() {
         return carz.getConfig().getDouble("Speed.Start");
     }
 
-    public Double getUpgradeSpeed() {
+    public double getUpgradeIncrement() {
         return carz.getConfig().getDouble("Speed.Upgrade.Increment");
     }
 
-    public Double getUpgradeMaxSpeed() {
+    public double getUpgradeMaxSpeed() {
         return carz.getConfig().getDouble("Speed.Upgrade.Max");
     }
 
-    public Double getClimbBlockStrength() {
+    public double getClimbBlockStrength() {
         return carz.getConfig().getDouble("ClimbBlocks.Strength");
     }
 

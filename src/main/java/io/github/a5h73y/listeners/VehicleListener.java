@@ -99,7 +99,9 @@ public class VehicleListener implements Listener {
             return;
         }
 
-        if (!event.getPlayer().isInsideVehicle() || !(event.getPlayer().getVehicle() instanceof Minecart)) {
+        if (!event.getPlayer().isInsideVehicle()
+                || !(event.getPlayer().getVehicle() instanceof Minecart)
+                || !(event.getPlayer().getVehicle() instanceof Vehicle)) { // for some reason 1.15 needs this..?
             return;
         }
 
@@ -192,7 +194,7 @@ public class VehicleListener implements Listener {
         Vector vehicleVelocity = event.getVehicle().getVelocity();
         Vector playerLocationVelocity = player.getLocation().getDirection();
 
-        double carSpeed = drivingCar.getSpeed();
+        double carSpeed = drivingCar.getCurrentSpeed();
 
         vehicleVelocity.setX((playerLocationVelocity.getX() / 100.0D) * carSpeed);
         vehicleVelocity.setZ((playerLocationVelocity.getZ() / 100.0D) * carSpeed);

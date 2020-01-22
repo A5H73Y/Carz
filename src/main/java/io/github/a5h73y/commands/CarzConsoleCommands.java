@@ -1,6 +1,7 @@
 package io.github.a5h73y.commands;
 
 import io.github.a5h73y.Carz;
+import io.github.a5h73y.conversation.CreateCarType;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.other.Utils;
 import io.github.a5h73y.utility.TranslationUtils;
@@ -9,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
 /**
@@ -24,7 +26,7 @@ public class CarzConsoleCommands implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
+        if (sender instanceof Player || !(sender instanceof ConsoleCommandSender)) {
             sender.sendMessage(Carz.getPrefix() + "Use /carz instead.");
             return false;
         }
@@ -70,6 +72,10 @@ public class CarzConsoleCommands implements CommandExecutor {
             case "reload":
                 carz.getSettings().reload();
                 TranslationUtils.sendTranslation("Carz.ConfigReloaded", sender);
+                break;
+
+            case "createtype":
+                new CreateCarType((ConsoleCommandSender) sender).begin();
                 break;
 
             case "cmds":

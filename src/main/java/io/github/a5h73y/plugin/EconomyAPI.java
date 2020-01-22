@@ -35,7 +35,7 @@ public class EconomyAPI extends PluginWrapper {
 					getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
 
 			if (economyProvider == null) {
-				Utils.log("[Economy] Parkour failed to connect to Economy service. Disabling Economy.", 2);
+				Utils.log("[Economy] Carz failed to connect to Economy service. Disabling Economy.", 2);
 				enabled = false;
 				return;
 			}
@@ -116,7 +116,7 @@ public class EconomyAPI extends PluginWrapper {
 		double cost = PurchaseType.FUEL.getCost();
 
 		if (Carz.getInstance().getSettings().isFuelScaleCost()) {
-			cost = cost * Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(car.getFuel());
+			cost *= Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(car.getCurrentFuel());
 		}
 
 		return processPurchase(player, cost);

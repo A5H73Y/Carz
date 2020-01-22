@@ -13,7 +13,7 @@ public class TranslationUtils {
 	 * The boolean will determine whether to display the Carz prefix
 	 *
 	 * @param translationKey to translate
-	 * @param prefix display Parkour prefix
+	 * @param prefix display Carz prefix
 	 * @return String of appropriate translation
 	 */
 	public static String getTranslation(String translationKey, boolean prefix) {
