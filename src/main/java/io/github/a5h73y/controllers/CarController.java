@@ -17,6 +17,10 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_SPEED;
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
+
 /**
  * All Car related functionality.
  */
@@ -32,6 +36,7 @@ public class CarController {
     // Players currently inside a Carz vehicle, with the value being Vehicle ID
     private final Map<String, Integer> playersDriving = new HashMap<>();
 
+    // All available Car Types
     private final Map<String, CarDetails> carTypes = new HashMap<>();
 
     public CarController(Carz carz) {
@@ -43,11 +48,12 @@ public class CarController {
         Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
 
         for (String carType : allCarTypes) {
-            double startSpeed = carz.getConfig().getDouble("CarTypes." + carType + ".StartMaxSpeed");
-            double maxSpeed = carz.getConfig().getDouble("CarTypes." + carType + ".MaxUpgradeSpeed");
-            double acceleration = carz.getConfig().getDouble("CarTypes." + carType + ".Acceleration");
-            double fuelUsage = carz.getConfig().getDouble("CarTypes." + carType + ".FuelUsage");
-            String fillMaterial = carz.getConfig().getString("CarTypes." + carType + ".FillMaterial");
+            String configPath = "CarTypes." + carType;
+            double startSpeed = carz.getConfig().getDouble(configPath + ".StartMaxSpeed");
+            double maxSpeed = carz.getConfig().getDouble(configPath + ".MaxUpgradeSpeed");
+            double acceleration = carz.getConfig().getDouble(configPath + ".Acceleration");
+            double fuelUsage = carz.getConfig().getDouble(configPath + ".FuelUsage");
+            String fillMaterial = carz.getConfig().getString(configPath + ".FillMaterial");
             carTypes.put(carType, new CarDetails(startSpeed, maxSpeed, acceleration, fuelUsage, fillMaterial));
         }
     }
@@ -55,19 +61,17 @@ public class CarController {
     /**
      * Register the player as the driving for the Car.
      * @param playerName player driving
-     * @param carId entity id for the vehicle
-     * @param owner is the player the registered owner?
+     * @param vehicle vehicle the player is driving
      */
-    public void startDriving(String playerName, Integer carId, boolean owner) {
-        Car car = getOrCreateCar(carId, DEFAULT_CAR);
-        if (owner) {
-            car.setOwner(playerName);
-        }
-        playersDriving.put(playerName, car.getEntityId());
-    }
+    public void startDriving(String playerName, Vehicle vehicle) {
+        String carType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, vehicle);
+        Car car = getOrCreateCar(vehicle.getEntityId(), carType);
 
-    public void startDriving(String playerName, Integer carId) {
-        this.startDriving(playerName, carId, false);
+        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
+            car.setOwner(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle));
+        }
+
+        playersDriving.put(playerName, car.getEntityId());
     }
 
     /**
@@ -174,8 +178,8 @@ public class CarController {
         }
 
         removeDriver(player.getName());
+        Utils.givePlayerOwnedCar(player, vehicle);
         destroyCar(vehicle);
-        Utils.givePlayerOwnedCar(player);
     }
 
     /**
@@ -183,8 +187,12 @@ public class CarController {
      * @param player
      */
     public void upgradeCarSpeed(Player player) {
+        if (player.getVehicle() == null) {
+            return;
+        }
+
+        upgradeCarSpeed((Vehicle) player.getVehicle());
         Car car = getCar(player.getVehicle().getEntityId());
-        upgradeCarSpeed(car);
         EffectUtils.playEffect(player, Effect.ZOMBIE_CHEW_WOODEN_DOOR);
         player.sendMessage(TranslationUtils.getTranslation("Car.UpgradeSpeed")
                 .replace("%SPEED%", String.valueOf(car.getMaxSpeed())));
@@ -196,9 +204,10 @@ public class CarController {
      * Apply a speed upgrade to the vehicle
      * The current speed of the car will be increased by the upgrade speed
      * until the current speed reaches the maximum upgrade limit.
-     * @param car
+     * @param vehicle
      */
-    private void upgradeCarSpeed(Car car) {
+    private void upgradeCarSpeed(Vehicle vehicle) {
+        Car car = getCar(vehicle.getEntityId());
         double currentMax = car.getCarDetails().getStartMaxSpeed();
         double maxSpeed = car.getCarDetails().getMaxUpgradeSpeed();
         double upgradeBy = carz.getSettings().getUpgradeIncrement();
@@ -208,6 +217,7 @@ public class CarController {
         }
 
         car.setMaxSpeed(currentMax + upgradeBy);
+        carz.getItemMetaUtils().setValue(VEHICLE_SPEED, vehicle, String.valueOf(car.getMaxSpeed()));
     }
 
     public Map<String, CarDetails> getCarTypes() {

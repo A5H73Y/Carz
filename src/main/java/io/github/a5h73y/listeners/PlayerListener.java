@@ -8,13 +8,18 @@ import io.github.a5h73y.other.XMaterial;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 public class PlayerListener implements Listener {
 
@@ -51,22 +56,29 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        ItemStack carInHand = PlayerUtils.getItemStackInPlayersHand(player);
+
+        if (!carInHand.hasItemMeta() || !carz.getItemMetaUtils().has(VEHICLE_TYPE, carInHand)) {
+            return;
+        }
+
         if (!DelayTasks.getInstance().delayPlayer(player, 3)) {
             return;
         }
 
-        ItemStack carInHand = PlayerUtils.getItemStackInPlayersHand(player);
+        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, carInHand)) {
+            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, carInHand);
 
-        if (carInHand.hasItemMeta() && carInHand.getItemMeta().hasDisplayName()) {
-            if (carInHand.getItemMeta().getDisplayName().contains(player.getName())) {
-                Utils.spawnOwnedCar(event.getClickedBlock().getLocation(), player);
-            } else {
+            if (!owner.equalsIgnoreCase(player.getName())) {
                 TranslationUtils.sendTranslation("Error.Owned", player);
                 return;
             }
-        } else {
-            Utils.spawnCar(event.getClickedBlock().getLocation());
         }
+
+        Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
+        Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
+
+        Utils.transferNamespaceKeyValues(carInHand.getItemMeta(), spawnedCar);
 
         PlayerUtils.reduceItemStackInPlayersHand(player);
     }

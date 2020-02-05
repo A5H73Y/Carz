@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import io.github.a5h73y.Carz;
+import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -55,7 +56,7 @@ public class CreateCarType extends CarzConversation {
 				return this;
 			}
 
-			if (STRING_PATTERN.matcher(input).matches()) {
+			if (!STRING_PATTERN.matcher(input).matches()) {
 				sendErrorMessage(context, "Invalid Car name");
 				return this;
 			}
@@ -106,11 +107,19 @@ public class CreateCarType extends CarzConversation {
 				FileConfiguration config = Carz.getInstance().getConfig();
 
 				answers.forEach((configKey, value) -> {
-					config.set("CarTypes." + carTypeName + "." + configKey, value);
+					config.set("CarTypes." + carTypeName + "." + configKey, calculateValue(value));
 				});
 				Carz.getInstance().saveConfig();
+				context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
 				return Prompt.END_OF_CONVERSATION;
 			}
+		}
+
+		private Object calculateValue(String value) {
+			if (ValidationUtils.isDouble(value)) {
+				return Double.valueOf(value);
+			}
+			return value;
 		}
 	}
 

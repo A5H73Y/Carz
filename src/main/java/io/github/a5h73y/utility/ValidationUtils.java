@@ -22,14 +22,28 @@ public class ValidationUtils {
 	}
 
 	/**
-	 * Check if the argument is numeric.
+	 * Check if the argument is an integer.
 	 * "1" - true, "Hi" - false
 	 * @param text
-	 * @return whether the input is numeric
+	 * @return whether the input is an integer
 	 */
-	public static boolean isNumber(String text) {
+	public static boolean isInteger(String text) {
 		try {
 			Integer.parseInt(text);
+			return true;
+		} catch (Exception ignored) {}
+		return false;
+	}
+
+	/**
+	 * Check if the argument is a double.
+	 * "1" - true, "Hi" - false
+	 * @param text
+	 * @return whether the input is a double
+	 */
+	public static boolean isDouble(String text) {
+		try {
+			Double.parseDouble(text);
 			return true;
 		} catch (Exception ignored) {}
 		return false;

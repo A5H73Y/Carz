@@ -23,6 +23,8 @@ import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
+
 /**
  * Vehicle related events.
  * The Order of events is in the typical lifecycle of a Car.
@@ -57,20 +59,19 @@ public class VehicleListener implements Listener {
         }
 
         Player player = (Player) event.getEntered();
-        Integer carID = event.getVehicle().getEntityId();
-        Car car = carz.getCarController().getCar(carID);
+        Minecart minecart = (Minecart) event.getVehicle();
 
-        if (car != null && car.getOwner() != null) {
-            boolean isOwner = car.getOwner().equals(player.getName());
-            if (!isOwner) {
-                if (!PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
-                    player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-                            .replace("%PLAYER%", car.getOwner()));
-                    event.setCancelled(true);
-                    return;
-                } else {
-                    TranslationUtils.sendTranslation("Car.CarUnlocked", player);
-                }
+        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, minecart)) {
+            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, minecart);
+            boolean isOwner = owner.equalsIgnoreCase(player.getName());
+
+            if (!isOwner && !PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
+                player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
+                        .replace("%PLAYER%", owner));
+                event.setCancelled(true);
+                return;
+            } else {
+                TranslationUtils.sendTranslation("Car.CarUnlocked", player);
             }
         } else if (carz.getSettings().isOnlyOwnedCarsDrive()) {
             return;
@@ -141,7 +142,7 @@ public class VehicleListener implements Listener {
             TranslationUtils.sendTranslation("Car.EngineStop", player);
 
         } else {
-            carz.getCarController().startDriving(player.getName(), player.getVehicle().getEntityId());
+            carz.getCarController().startDriving(player.getName(), minecart);
             minecart.setMaxSpeed(1000D);
             TranslationUtils.sendTranslation("Car.EngineStart", player);
         }

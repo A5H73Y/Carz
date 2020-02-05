@@ -28,7 +28,7 @@ public class EffectUtils {
 	}
 
 	public static void createDamageEffect(Vehicle car) {
-		createEffect(car.getLocation().add(0, 1, 0), Effect.SMOKE, 2);
+		createEffect(car.getLocation(), Effect.SMOKE, 2);
 	}
 
 	public static void createUpgradeEffect(Vehicle car) {

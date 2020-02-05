@@ -5,18 +5,25 @@ import java.util.List;
 import java.util.Set;
 
 import io.github.a5h73y.Carz;
+import io.github.a5h73y.controllers.CarController;
 import io.github.a5h73y.enums.Commands;
+import io.github.a5h73y.enums.VehicleDetailKey;
+import io.github.a5h73y.utility.ItemMetaUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataHolder;
+
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
  * Various Carz Utility commands.
@@ -39,27 +46,12 @@ public class Utils {
     /**
      * Spawn a vehicle at the given location.
      * If a player is provided, they will be declared the owner
-     * @param location
      * @param player
      */
-    public static void spawnOwnedCar(Location location, Player player) {
-        location.add(0, 1, 0);
-        Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
+    public static void giveOwnedCar(Player player) {
 //        TODO make configurable
 //        BlockData data = Bukkit.createBlockData(Material.WET_SPONGE);
 //        spawnedCar.setDisplayBlockData(data);
-
-        if (player != null) {
-            Carz.getInstance().getCarController().startDriving(player.getName(), spawnedCar.getEntityId(), true);
-        }
-    }
-
-    /**
-     * Spawn an owner-less vehicle at the given location.
-     * @param location
-     */
-    public static void spawnCar(Location location) {
-        spawnOwnedCar(location, null);
     }
 
     /**
@@ -67,14 +59,52 @@ public class Utils {
      * @param player
      */
     public static void givePlayerOwnedCar(Player player) {
-        ItemStack s = new ItemStack(Material.MINECART);
-        ItemMeta m = s.getItemMeta();
-        m.setDisplayName(TranslationUtils.getTranslation("Car.PlayerCar", false)
-                .replace("%PLAYER%", player.getName()));
-        s.setItemMeta(m);
-        player.getInventory().addItem(s);
+        ItemStack itemStack = new ItemStack(Material.MINECART);
 
+        Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_TYPE, itemStack, CarController.DEFAULT_CAR);
+        Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
+
+        setOwnerDisplayName(itemStack, player);
+
+        player.getInventory().addItem(itemStack);
         player.updateInventory();
+    }
+
+    public static void givePlayerOwnedCar(Player player, Vehicle vehicle) {
+        ItemStack itemStack = new ItemStack(Material.MINECART);
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        transferNamespaceKeyValues(vehicle, itemMeta);
+        itemStack.setItemMeta(itemMeta);
+
+        setOwnerDisplayName(itemStack, player);
+
+        player.getInventory().addItem(itemStack);
+        player.updateInventory();
+    }
+
+    public static PersistentDataHolder transferNamespaceKeyValues(PersistentDataHolder from, PersistentDataHolder to) {
+        ItemMetaUtils itemMetaUtils = Carz.getInstance().getItemMetaUtils();
+
+        for (VehicleDetailKey value : VehicleDetailKey.values()) {
+            if (itemMetaUtils.has(value, from)) {
+                String storedValue = itemMetaUtils.getValue(value, from);
+                itemMetaUtils.setValue(value, to, storedValue);
+
+                System.out.println("transferred " + value + ": " + storedValue);
+            }
+        }
+
+        return to;
+    }
+
+    public static void setOwnerDisplayName(ItemStack itemStack, Player player) {
+        if (itemStack.hasItemMeta()) {
+            ItemMeta itemMeta = itemStack.getItemMeta();
+            itemMeta.setDisplayName(TranslationUtils.getTranslation("Car.PlayerCar", false)
+                    .replace("%PLAYER%", player.getName()));
+            itemStack.setItemMeta(itemMeta);
+        }
     }
 
     /**

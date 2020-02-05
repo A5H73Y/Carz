@@ -12,6 +12,7 @@ import io.github.a5h73y.listeners.VehicleListener;
 import io.github.a5h73y.other.Updater;
 import io.github.a5h73y.plugin.BountifulAPI;
 import io.github.a5h73y.plugin.EconomyAPI;
+import io.github.a5h73y.utility.ItemMetaUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,6 +27,7 @@ public class Carz extends JavaPlugin {
     private FuelController fuelController;
     private CarController carController;
     private Settings settings;
+    private ItemMetaUtils itemMetaUtils;
 
     public static Carz getInstance() {
         return instance;
@@ -35,9 +37,10 @@ public class Carz extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        settings = new Settings(this);
         carController = new CarController(this);
         fuelController = new FuelController(this);
-        settings = new Settings(this);
+        itemMetaUtils = new ItemMetaUtils();
 
         registerCommands();
         registerEvents();
@@ -96,5 +99,9 @@ public class Carz extends JavaPlugin {
 
     public EconomyAPI getEconomyAPI() {
         return economyAPI;
+    }
+
+    public ItemMetaUtils getItemMetaUtils() {
+        return itemMetaUtils;
     }
 }

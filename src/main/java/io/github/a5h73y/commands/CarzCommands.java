@@ -57,7 +57,7 @@ public class CarzCommands implements CommandExecutor {
                     return false;
                 }
 
-                Utils.spawnCar(player.getLocation());
+                Utils.givePlayerOwnedCar(player);
                 TranslationUtils.sendTranslation("Car.Spawned", player);
                 break;
 

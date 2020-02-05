@@ -37,7 +37,7 @@ public class Car {
 	}
 
 	public void accelerate() {
-		if (this.currentSpeed < this.carDetails.getStartMaxSpeed()) {
+		if (this.currentSpeed < this.maxSpeed) {
 			this.currentSpeed += this.carDetails.getAcceleration();
 		}
 		this.currentFuel -= this.carDetails.getFuelUsage();

@@ -83,8 +83,8 @@ public class Settings {
         carz.getConfig().addDefault("Other.Vault.Cost.Upgrade", 8.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
 
-        carz.getConfig().addDefault("CarTypes.Default.StartMaxSpeed", 1.0);
-        carz.getConfig().addDefault("CarTypes.Default.Acceleration", 1.0);
+        carz.getConfig().addDefault("CarTypes.Default.StartMaxSpeed", 60.0);
+        carz.getConfig().addDefault("CarTypes.Default.Acceleration", 2.0);
         carz.getConfig().addDefault("CarTypes.Default.FuelUsage", 1.0);
         carz.getConfig().addDefault("CarTypes.Default.FillMaterial", "AIR");
 
