@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) 2018 A5H73Y
+Copyright (c) 2020 A5H73Y
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

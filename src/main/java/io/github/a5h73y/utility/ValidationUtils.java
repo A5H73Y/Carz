@@ -70,9 +70,14 @@ public class ValidationUtils {
 	 * Check to see if the player is currently able to purchase a car
 	 * This includes checking the permission status
 	 * @param player
+	 * @param args
 	 * @return boolean
 	 */
-	public static boolean canPurchaseCar(Player player) {
+	public static boolean canPurchaseCar(Player player, String[] args) {
+		if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
+			return false;
+		}
+
 		if (player.isInsideVehicle()) {
 			TranslationUtils.sendTranslation("Error.InCar", player);
 			return false;
@@ -83,7 +88,8 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
+		if (args.length > 1 && !Carz.getInstance().getCarController().getCarTypes().containsKey(args[1])) {
+			TranslationUtils.sendTranslation("Error.UnknownCarType", player);
 			return false;
 		}
 

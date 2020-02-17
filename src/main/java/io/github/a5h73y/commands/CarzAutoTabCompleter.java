@@ -29,33 +29,41 @@ public class CarzAutoTabCompleter implements TabCompleter {
             return null;
         }
 
-        List<String> commands = new ArrayList<>();
+        List<String> allowedCommands = new ArrayList<>();
+        List<String> filteredCommands = new ArrayList<>();
 
         if (carz.getFuelController().isFuelEnabled()) {
-            commands.add("fuel");
+            allowedCommands.add("fuel");
             if (carz.getConfig().getBoolean(Commands.REFUEL.getConfigPath())) {
-                commands.add("refuel");
+                allowedCommands.add("refuel");
             }
         }
 
         if (carz.getConfig().getBoolean(Commands.PURCHASE.getConfigPath())) {
-            commands.add("purchase");
-            commands.add("stash");
+            allowedCommands.add("purchase");
+            allowedCommands.add("stash");
         }
 
         if (carz.getConfig().getBoolean(Commands.UPGRADE.getConfigPath())) {
-            commands.add("upgrade");
+            allowedCommands.add("upgrade");
         }
 
         if (PermissionUtils.hasStrictPermission((Player) sender, Permissions.ADMIN, false)) {
             if (carz.getConfig().getBoolean(Commands.SPAWN.getConfigPath())) {
-                commands.add("spawn");
+                allowedCommands.add("spawn");
             }
 
-            commands.add("reload");
-            commands.add("addCB");
+            allowedCommands.add("reload");
+            allowedCommands.add("addCB");
         }
 
-        return commands;
+
+        for (String allowedCommand : allowedCommands) {
+            if (allowedCommand.startsWith(args[args.length - 1])) {
+                filteredCommands.add(allowedCommand);
+            }
+        }
+
+        return filteredCommands.isEmpty() ? allowedCommands : filteredCommands;
     }
 }

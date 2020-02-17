@@ -22,7 +22,7 @@ public class EconomyAPI extends PluginWrapper {
 	private Economy economy;
 
 	@Override
-	String getPluginName() {
+	public String getPluginName() {
 		return "Vault";
 	}
 

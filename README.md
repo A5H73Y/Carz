@@ -6,14 +6,14 @@
 [![license: MIT](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://tldrlegal.com/license/mit-license)
 [![repo](https://api.bintray.com/packages/a5h73y/repo/Carz/images/download.svg)](https://bintray.com/a5h73y/repo/Carz/_latestVersion)
 
-Carz has finally been updated from 2014, bringing with it improved code, car ownership, fuel, economy, better permissions, and of course open-source.
-First released in July 2012, becoming my most downloaded plugin to date. Carz is now open source, allowing you to contribute ideas and enhancements, or create your own spin on the plugin.<p />
+Carz has finally been updated from 2014, bringing with it improved code, car ownership, fuel, economy, better permissions, and is of course open-source.
+First released in July 2012, becoming my most downloaded plugin to date. Carz is now open-source, allowing you to contribute ideas and enhancements, or create your own spin on the plugin.<p />
 Add a whole new level of role-play to any server that uses roads, perfect for city servers.<p />
 
 [<img src="https://i.imgur.com/jcFOb37.png" alt="Discord Support">](https://discord.gg/h9d2fSd)<p />
 
 ## Installation
-* Install [Spigot](https://www.spigotmc.org/threads/buildtools-updates-information.42865/) _(v1.8 to 1.14)_
+* Install [Spigot](https://www.spigotmc.org/threads/buildtools-updates-information.42865/) _(v1.8 to 1.15)_
 * Download Carz from [dev.bukkit.org/projects/carz/files](https://dev.bukkit.org/projects/carz/files)
 * Place the _Carz.jar_ into the _/plugins_ folder of the server.
 * Start your server and check the server logs to ensure the plugin started successfully.

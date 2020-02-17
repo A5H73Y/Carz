@@ -74,6 +74,7 @@ public class Settings {
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
+        carz.getConfig().addDefault("Other.SignProtection", true);
         carz.getConfig().addDefault("Other.UseAutoTabCompletion", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
 
@@ -84,7 +85,7 @@ public class Settings {
         carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
 
         carz.getConfig().addDefault("CarTypes.Default.StartMaxSpeed", 60.0);
-        carz.getConfig().addDefault("CarTypes.Default.Acceleration", 2.0);
+        carz.getConfig().addDefault("CarTypes.Default.Acceleration", 5.0);
         carz.getConfig().addDefault("CarTypes.Default.FuelUsage", 1.0);
         carz.getConfig().addDefault("CarTypes.Default.FillMaterial", "AIR");
 
@@ -99,9 +100,10 @@ public class Settings {
 
         stringsConfig.addDefault("Carz.Prefix", "&0[&bCarz&0]&7 ");
         stringsConfig.addDefault("Carz.SignHeader", "&0[&bCarz&0]");
-        stringsConfig.addDefault("Carz.Commands", "To display all commands enter &f/Carz cmds");
-        stringsConfig.addDefault("Carz.ConsoleCommands", "To display all commands enter &f/Carzc cmds");
+        stringsConfig.addDefault("Carz.Commands", "To display all commands enter &f/carz cmds");
+        stringsConfig.addDefault("Carz.ConsoleCommands", "To display all commands enter &f/carzc cmds");
         stringsConfig.addDefault("Carz.ConfigReloaded", "The config has been reloaded.");
+        stringsConfig.addDefault("Carz.SignRemoved", "Carz sign removed!");
 
         stringsConfig.addDefault("Car.Spawned", "Car Spawned!");
         stringsConfig.addDefault("Car.Purchased", "Car purchased!");
@@ -128,6 +130,7 @@ public class Settings {
         stringsConfig.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: %COST%");
         stringsConfig.addDefault("Error.FullyUpgraded", "Your car is already fully upgraded!");
         stringsConfig.addDefault("Error.Owned", "This car is owned by %PLAYER%!");
+        stringsConfig.addDefault("Error.UnknownCarType", "Unknown car type.");
 
         stringsConfig.options().copyDefaults(true);
         try {

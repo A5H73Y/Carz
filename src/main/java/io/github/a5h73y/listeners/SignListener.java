@@ -11,6 +11,7 @@ import io.github.a5h73y.utility.TranslationUtils;
 import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.event.EventHandler;
@@ -79,11 +80,12 @@ public class SignListener implements Listener {
             return;
         }
 
-        if (!(event.getClickedBlock().getBlockData() instanceof Sign)) {
+        if (!(event.getClickedBlock().getBlockData() instanceof Sign)
+                && !(event.getClickedBlock().getBlockData() instanceof WallSign)) {
             return;
         }
 
-        if (!Carz.getInstance().getConfig().getBoolean("Carz.SignProtection")) {
+        if (!Carz.getInstance().getConfig().getBoolean("Other.SignProtection")) {
             return;
         }
 
@@ -94,11 +96,12 @@ public class SignListener implements Listener {
         }
 
         if (!PermissionUtils.hasStrictPermission(event.getPlayer(), Permissions.ADMIN)) {
-            TranslationUtils.sendTranslation("SignProtected", event.getPlayer());
+            TranslationUtils.sendTranslation("Error.SignProtected", event.getPlayer());
             event.setCancelled(true);
+
         } else {
             event.getClickedBlock().breakNaturally();
-            event.getPlayer().sendMessage("Sign Removed!"); //TODO translation
+            TranslationUtils.sendTranslation("Carz.SignRemoved", event.getPlayer());
         }
     }
 
@@ -113,7 +116,8 @@ public class SignListener implements Listener {
             return;
         }
 
-        if (!(event.getClickedBlock().getBlockData() instanceof Sign)) {
+        if (!(event.getClickedBlock().getBlockData() instanceof Sign)
+                && !(event.getClickedBlock().getBlockData() instanceof WallSign)) {
             return;
         }
 
@@ -142,7 +146,7 @@ public class SignListener implements Listener {
                 break;
 
             case "purchase":
-                if (!ValidationUtils.canPurchaseCar(player)) {
+                if (!ValidationUtils.canPurchaseCar(player, new String[0])) {
                     return;
                 }
 

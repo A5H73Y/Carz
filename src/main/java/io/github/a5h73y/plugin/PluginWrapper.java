@@ -18,7 +18,7 @@ public abstract class PluginWrapper {
 	 * What is the name of the 3rd party plugin.
 	 * @return plugin name.
 	 */
-	abstract String getPluginName();
+	public abstract String getPluginName();
 
 	/**
 	 * Initialise the startup of the plugin on Construction of object.

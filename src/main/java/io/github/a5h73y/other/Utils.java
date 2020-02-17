@@ -5,10 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import io.github.a5h73y.Carz;
-import io.github.a5h73y.controllers.CarController;
 import io.github.a5h73y.enums.Commands;
-import io.github.a5h73y.enums.VehicleDetailKey;
-import io.github.a5h73y.utility.ItemMetaUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -20,8 +17,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataHolder;
 
+import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 
@@ -58,10 +55,10 @@ public class Utils {
      * Place an Minecart in the player's inventory with their name on it.
      * @param player
      */
-    public static void givePlayerOwnedCar(Player player) {
+    public static void givePlayerOwnedCar(Player player, String carType) {
         ItemStack itemStack = new ItemStack(Material.MINECART);
 
-        Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_TYPE, itemStack, CarController.DEFAULT_CAR);
+        Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_TYPE, itemStack, carType);
         Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
 
         setOwnerDisplayName(itemStack, player);
@@ -70,32 +67,25 @@ public class Utils {
         player.updateInventory();
     }
 
+    /**
+     * Place an Minecart in the player's inventory with their name on it.
+     * @param player
+     */
+    public static void givePlayerOwnedCar(Player player) {
+        givePlayerOwnedCar(player, DEFAULT_CAR);
+    }
+
     public static void givePlayerOwnedCar(Player player, Vehicle vehicle) {
         ItemStack itemStack = new ItemStack(Material.MINECART);
 
         ItemMeta itemMeta = itemStack.getItemMeta();
-        transferNamespaceKeyValues(vehicle, itemMeta);
+        Carz.getInstance().getItemMetaUtils().transferNamespaceKeyValues(vehicle, itemMeta);
         itemStack.setItemMeta(itemMeta);
 
         setOwnerDisplayName(itemStack, player);
 
         player.getInventory().addItem(itemStack);
         player.updateInventory();
-    }
-
-    public static PersistentDataHolder transferNamespaceKeyValues(PersistentDataHolder from, PersistentDataHolder to) {
-        ItemMetaUtils itemMetaUtils = Carz.getInstance().getItemMetaUtils();
-
-        for (VehicleDetailKey value : VehicleDetailKey.values()) {
-            if (itemMetaUtils.has(value, from)) {
-                String storedValue = itemMetaUtils.getValue(value, from);
-                itemMetaUtils.setValue(value, to, storedValue);
-
-                System.out.println("transferred " + value + ": " + storedValue);
-            }
-        }
-
-        return to;
     }
 
     public static void setOwnerDisplayName(ItemStack itemStack, Player player) {

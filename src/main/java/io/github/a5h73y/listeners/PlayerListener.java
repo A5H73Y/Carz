@@ -3,13 +3,14 @@ package io.github.a5h73y.listeners;
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.other.DelayTasks;
-import io.github.a5h73y.other.Utils;
 import io.github.a5h73y.other.XMaterial;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -78,7 +79,15 @@ public class PlayerListener implements Listener {
         Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
         Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
 
-        Utils.transferNamespaceKeyValues(carInHand.getItemMeta(), spawnedCar);
+        carz.getItemMetaUtils().transferNamespaceKeyValues(carInHand.getItemMeta(), spawnedCar);
+
+        String vehicleType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, spawnedCar);
+        Material fillMaterial = carz.getCarController().getCarTypes().get(vehicleType).getFillMaterial();
+
+        if (fillMaterial != null && fillMaterial != Material.AIR) {
+            BlockData data = Bukkit.createBlockData(fillMaterial);
+            spawnedCar.setDisplayBlockData(data);
+        }
 
         PlayerUtils.reduceItemStackInPlayersHand(player);
     }

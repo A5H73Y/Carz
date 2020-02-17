@@ -1,8 +1,10 @@
 package io.github.a5h73y.commands;
 
 import io.github.a5h73y.Carz;
+import io.github.a5h73y.conversation.CreateCarType;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.enums.Permissions;
+import io.github.a5h73y.enums.VehicleDetailKey;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.DelayTasks;
 import io.github.a5h73y.other.Help;
@@ -15,6 +17,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
 
 /**
  * Player-related Carz commands handling.
@@ -66,11 +70,12 @@ public class CarzCommands implements CommandExecutor {
                     return false;
                 }
 
-                if (!ValidationUtils.canPurchaseCar(player)) {
+                if (!ValidationUtils.canPurchaseCar(player, args)) {
                     return false;
                 }
 
-                Utils.givePlayerOwnedCar(player);
+                String carType = args.length > 1 ? args[1] : DEFAULT_CAR;
+                Utils.givePlayerOwnedCar(player, carType);
                 TranslationUtils.sendTranslation("Car.Purchased", player);
                 break;
 
@@ -118,6 +123,25 @@ public class CarzCommands implements CommandExecutor {
                 }
 
                 Utils.addClimbBlock(player, args);
+                break;
+
+            case "createtype":
+                new CreateCarType(player).begin();
+                break;
+
+            case "cartypes":
+                carz.getCarController().getCarTypes().keySet().forEach(player::sendMessage);
+                break;
+
+            case "details":
+                if (carz.getCarController().isDriving(player.getName())) {
+                    player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
+                }
+                break;
+
+            case "test":
+                carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_TYPE, player.getVehicle(), args[1]);
+                player.sendMessage("done: " + args[1]);
                 break;
 
             case "reload":

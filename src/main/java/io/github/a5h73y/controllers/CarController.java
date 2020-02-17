@@ -44,6 +44,11 @@ public class CarController {
         populateCarTypes();
     }
 
+    public void resetCacheAndRepopulate() {
+        carTypes.clear();
+        populateCarTypes();
+    }
+
     private void populateCarTypes() {
         Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
 

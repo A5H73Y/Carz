@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 public class BountifulAPI extends PluginWrapper {
 
 	@Override
-	String getPluginName() {
+	public String getPluginName() {
 		return "BountifulAPI";
 	}
 

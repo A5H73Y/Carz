@@ -40,4 +40,17 @@ public class ItemMetaUtils {
 		return persistentDataHolder.getPersistentDataContainer().has(keyName.getNamespacedKey(), PersistentDataType.STRING);
 	}
 
+	public PersistentDataHolder transferNamespaceKeyValues(PersistentDataHolder from, PersistentDataHolder to) {
+		for (VehicleDetailKey value : VehicleDetailKey.values()) {
+			if (has(value, from)) {
+				String storedValue = getValue(value, from);
+				setValue(value, to, storedValue);
+
+				System.out.println("transferred " + value + ": " + storedValue);
+			}
+		}
+
+		return to;
+	}
+
 }

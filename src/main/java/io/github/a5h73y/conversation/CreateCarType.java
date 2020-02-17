@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
+import org.bukkit.conversations.NumericPrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 
@@ -24,7 +25,7 @@ public class CreateCarType extends CarzConversation {
 	private static final Pattern STRING_PATTERN = Pattern.compile("^[A-Za-z]+$");
 
 	private static List<CarDetailQuestion> carTypeConversion = Arrays.asList(
-			new CarDetailQuestion("Car's Start Speed", "StartMaxSpeed", 1.0, DOUBLE_PATTERN),
+			new CarDetailQuestion("Car's Start Speed", "StartMaxSpeed", 60.0, DOUBLE_PATTERN),
 			new CarDetailQuestion("Car's Max Upgrade Speed", "MaxUpgradeSpeed", 5.0, DOUBLE_PATTERN),
 			new CarDetailQuestion("Car's Acceleration", "Acceleration", 1.0, DOUBLE_PATTERN),
 			new CarDetailQuestion("Fuel Usage", "FuelUsage", 1.0, DOUBLE_PATTERN),
@@ -51,16 +52,16 @@ public class CreateCarType extends CarzConversation {
 		public Prompt acceptInput(ConversationContext context, String input) {
 			List<String> existingCarTypes = Carz.getInstance().getConfig().getStringList("CarTypes");
 
-			if (existingCarTypes.contains(input)) {
-				sendErrorMessage(context, "This car type is already taken");
-				return this;
-			}
-
 			if (!STRING_PATTERN.matcher(input).matches()) {
 				sendErrorMessage(context, "Invalid Car name");
 				return this;
 			}
-			context.setSessionData(SESSION_CAR_TYPE, input);
+
+			if (existingCarTypes.contains(input.toLowerCase())) {
+				sendErrorMessage(context, "This car type is already taken");
+				return this;
+			}
+			context.setSessionData(SESSION_CAR_TYPE, input.toLowerCase());
 			return new ChooseCarDetails();
 		}
 	}
@@ -110,8 +111,15 @@ public class CreateCarType extends CarzConversation {
 					config.set("CarTypes." + carTypeName + "." + configKey, calculateValue(value));
 				});
 				Carz.getInstance().saveConfig();
-				context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
-				return Prompt.END_OF_CONVERSATION;
+
+				if (Carz.getInstance().getEconomyAPI().isEnabled()) {
+					return new ChooseCarCost();
+
+				} else {
+					Carz.getInstance().getCarController().resetCacheAndRepopulate();
+					context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
+					return Prompt.END_OF_CONVERSATION;
+				}
 			}
 		}
 
@@ -120,6 +128,27 @@ public class CreateCarType extends CarzConversation {
 				return Double.valueOf(value);
 			}
 			return value;
+		}
+	}
+
+	private class ChooseCarCost extends NumericPrompt {
+
+		@Override
+		public String getPromptText(ConversationContext context) {
+			return ChatColor.LIGHT_PURPLE + "How much should the car cost?\n" +
+					ChatColor.GREEN + " (default = 10.0)";
+		}
+
+		@Override
+		protected Prompt acceptValidatedInput(ConversationContext context, Number input) {
+			String carTypeName = (String) context.getSessionData(SESSION_CAR_TYPE);
+
+			Carz.getInstance().getConfig().set("CarTypes." + carTypeName + ".Cost", input.doubleValue());
+			Carz.getInstance().saveConfig();
+
+			Carz.getInstance().getCarController().resetCacheAndRepopulate();
+			context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
+			return Prompt.END_OF_CONVERSATION;
 		}
 	}
 
