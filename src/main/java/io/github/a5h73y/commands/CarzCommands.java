@@ -159,6 +159,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 Purchasable purchasing = carz.getEconomyAPI().getPurchasing(player);
                 if (carz.getEconomyAPI().processPurchase(player, purchasing.getCost())) {
                     purchasing.performPurchase(player);
+                    carz.getEconomyAPI().removePurchase(player);
                 }
                 break;
 
@@ -168,7 +169,9 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                carz.getEconomyAPI().cancelPurchase(player);
+                carz.getEconomyAPI().removePurchase(player);
+                TranslationUtils.sendTranslation("Purchase.Cancelled", player);
+                break;
 
             case "reload":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {

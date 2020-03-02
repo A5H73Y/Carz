@@ -205,7 +205,7 @@ public class CarController extends AbstractPluginReceiver {
      */
     private void upgradeCarSpeed(Vehicle vehicle) {
         Car car = getCar(vehicle.getEntityId());
-        double currentMax = car.getCarDetails().getStartMaxSpeed();
+        double currentMax = car.getMaxSpeed();
         double maxSpeed = car.getCarDetails().getMaxUpgradeSpeed();
         double upgradeBy = carz.getSettings().getUpgradeIncrement();
 

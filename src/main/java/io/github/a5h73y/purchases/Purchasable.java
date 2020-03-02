@@ -13,6 +13,8 @@ public interface Purchasable {
 
 	String COST_PLACEHOLDER = "%COST%";
 
+	String CURRENCY_PLACEHOLDER = "%CURRENCY%";
+
 	String CONFIRM_PURCHASE_MESSAGE = "Purchase.Confirm.Purchase";
 
 	/**

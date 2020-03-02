@@ -124,6 +124,23 @@ public class EconomyAPI extends PluginWrapper {
 	}
 
 	/**
+	 * Get the currency name based on amount.
+	 * @param amount
+	 * @return currency name
+	 */
+	public String getCurrencyName(double amount) {
+		String value;
+
+		if (amount == 1.0) {
+			value = economy.currencyNameSingular();
+		} else {
+			value = economy.currencyNamePlural();
+		}
+
+		return value == null ? "" : " " + value;
+	}
+
+	/**
 	 * Process the purchase attempt.
 	 * If economy is disabled, the purchase will succeed
 	 * If the player passes validation checks, an attempt will be made to withdraw the cost
@@ -165,7 +182,7 @@ public class EconomyAPI extends PluginWrapper {
 	 * Remove the player from the purchasing map.
 	 * @param player
 	 */
-	public void cancelPurchase(Player player) {
+	public void removePurchase(Player player) {
 		purchasing.remove(player.getName());
 	}
 }

@@ -69,26 +69,29 @@ public class Settings extends AbstractPluginReceiver {
         carz.getConfig().addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
         carz.getConfig().addDefault("ClimbBlocks.Strength", 0.05D);
 
-        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
         carz.getConfig().addDefault("Other.ControlCarsWhileFalling", true);
+        carz.getConfig().addDefault("Other.DamageEntities.Enabled", true);
+        carz.getConfig().addDefault("Other.DamageEntities.Damage", 20.0);
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
-        carz.getConfig().addDefault("Other.UsePermissions", true);
-        carz.getConfig().addDefault("Other.UseEffects", true);
+        carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive" , false);
         carz.getConfig().addDefault("Other.SignProtection", true);
-        carz.getConfig().addDefault("Other.UseAutoTabCompletion", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
+        carz.getConfig().addDefault("Other.UseAutoTabCompletion", true);
+        carz.getConfig().addDefault("Other.UseEffects", true);
+        carz.getConfig().addDefault("Other.UsePermissions", true);
 
         carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
         carz.getConfig().addDefault("Other.Vault.Enabled", true);
         carz.getConfig().addDefault("Other.Vault.ConfirmPurchases", true);
-        carz.getConfig().addDefault("Other.Vault.Cost.Purchase", 10.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Upgrade", 8.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
 
         carz.getConfig().addDefault("CarTypes.default.StartMaxSpeed", 60.0);
+        carz.getConfig().addDefault("CarTypes.default.MaxUpgradeSpeed", 200.0);
         carz.getConfig().addDefault("CarTypes.default.Acceleration", 5.0);
         carz.getConfig().addDefault("CarTypes.default.FuelUsage", 1.0);
         carz.getConfig().addDefault("CarTypes.default.FillMaterial", "AIR");
+        carz.getConfig().addDefault("CarTypes.default.Cost", 10.0);
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();
@@ -119,13 +122,14 @@ public class Settings extends AbstractPluginReceiver {
         stringsConfig.addDefault("Car.Key.Display", "&b%PLAYER%&f's key");
         stringsConfig.addDefault("Car.Key.Received", "You receive a key.");
 
-        stringsConfig.addDefault("Purchase.Confirm.Purchase","Enter '/carz confirm' to confirm, or '/carz cancel' to cancel the purchase.");
-        stringsConfig.addDefault("Purchase.Confirm.Car","You are about to purchase a &b%TYPE% &fcar, costing &b%COST%&f.");
-        stringsConfig.addDefault("Purchase.Confirm.Upgrade","You are about to upgrade your car from &b%FROM% &fto &b%TO%&f, costing &b%COST%&f.");
-        stringsConfig.addDefault("Purchase.Confirm.Refuel","You are about to refuel &b%PERCENT% &fof your car's fuel, costing &b%COST%&f.");
-        stringsConfig.addDefault("Purchase.Success.Car", "&b%TYPE% &fCar Purchased!");
+        stringsConfig.addDefault("Purchase.Confirm.Purchase","&7Enter &a/carz confirm &7to confirm, or &c/carz cancel &7to cancel the purchase.");
+        stringsConfig.addDefault("Purchase.Confirm.Car","You are about to purchase a &b%TYPE% &7car, costing &b%COST%&7.");
+        stringsConfig.addDefault("Purchase.Confirm.Upgrade","You are about to upgrade your car from &b%FROM% &7to &b%TO%&7, costing &b%COST%&7.");
+        stringsConfig.addDefault("Purchase.Confirm.Refuel","You are about to refuel &b%PERCENT% &7of your car's fuel, costing &b%COST% %CURRENCY%&7.");
+        stringsConfig.addDefault("Purchase.Success.Car", "&f%TYPE% &7car Purchased!");
         stringsConfig.addDefault("Purchase.Success.Upgrade","Car Upgraded!");
         stringsConfig.addDefault("Purchase.Success.Refuel","Car Refuelled!");
+        stringsConfig.addDefault("Purchase.Cancelled","Purchase cancelled.");
 
         stringsConfig.addDefault("Error.NoPermission", "You do not have permission: &b%PERMISSION%");
         stringsConfig.addDefault("Error.SignProtected", "This sign is protected!");

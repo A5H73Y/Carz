@@ -3,14 +3,15 @@ package io.github.a5h73y.listeners;
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.model.Car;
-import io.github.a5h73y.other.DelayTasks;
 import io.github.a5h73y.other.AbstractPluginReceiver;
+import io.github.a5h73y.other.DelayTasks;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.Effect;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -20,6 +21,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.inventory.ItemFlag;
@@ -289,6 +291,38 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         if (player.getName().equals(car.getOwner())) {
             TranslationUtils.sendTranslation("Car.CarLocked", player);
+        }
+    }
+
+    /**
+     * Vehicle Entity Collision Event.
+     * When a driver hits an entity with their car, damage amount configurable.
+     * @param event
+     */
+    @EventHandler
+    public void onVehicleCollide(VehicleEntityCollisionEvent event) {
+        if (!(event.getVehicle().getPassenger() instanceof Player)) {
+            return;
+        }
+
+        if (!(event.getVehicle() instanceof Minecart)) {
+            return;
+        }
+
+        Player player = (Player) event.getVehicle().getPassenger();
+
+        if (!carz.getCarController().isDriving(player.getName())) {
+            return;
+        }
+
+        if (!carz.getConfig().getBoolean("Other.DamageEntities.Enabled")) {
+            return;
+        }
+
+        double damage = carz.getConfig().getDouble("Other.DamageEntities.Damage");
+
+        if (event.getEntity() instanceof LivingEntity) {
+            ((LivingEntity) event.getEntity()).damage(damage, player);
         }
     }
 }

@@ -20,7 +20,8 @@ public class RefuelPurchase implements Purchasable {
 		double fillPercent = Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(currentCar.getCurrentFuel());
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Refuel")
 				.replace(PERCENT_PLACEHOLDER, String.valueOf(fillPercent))
-				.replace(COST_PLACEHOLDER, String.valueOf(getCost()));
+				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
+				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));;
 
 		player.sendMessage(purchaseMessage);
 		TranslationUtils.sendTranslation(CONFIRM_PURCHASE_MESSAGE, false, player);

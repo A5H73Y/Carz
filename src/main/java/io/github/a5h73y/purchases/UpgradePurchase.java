@@ -23,7 +23,9 @@ public class UpgradePurchase implements Purchasable {
 	public void sendConfirmationMessage(Player player) {
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Upgrade")
 				.replace(FROM_SPEED_PLACEHOLDER, String.valueOf(previousTopSpeed))
-				.replace(TO_SPEED_PLACEHOLDER, String.valueOf(newTopSpeed));
+				.replace(TO_SPEED_PLACEHOLDER, String.valueOf(newTopSpeed))
+				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
+				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));;
 
 		player.sendMessage(purchaseMessage);
 		TranslationUtils.sendTranslation(CONFIRM_PURCHASE_MESSAGE, false, player);
