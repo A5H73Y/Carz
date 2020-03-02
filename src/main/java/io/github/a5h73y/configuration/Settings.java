@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Set;
 
 import io.github.a5h73y.Carz;
-import io.github.a5h73y.other.Utils;
+import io.github.a5h73y.other.AbstractPluginReceiver;
+import io.github.a5h73y.other.PluginUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -15,17 +16,15 @@ import org.bukkit.configuration.file.YamlConfiguration;
 /**
  * Carz config convenience accessors.
  */
-public class Settings {
-
-    private Carz carz;
+public class Settings extends AbstractPluginReceiver {
 
     private File stringsFile;
     private FileConfiguration stringsConfig;
 
     private Set<Material> climbBlocks;
 
-    public Settings(Carz carz) {
-        this.carz = carz;
+    public Settings(final Carz carz) {
+        super(carz);
 
         setupConfig();
         setupStrings();
@@ -49,6 +48,7 @@ public class Settings {
         carz.getConfig().options().header("==== Carz Config ==== #");
 
         carz.getConfig().addDefault("Key.Material", "STICK");
+        carz.getConfig().addDefault("Key.Glow", true);
         carz.getConfig().addDefault("Key.GiveOnCarEnter", true);
         carz.getConfig().addDefault("Key.RequireCarzKey", true);
 
@@ -80,14 +80,15 @@ public class Settings {
 
         carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
         carz.getConfig().addDefault("Other.Vault.Enabled", true);
+        carz.getConfig().addDefault("Other.Vault.ConfirmPurchases", true);
         carz.getConfig().addDefault("Other.Vault.Cost.Purchase", 10.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Upgrade", 8.0);
         carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
 
-        carz.getConfig().addDefault("CarTypes.Default.StartMaxSpeed", 60.0);
-        carz.getConfig().addDefault("CarTypes.Default.Acceleration", 5.0);
-        carz.getConfig().addDefault("CarTypes.Default.FuelUsage", 1.0);
-        carz.getConfig().addDefault("CarTypes.Default.FillMaterial", "AIR");
+        carz.getConfig().addDefault("CarTypes.default.StartMaxSpeed", 60.0);
+        carz.getConfig().addDefault("CarTypes.default.Acceleration", 5.0);
+        carz.getConfig().addDefault("CarTypes.default.FuelUsage", 1.0);
+        carz.getConfig().addDefault("CarTypes.default.FillMaterial", "AIR");
 
         carz.getConfig().options().copyDefaults(true);
         carz.saveConfig();
@@ -104,19 +105,27 @@ public class Settings {
         stringsConfig.addDefault("Carz.ConsoleCommands", "To display all commands enter &f/carzc cmds");
         stringsConfig.addDefault("Carz.ConfigReloaded", "The config has been reloaded.");
         stringsConfig.addDefault("Carz.SignRemoved", "Carz sign removed!");
+        stringsConfig.addDefault("Carz.CarsDestroyed", "All cars destroyed!");
 
         stringsConfig.addDefault("Car.Spawned", "Car Spawned!");
-        stringsConfig.addDefault("Car.Purchased", "Car purchased!");
-        stringsConfig.addDefault("Car.Refuel", "Car Refuelled!");
         stringsConfig.addDefault("Car.EngineStart", "You switch the engine on.");
         stringsConfig.addDefault("Car.EngineStop", "You switch the engine off.");
         stringsConfig.addDefault("Car.CarLocked", "You lock the car.");
         stringsConfig.addDefault("Car.CarUnlocked", "You unlock the car.");
-        stringsConfig.addDefault("Car.PlayerCar", "%PLAYER%'s car");
+        stringsConfig.addDefault("Car.PlayerCar", "&b%PLAYER%&f's car");
         stringsConfig.addDefault("Car.FuelEmpty", "This car has run out of fuel!");
-        stringsConfig.addDefault("Car.KeyReceived", "You receive a key.");
         stringsConfig.addDefault("Car.LiquidDamage", "Your car has been destroyed by liquid!");
         stringsConfig.addDefault("Car.UpgradeSpeed", "New top speed: %SPEED%");
+        stringsConfig.addDefault("Car.Key.Display", "&b%PLAYER%&f's key");
+        stringsConfig.addDefault("Car.Key.Received", "You receive a key.");
+
+        stringsConfig.addDefault("Purchase.Confirm.Purchase","Enter '/carz confirm' to confirm, or '/carz cancel' to cancel the purchase.");
+        stringsConfig.addDefault("Purchase.Confirm.Car","You are about to purchase a &b%TYPE% &fcar, costing &b%COST%&f.");
+        stringsConfig.addDefault("Purchase.Confirm.Upgrade","You are about to upgrade your car from &b%FROM% &fto &b%TO%&f, costing &b%COST%&f.");
+        stringsConfig.addDefault("Purchase.Confirm.Refuel","You are about to refuel &b%PERCENT% &fof your car's fuel, costing &b%COST%&f.");
+        stringsConfig.addDefault("Purchase.Success.Car", "&b%TYPE% &fCar Purchased!");
+        stringsConfig.addDefault("Purchase.Success.Upgrade","Car Upgraded!");
+        stringsConfig.addDefault("Purchase.Success.Refuel","Car Refuelled!");
 
         stringsConfig.addDefault("Error.NoPermission", "You do not have permission: &b%PERMISSION%");
         stringsConfig.addDefault("Error.SignProtected", "This sign is protected!");
@@ -131,6 +140,10 @@ public class Settings {
         stringsConfig.addDefault("Error.FullyUpgraded", "Your car is already fully upgraded!");
         stringsConfig.addDefault("Error.Owned", "This car is owned by %PLAYER%!");
         stringsConfig.addDefault("Error.UnknownCarType", "Unknown car type.");
+        stringsConfig.addDefault("Error.UnknownPlayer", "Unknown player.");
+        stringsConfig.addDefault("Error.SpecifyPlayer", "Please specify a player.");
+        stringsConfig.addDefault("Error.PurchaseOutstanding", "You have an outstanding purchase.");
+        stringsConfig.addDefault("Error.NoPurchaseOutstanding", "You don't have an outstanding purchase.");
 
         stringsConfig.options().copyDefaults(true);
         try {
@@ -153,7 +166,7 @@ public class Settings {
     }
 
     private void reloadClimbBlocks() {
-        this.climbBlocks = Utils.convertToValidMaterials(getRawClimbBlocks());
+        this.climbBlocks = PluginUtils.convertToValidMaterials(getRawClimbBlocks());
     }
 
     public Set<Material> getClimbBlocks() {

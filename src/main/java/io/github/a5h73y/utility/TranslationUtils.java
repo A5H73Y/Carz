@@ -39,12 +39,21 @@ public class TranslationUtils {
 	/**
 	 * Send the translated message to the player(s).
 	 * @param translationKey to translate
+	 * @param prefix display prefix
 	 * @param players to receive the message
 	 */
-	public static void sendTranslation(String translationKey, CommandSender... players) {
-		String translation = getTranslation(translationKey);
+	public static void sendTranslation(String translationKey, boolean prefix, CommandSender... players) {
+		String translation = getTranslation(translationKey, prefix);
 		for (CommandSender player : players) {
 			player.sendMessage(translation);
 		}
+	}
+	/**
+	 * Send the translated message to the player(s).
+	 * @param translationKey to translate
+	 * @param players to receive the message
+	 */
+	public static void sendTranslation(String translationKey, CommandSender... players) {
+		sendTranslation(translationKey, true, players);
 	}
 }

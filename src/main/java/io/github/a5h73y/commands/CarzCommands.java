@@ -4,11 +4,16 @@ import io.github.a5h73y.Carz;
 import io.github.a5h73y.conversation.CreateCarType;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.enums.Permissions;
-import io.github.a5h73y.enums.VehicleDetailKey;
 import io.github.a5h73y.model.Car;
+import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.other.DelayTasks;
 import io.github.a5h73y.other.Help;
-import io.github.a5h73y.other.Utils;
+import io.github.a5h73y.other.PluginUtils;
+import io.github.a5h73y.purchases.CarPurchase;
+import io.github.a5h73y.purchases.Purchasable;
+import io.github.a5h73y.purchases.RefuelPurchase;
+import io.github.a5h73y.purchases.UpgradePurchase;
+import io.github.a5h73y.utility.CarUtils;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import io.github.a5h73y.utility.ValidationUtils;
@@ -23,12 +28,10 @@ import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
 /**
  * Player-related Carz commands handling.
  */
-public class CarzCommands implements CommandExecutor {
+public class CarzCommands extends AbstractPluginReceiver implements CommandExecutor {
 
-    private final Carz carz;
-
-    public CarzCommands(Carz carz) {
-        this.carz = carz;
+    public CarzCommands(final Carz carz) {
+        super(carz);
     }
 
     @Override
@@ -48,8 +51,12 @@ public class CarzCommands implements CommandExecutor {
         }
 
         switch (args[0].toLowerCase()) {
+            case "fuel":
+                carz.getFuelController().displayFuelLevel(player);
+                break;
+
             case "spawn":
-                if (!Utils.commandEnabled(player, Commands.SPAWN)) {
+                if (!PluginUtils.commandEnabled(player, Commands.SPAWN)) {
                     return false;
                 }
 
@@ -61,12 +68,12 @@ public class CarzCommands implements CommandExecutor {
                     return false;
                 }
 
-                Utils.givePlayerOwnedCar(player);
+                CarUtils.givePlayerOwnedCar(player);
                 TranslationUtils.sendTranslation("Car.Spawned", player);
                 break;
 
             case "purchase":
-                if (!Utils.commandEnabled(player, Commands.PURCHASE)) {
+                if (!PluginUtils.commandEnabled(player, Commands.PURCHASE)) {
                     return false;
                 }
 
@@ -75,29 +82,11 @@ public class CarzCommands implements CommandExecutor {
                 }
 
                 String carType = args.length > 1 ? args[1] : DEFAULT_CAR;
-                Utils.givePlayerOwnedCar(player, carType);
-                TranslationUtils.sendTranslation("Car.Purchased", player);
-                break;
-
-            case "fuel":
-                carz.getFuelController().displayFuelLevel(player);
-                break;
-
-            case "refuel":
-                if (!Utils.commandEnabled(player, Commands.REFUEL)) {
-                    return false;
-                }
-
-                if (!ValidationUtils.canPurchaseFuel(player)) {
-                    return false;
-                }
-
-                Car car = carz.getCarController().getCar(player.getVehicle().getEntityId());
-                carz.getFuelController().refuel(car, player);
+                carz.getEconomyAPI().requestPurchase(player, new CarPurchase(carType));
                 break;
 
             case "upgrade":
-                if (!Utils.commandEnabled(player, Commands.UPGRADE)) {
+                if (!PluginUtils.commandEnabled(player, Commands.UPGRADE)) {
                     return false;
                 }
 
@@ -105,11 +94,25 @@ public class CarzCommands implements CommandExecutor {
                     return false;
                 }
 
-                carz.getCarController().upgradeCarSpeed(player);
+                Car upgradeCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
+                carz.getEconomyAPI().requestPurchase(player, new UpgradePurchase(upgradeCar));
+                break;
+
+            case "refuel":
+                if (!PluginUtils.commandEnabled(player, Commands.REFUEL)) {
+                    return false;
+                }
+
+                if (!ValidationUtils.canPurchaseFuel(player)) {
+                    return false;
+                }
+
+                Car refuelCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
+                carz.getEconomyAPI().requestPurchase(player, new RefuelPurchase(refuelCar));
                 break;
 
             case "stash":
-                if (!Utils.commandEnabled(player, Commands.PURCHASE)) {
+                if (!PluginUtils.commandEnabled(player, Commands.PURCHASE)) {
                     return false;
                 }
 
@@ -122,14 +125,22 @@ public class CarzCommands implements CommandExecutor {
                     return false;
                 }
 
-                Utils.addClimbBlock(player, args);
+                PluginUtils.addClimbBlock(player, args);
                 break;
 
             case "createtype":
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+                }
+
                 new CreateCarType(player).begin();
                 break;
 
             case "cartypes":
+                if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
+                    return false;
+                }
+
                 carz.getCarController().getCarTypes().keySet().forEach(player::sendMessage);
                 break;
 
@@ -139,10 +150,25 @@ public class CarzCommands implements CommandExecutor {
                 }
                 break;
 
-            case "test":
-                carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_TYPE, player.getVehicle(), args[1]);
-                player.sendMessage("done: " + args[1]);
+            case "confirm":
+                if (!carz.getEconomyAPI().isPurchasing(player)) {
+                    TranslationUtils.sendTranslation("Error.NoPurchaseOutstanding", player);
+                    return false;
+                }
+
+                Purchasable purchasing = carz.getEconomyAPI().getPurchasing(player);
+                if (carz.getEconomyAPI().processPurchase(player, purchasing.getCost())) {
+                    purchasing.performPurchase(player);
+                }
                 break;
+
+            case "cancel":
+                if (!carz.getEconomyAPI().isPurchasing(player)) {
+                    TranslationUtils.sendTranslation("Error.NoPurchaseOutstanding", player);
+                    return false;
+                }
+
+                carz.getEconomyAPI().cancelPurchase(player);
 
             case "reload":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {

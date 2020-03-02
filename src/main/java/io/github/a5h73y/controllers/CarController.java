@@ -8,7 +8,8 @@ import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.model.CarDetails;
-import io.github.a5h73y.other.Utils;
+import io.github.a5h73y.other.AbstractPluginReceiver;
+import io.github.a5h73y.utility.CarUtils;
 import io.github.a5h73y.utility.EffectUtils;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.TranslationUtils;
@@ -24,11 +25,9 @@ import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 /**
  * All Car related functionality.
  */
-public class CarController {
+public class CarController extends AbstractPluginReceiver {
 
-    public static final String DEFAULT_CAR = "Default";
-
-    private final Carz carz;
+    public static final String DEFAULT_CAR = "default";
 
     // Vehicle ID with it's associated Car
     private final Map<Integer, Car> entityIdToCar = new HashMap<>();
@@ -39,17 +38,13 @@ public class CarController {
     // All available Car Types
     private final Map<String, CarDetails> carTypes = new HashMap<>();
 
-    public CarController(Carz carz) {
-        this.carz = carz;
+    public CarController(final Carz carz) {
+        super(carz);
         populateCarTypes();
     }
 
-    public void resetCacheAndRepopulate() {
+    public void populateCarTypes() {
         carTypes.clear();
-        populateCarTypes();
-    }
-
-    private void populateCarTypes() {
         Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
 
         for (String carType : allCarTypes) {
@@ -135,14 +130,11 @@ public class CarController {
      * @param car
      */
     private void tryAndRemovePlayerFromCar(Vehicle car) {
-        try {
-            if (car == null || car.getPassenger() == null) {
-                return;
-            }
-
-            removeDriver(car.getPassenger().getName());
-        } catch (NoSuchMethodError ignored) {
+        if (car == null || car.getPassengers().isEmpty()) {
+            return;
         }
+
+        car.getPassengers().forEach(entity -> removeDriver(entity.getName()));
     }
 
     /**
@@ -183,7 +175,7 @@ public class CarController {
         }
 
         removeDriver(player.getName());
-        Utils.givePlayerOwnedCar(player, vehicle);
+        CarUtils.givePlayerOwnedCar(player, vehicle);
         destroyCar(vehicle);
     }
 
@@ -227,5 +219,9 @@ public class CarController {
 
     public Map<String, CarDetails> getCarTypes() {
         return carTypes;
+    }
+
+    public boolean doesCarTypeExist(String carType) {
+        return carTypes.containsKey(carType.toLowerCase());
     }
 }

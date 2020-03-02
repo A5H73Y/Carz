@@ -6,6 +6,7 @@ import java.util.List;
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.enums.Permissions;
+import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.utility.PermissionUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -15,12 +16,10 @@ import org.bukkit.entity.Player;
 /**
  * Tab auto-completion for Carz commands.
  */
-public class CarzAutoTabCompleter implements TabCompleter {
+public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabCompleter {
 
-    private Carz carz;
-
-    public CarzAutoTabCompleter(Carz instance) {
-        this.carz = instance;
+    public CarzAutoTabCompleter(final Carz carz) {
+        super(carz);
     }
 
     @Override

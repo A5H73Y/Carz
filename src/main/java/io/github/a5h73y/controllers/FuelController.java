@@ -2,6 +2,7 @@ package io.github.a5h73y.controllers;
 
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.model.Car;
+import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Minecart;
@@ -10,20 +11,18 @@ import org.bukkit.entity.Player;
 /**
  * Fuel related functionality.
  */
-public class FuelController {
+public class FuelController extends AbstractPluginReceiver {
 
     private final double MAX_FUEL;
     private final boolean USE_FUEL;
     private final int GAUGE_SCALE;
-
-    private final Carz carz;
 
     /**
      * Initialise the global fuel variables.
      * @param carz
      */
     public FuelController(final Carz carz) {
-        this.carz = carz;
+        super(carz);
         USE_FUEL = carz.getConfig().getBoolean("Fuel.Enable");
         MAX_FUEL = carz.getConfig().getDouble("Fuel.StartAmount");
         GAUGE_SCALE = carz.getConfig().getInt("Fuel.GaugeScale");

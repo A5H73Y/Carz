@@ -2,13 +2,14 @@ package io.github.a5h73y.utility;
 
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
-import io.github.a5h73y.enums.PurchaseType;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
+
+import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
 
 public class ValidationUtils {
 
@@ -88,12 +89,14 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (args.length > 1 && !Carz.getInstance().getCarController().getCarTypes().containsKey(args[1])) {
+		if (args.length > 1 && !Carz.getInstance().getCarController().doesCarTypeExist(args[1].toLowerCase())) {
 			TranslationUtils.sendTranslation("Error.UnknownCarType", player);
 			return false;
 		}
 
-		return Carz.getInstance().getEconomyAPI().processPurchase(player, PurchaseType.CAR);
+		String carType = args.length > 1 ? args[1].toLowerCase() : DEFAULT_CAR;
+		double cost = Carz.getInstance().getConfig().getDouble("CarTypes." + carType + ".Cost");
+		return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 	}
 
 	/**
@@ -116,14 +119,15 @@ public class ValidationUtils {
 			return false;
 		}
 
-		double currentSpeed = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId()).getMaxSpeed();
+		Car currentCar = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId());
 
-		if (currentSpeed >= Carz.getInstance().getSettings().getUpgradeMaxSpeed()) {
+		if (currentCar.getMaxSpeed() >= Carz.getInstance().getSettings().getUpgradeMaxSpeed()) {
 			TranslationUtils.sendTranslation("Error.FullyUpgraded", player);
 			return false;
 		}
 
-		return Carz.getInstance().getEconomyAPI().processPurchase(player, PurchaseType.UPGRADE);
+		double cost = Carz.getInstance().getConfig().getDouble("Other.Vault.Cost.Upgrade");
+		return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 	}
 
 	/**
@@ -143,6 +147,7 @@ public class ValidationUtils {
 		}
 
 		Car car = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId());
-		return Carz.getInstance().getEconomyAPI().processFuelPurchase(player, car);
+		double cost = Carz.getInstance().getEconomyAPI().getRefuelCost(car);
+		return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 	}
 }

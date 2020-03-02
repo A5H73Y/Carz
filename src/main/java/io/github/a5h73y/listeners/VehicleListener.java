@@ -4,11 +4,13 @@ import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.DelayTasks;
+import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.Effect;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
@@ -20,7 +22,9 @@ import org.bukkit.event.vehicle.VehicleDestroyEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
@@ -29,12 +33,10 @@ import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
  * Vehicle related events.
  * The Order of events is in the typical lifecycle of a Car.
  */
-public class VehicleListener implements Listener {
-
-    private final Carz carz;
+public class VehicleListener extends AbstractPluginReceiver implements Listener {
 
     public VehicleListener(Carz carz) {
-        this.carz = carz;
+        super(carz);
     }
 
     /**
@@ -83,9 +85,31 @@ public class VehicleListener implements Listener {
 
         if (carz.getConfig().getBoolean("Key.GiveOnCarEnter")
                 && !player.getInventory().contains(carz.getSettings().getKey())) {
-            TranslationUtils.sendTranslation("Car.KeyReceived", player);
-            player.getInventory().addItem(new ItemStack(carz.getSettings().getKey()));
+            givePlayerKey(player);
         }
+    }
+
+    /**
+     * Give the player a customised key.
+     * If enabled, a Durability enchantment will be applied to give a glowing effect.
+     * @param player
+     */
+    private void givePlayerKey(Player player) {
+        ItemStack itemStack = new ItemStack(carz.getSettings().getKey());
+        String keyName = TranslationUtils.getTranslation("Car.Key.Display", false)
+                .replace("%PLAYER%", player.getName());
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(keyName);
+
+        if (carz.getConfig().getBoolean("Key.Glow")) {
+            itemMeta.addEnchant(Enchantment.DURABILITY, 1, false);
+            itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        }
+
+        itemStack.setItemMeta(itemMeta);
+        player.getInventory().addItem(itemStack);
+        TranslationUtils.sendTranslation("Car.Key.Received", player);
     }
 
     /**

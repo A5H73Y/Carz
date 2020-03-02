@@ -1,9 +1,12 @@
 package io.github.a5h73y.plugin;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import io.github.a5h73y.Carz;
-import io.github.a5h73y.enums.PurchaseType;
 import io.github.a5h73y.model.Car;
-import io.github.a5h73y.other.Utils;
+import io.github.a5h73y.other.PluginUtils;
+import io.github.a5h73y.purchases.Purchasable;
 import io.github.a5h73y.utility.TranslationUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -20,6 +23,8 @@ import static org.bukkit.Bukkit.getServer;
 public class EconomyAPI extends PluginWrapper {
 
 	private Economy economy;
+	// player name to purchasable
+	private final Map<String, Purchasable> purchasing = new HashMap<>();
 
 	@Override
 	public String getPluginName() {
@@ -32,10 +37,10 @@ public class EconomyAPI extends PluginWrapper {
 
 		if (enabled) {
 			RegisteredServiceProvider<Economy> economyProvider =
-					getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
+					getServer().getServicesManager().getRegistration(Economy.class);
 
 			if (economyProvider == null) {
-				Utils.log("[Economy] Carz failed to connect to Economy service. Disabling Economy.", 2);
+				PluginUtils.log("[Economy] Carz failed to connect to Economy service. Disabling Economy.", 2);
 				enabled = false;
 				return;
 			}
@@ -54,6 +59,45 @@ public class EconomyAPI extends PluginWrapper {
 	 */
 	public boolean canPurchase(Player player, double cost) {
 		return !enabled || economy.has(player, cost);
+	}
+
+	/**
+	 * Request to make a purchase.
+	 * Economy does not have to be enabled, each payment request will go into this flow.
+	 * If confirmation is required, an entry will be made in the `purchasing` Map, requiring user action to confirm purchase.
+	 *
+	 * @param player
+	 * @param purchasable
+	 */
+	public void requestPurchase(Player player, Purchasable purchasable) {
+		if (!canPurchase(player, purchasable.getCost())) {
+			return;
+		}
+
+		if (isPurchasing(player)) {
+			TranslationUtils.sendTranslation("Error.PurchaseOutstanding", player);
+			TranslationUtils.sendTranslation("Purchase.Confirm.Purchase", player);
+			return;
+		}
+
+		// if the user has to confirm their purchases
+		if (enabled && Carz.getInstance().getConfig().getBoolean("Other.Vault.ConfirmPurchases")) {
+			purchasable.sendConfirmationMessage(player);
+			purchasing.put(player.getName(), purchasable);
+
+		} else {
+			if (processPurchase(player, purchasable.getCost())) {
+				purchasable.performPurchase(player);
+			}
+		}
+	}
+
+	public Purchasable getPurchasing(Player player) {
+		return purchasing.get(player.getName());
+	}
+
+	public boolean isPurchasing(Player player) {
+		return purchasing.containsKey(player.getName());
 	}
 
 	/**
@@ -79,10 +123,6 @@ public class EconomyAPI extends PluginWrapper {
 		return success;
 	}
 
-	public boolean processPurchase(Player player, PurchaseType type) {
-		return processPurchase(player, type.getCost());
-	}
-
 	/**
 	 * Process the purchase attempt.
 	 * If economy is disabled, the purchase will succeed
@@ -106,19 +146,26 @@ public class EconomyAPI extends PluginWrapper {
 	}
 
 	/**
-	 * Process the purchase of fuel.
-	 * As the cost could scale to the remaining fuel this must be processed differently.
-	 * @param player
+	 * Calculate the cost of refueling.
+	 * If the settings enable cost scaling, use the remaining Car's fuel to determine the cost to fully refuel.
 	 * @param car
-	 * @return purchase successful
+	 * @return refuel cost
 	 */
-	public boolean processFuelPurchase(Player player, Car car) {
-		double cost = PurchaseType.FUEL.getCost();
+	public double getRefuelCost(Car car) {
+		double cost = Carz.getInstance().getConfig().getDouble("Other.Vault.Cost.Refuel");
 
 		if (Carz.getInstance().getSettings().isFuelScaleCost()) {
 			cost *= Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(car.getCurrentFuel());
 		}
 
-		return processPurchase(player, cost);
+		return cost;
+	}
+
+	/**
+	 * Remove the player from the purchasing map.
+	 * @param player
+	 */
+	public void cancelPurchase(Player player) {
+		purchasing.remove(player.getName());
 	}
 }

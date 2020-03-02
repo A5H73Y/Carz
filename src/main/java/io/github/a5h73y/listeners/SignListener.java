@@ -2,9 +2,9 @@ package io.github.a5h73y.listeners;
 
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
-import io.github.a5h73y.enums.PurchaseType;
 import io.github.a5h73y.model.Car;
-import io.github.a5h73y.other.Utils;
+import io.github.a5h73y.other.AbstractPluginReceiver;
+import io.github.a5h73y.utility.CarUtils;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.StringUtils;
 import io.github.a5h73y.utility.TranslationUtils;
@@ -20,12 +20,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class SignListener implements Listener {
-
-    private final Carz carz;
+public class SignListener extends AbstractPluginReceiver implements Listener {
 
     public SignListener(Carz carz) {
-        this.carz = carz;
+        super(carz);
     }
 
     /**
@@ -36,6 +34,8 @@ public class SignListener implements Listener {
      */
     @EventHandler
     public void onSignCreate(SignChangeEvent event) {
+        //TODO this needs a major refactor
+
         if (!event.getLine(0).equalsIgnoreCase("[carz]")) {
             return;
         }
@@ -66,7 +66,7 @@ public class SignListener implements Listener {
         player.sendMessage(Carz.getPrefix() + title + " sign created");
 
         event.setLine(0, Carz.getInstance().getSettings().getSignHeader());
-        event.setLine(3, ChatColor.RED + String.valueOf(PurchaseType.fromString(title).getCost()));
+//        event.setLine(3, ChatColor.RED + String.valueOf(PurchaseType.fromString(title).getCost()));
     }
 
     /**
@@ -150,7 +150,7 @@ public class SignListener implements Listener {
                     return;
                 }
 
-                Utils.givePlayerOwnedCar(player);
+                CarUtils.givePlayerOwnedCar(player);
                 TranslationUtils.sendTranslation("Car.Purchased", player);
                 break;
 

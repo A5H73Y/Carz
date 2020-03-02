@@ -4,6 +4,7 @@ import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.other.DelayTasks;
 import io.github.a5h73y.other.XMaterial;
+import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;
@@ -22,12 +23,10 @@ import org.bukkit.inventory.ItemStack;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 
-public class PlayerListener implements Listener {
-
-    private final Carz carz;
+public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
     public PlayerListener(Carz carz) {
-        this.carz = carz;
+        super(carz);
     }
 
     /**

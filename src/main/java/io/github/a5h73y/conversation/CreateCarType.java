@@ -116,7 +116,7 @@ public class CreateCarType extends CarzConversation {
 					return new ChooseCarCost();
 
 				} else {
-					Carz.getInstance().getCarController().resetCacheAndRepopulate();
+					Carz.getInstance().getCarController().populateCarTypes();
 					context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
 					return Prompt.END_OF_CONVERSATION;
 				}
@@ -146,7 +146,7 @@ public class CreateCarType extends CarzConversation {
 			Carz.getInstance().getConfig().set("CarTypes." + carTypeName + ".Cost", input.doubleValue());
 			Carz.getInstance().saveConfig();
 
-			Carz.getInstance().getCarController().resetCacheAndRepopulate();
+			Carz.getInstance().getCarController().populateCarTypes();
 			context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
 			return Prompt.END_OF_CONVERSATION;
 		}

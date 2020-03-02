@@ -7,95 +7,13 @@ import java.util.Set;
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.utility.TranslationUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Minecart;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
-import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
-import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
  * Various Carz Utility commands.
  */
-public class Utils {
-
-    /**
-     * Destroy all Minecarts on the server.
-     */
-    public static void destroyAllCars() {
-        for (World world : Bukkit.getWorlds()) {
-            for (Entity entity : world.getEntities()) {
-                if (entity instanceof Minecart) {
-                    entity.remove();
-                }
-            }
-        }
-    }
-
-    /**
-     * Spawn a vehicle at the given location.
-     * If a player is provided, they will be declared the owner
-     * @param player
-     */
-    public static void giveOwnedCar(Player player) {
-//        TODO make configurable
-//        BlockData data = Bukkit.createBlockData(Material.WET_SPONGE);
-//        spawnedCar.setDisplayBlockData(data);
-    }
-
-    /**
-     * Place an Minecart in the player's inventory with their name on it.
-     * @param player
-     */
-    public static void givePlayerOwnedCar(Player player, String carType) {
-        ItemStack itemStack = new ItemStack(Material.MINECART);
-
-        Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_TYPE, itemStack, carType);
-        Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
-
-        setOwnerDisplayName(itemStack, player);
-
-        player.getInventory().addItem(itemStack);
-        player.updateInventory();
-    }
-
-    /**
-     * Place an Minecart in the player's inventory with their name on it.
-     * @param player
-     */
-    public static void givePlayerOwnedCar(Player player) {
-        givePlayerOwnedCar(player, DEFAULT_CAR);
-    }
-
-    public static void givePlayerOwnedCar(Player player, Vehicle vehicle) {
-        ItemStack itemStack = new ItemStack(Material.MINECART);
-
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        Carz.getInstance().getItemMetaUtils().transferNamespaceKeyValues(vehicle, itemMeta);
-        itemStack.setItemMeta(itemMeta);
-
-        setOwnerDisplayName(itemStack, player);
-
-        player.getInventory().addItem(itemStack);
-        player.updateInventory();
-    }
-
-    public static void setOwnerDisplayName(ItemStack itemStack, Player player) {
-        if (itemStack.hasItemMeta()) {
-            ItemMeta itemMeta = itemStack.getItemMeta();
-            itemMeta.setDisplayName(TranslationUtils.getTranslation("Car.PlayerCar", false)
-                    .replace("%PLAYER%", player.getName()));
-            itemStack.setItemMeta(itemMeta);
-        }
-    }
+public class PluginUtils {
 
     /**
      * Check to see if a command is disabled from the config
@@ -170,11 +88,11 @@ public class Utils {
         Set<Material> validMaterials = new HashSet<>();
 
         for (String rawMaterial : rawMaterials) {
-            Material material = Utils.lookupMaterial(rawMaterial);
+            Material material = lookupMaterial(rawMaterial);
             if (material != null) {
                 validMaterials.add(material);
             } else {
-                Utils.log("Material '" + rawMaterial + "' is invalid", 2);
+                log("Material '" + rawMaterial + "' is invalid", 2);
             }
         }
         return validMaterials;
@@ -191,7 +109,7 @@ public class Utils {
             return;
         }
 
-        Material material = Utils.lookupMaterial(args[1]);
+        Material material = lookupMaterial(args[1]);
 
         if (material == null) {
             player.sendMessage(Carz.getPrefix() + args[1] + " is not a valid Material!");
