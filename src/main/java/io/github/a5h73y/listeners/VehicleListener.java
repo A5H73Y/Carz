@@ -10,6 +10,8 @@ import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.Effect;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
@@ -223,8 +225,28 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         double carSpeed = drivingCar.getCurrentSpeed();
 
-        vehicleVelocity.setX((playerLocationVelocity.getX() / 100.0D) * carSpeed);
-        vehicleVelocity.setZ((playerLocationVelocity.getZ() / 100.0D) * carSpeed);
+        vehicleVelocity.setX((playerLocationVelocity.getX() / 100.0) * carSpeed);
+        vehicleVelocity.setZ((playerLocationVelocity.getZ() / 100.0) * carSpeed);
+
+        Location playerLocation = player.getLocation().clone();
+        playerLocation.setPitch(0f);
+
+        Location twoBlocksAhead = playerLocation.add(playerLocation.getDirection().multiply(2));
+        //TODO set Y to minecart + offset
+        twoBlocksAhead.setY(Math.max(playerLocation.getY() + 1, twoBlocksAhead.getY()));
+
+        // if there is a block ahead of us
+        if (twoBlocksAhead.getBlock().getType() != Material.AIR) {
+            Location above = twoBlocksAhead.add(0, 1, 0);
+
+            // if the block above it is AIR, allow to climb
+            if (above.getBlock().getType() == Material.AIR) {
+                vehicleVelocity.setY(0.25);
+
+                vehicleVelocity.setX(playerLocationVelocity.getX() / 8.0);
+                vehicleVelocity.setZ(playerLocationVelocity.getZ() / 8.0);
+            }
+        }
 
         event.getVehicle().setVelocity(vehicleVelocity);
     }

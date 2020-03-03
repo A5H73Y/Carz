@@ -70,6 +70,9 @@ public class CarController extends AbstractPluginReceiver {
         if (carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
             car.setOwner(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle));
         }
+        if (carz.getItemMetaUtils().has(VEHICLE_SPEED, vehicle)) {
+            car.setMaxSpeed(Double.parseDouble(carz.getItemMetaUtils().getValue(VEHICLE_SPEED, vehicle)));
+        }
 
         playersDriving.put(playerName, car.getEntityId());
     }
