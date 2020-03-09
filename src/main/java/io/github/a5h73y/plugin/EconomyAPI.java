@@ -7,9 +7,11 @@ import io.github.a5h73y.Carz;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.PluginUtils;
 import io.github.a5h73y.purchases.Purchasable;
+import io.github.a5h73y.utility.StringUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
@@ -58,7 +60,26 @@ public class EconomyAPI extends PluginWrapper {
 	 * @return boolean
 	 */
 	public boolean canPurchase(Player player, double cost) {
-		return !enabled || economy.has(player, cost);
+		return canPurchase(player, cost, false);
+	}
+
+	public boolean canPurchase(Player player, double cost, boolean message) {
+		boolean success = true;
+
+		if (enabled && !economy.has(player, cost)) {
+			success = false;
+
+			if (message) {
+				String currencyName = economy.currencyNamePlural() == null
+						? "" : " " + economy.currencyNamePlural();
+
+				player.sendMessage(
+						TranslationUtils.getTranslation("Error.PurchaseFailed")
+								.replace("%COST%", cost + currencyName));
+			}
+		}
+
+		return success;
 	}
 
 	/**
@@ -109,18 +130,7 @@ public class EconomyAPI extends PluginWrapper {
 	 * @return purchase successful
 	 */
 	public boolean processPurchase(Player player, double price) {
-		boolean success = purchase(player, price);
-
-		if (!success) {
-			String currencyName = economy.currencyNamePlural() == null
-					? "" : " " + economy.currencyNamePlural();
-
-			player.sendMessage(
-					TranslationUtils.getTranslation("Error.PurchaseFailed")
-							.replace("%COST%", price + currencyName));
-		}
-
-		return success;
+		return purchase(player, price);
 	}
 
 	/**
@@ -154,7 +164,7 @@ public class EconomyAPI extends PluginWrapper {
 			return true;
 		}
 
-		if (!canPurchase(player, cost)) {
+		if (!canPurchase(player, cost, true)) {
 			return false;
 		}
 
@@ -184,5 +194,23 @@ public class EconomyAPI extends PluginWrapper {
 	 */
 	public void removePurchase(Player player) {
 		purchasing.remove(player.getName());
+	}
+
+	public void sendInformation(Player player) {
+		player.sendMessage(StringUtils.getStandardHeading("Economy Details"));
+		player.sendMessage("Enabled: " + enabled);
+
+		if (enabled) {
+			FileConfiguration config = Carz.getInstance().getConfig();
+			player.sendMessage("Economy: " + economy.getName());
+			player.sendMessage("Purchase Confirmation: " + config.getBoolean("Other.Vault.ConfirmPurchases"));
+			player.sendMessage("Upgrade Cost: " + config.getDouble("Other.Vault.Cost.Upgrade"));
+			player.sendMessage("Refuel Cost: " + config.getDouble("Other.Vault.Cost.Refuel"));
+
+			player.sendMessage("CarTypes:");
+			for (String carType : Carz.getInstance().getCarController().getCarTypes().keySet()) {
+				player.sendMessage(carType + " cost: " + config.getDouble("CarTypes." + carType + ".Cost"));
+			}
+		}
 	}
 }

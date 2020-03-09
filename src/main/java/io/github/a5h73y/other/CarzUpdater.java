@@ -44,7 +44,7 @@ import org.bukkit.scheduler.BukkitRunnable;
  * @version 4.0.0
  */
 
-public class Updater {
+public class CarzUpdater {
 
 	/* Constants */
 
@@ -104,7 +104,7 @@ public class Updater {
 	// Updater thread
 	private Thread thread;
 	// Used for determining the outcome of the update process
-	private Updater.UpdateResult result;
+	private CarzUpdater.UpdateResult result;
 
 	/**
 	 * Gives the developer the result of the update process. Can be obtained by called {@link #getResult()}
@@ -193,7 +193,7 @@ public class Updater {
 	 * @param type Specify the type of update this will be. See {@link UpdateType}
 	 * @param announce True if the program should announce the progress of new updates in console.
 	 */
-	public Updater(final Plugin plugin, final int id, final File file, final UpdateType type, final boolean announce) {
+	public CarzUpdater(final Plugin plugin, final int id, final File file, final UpdateType type, final boolean announce) {
 		this(plugin, id, file, type, null, announce);
 	}
 
@@ -206,7 +206,7 @@ public class Updater {
 	 * @param type Specify the type of update this will be. See {@link UpdateType}
 	 * @param callback The callback instance to notify when the Updater has finished
 	 */
-	public Updater(final Plugin plugin, final int id, final File file, final UpdateType type, final UpdateCallback callback) {
+	public CarzUpdater(final Plugin plugin, final int id, final File file, final UpdateType type, final UpdateCallback callback) {
 		this(plugin, id, file, type, callback, false);
 	}
 
@@ -220,8 +220,8 @@ public class Updater {
 	 * @param callback The callback instance to notify when the Updater has finished
 	 * @param announce True if the program should announce the progress of new updates in console.
 	 */
-	public Updater(final Plugin plugin, final int id, final File file, final UpdateType type, final UpdateCallback callback,
-	               final boolean announce) {
+	public CarzUpdater(final Plugin plugin, final int id, final File file, final UpdateType type, final UpdateCallback callback,
+	                   final boolean announce) {
 		this.plugin = plugin;
 		this.type = type;
 		this.announce = announce;
@@ -277,7 +277,7 @@ public class Updater {
 		this.apiKey = key;
 
 		try {
-			this.url = new URL(Updater.HOST + Updater.QUERY + this.id);
+			this.url = new URL(CarzUpdater.HOST + CarzUpdater.QUERY + this.id);
 		} catch (final MalformedURLException e) {
 			this.plugin.getLogger().log(Level.SEVERE, "The project ID provided for updating, " + this.id + " is invalid.", e);
 			this.result = UpdateResult.FAIL_BADID;
@@ -297,7 +297,7 @@ public class Updater {
 	 * @return result of the update process.
 	 * @see UpdateResult
 	 */
-	public Updater.UpdateResult getResult() {
+	public CarzUpdater.UpdateResult getResult() {
 		this.waitForThread();
 		return this.result;
 	}
@@ -403,14 +403,14 @@ public class Updater {
 		try (BufferedInputStream in = new BufferedInputStream(fileUrl.openStream());
 		     FileOutputStream fout = new FileOutputStream(updateFile)) {
 
-			final byte[] data = new byte[Updater.BYTE_SIZE];
+			final byte[] data = new byte[CarzUpdater.BYTE_SIZE];
 			int count;
 			if (this.announce) {
 				this.plugin.getLogger().info("About to download a new update: " + this.versionName);
 			}
 			long downloaded = 0;
 			final MessageDigest md = MessageDigest.getInstance("MD5");
-			while ((count = in.read(data, 0, Updater.BYTE_SIZE)) != -1) {
+			while ((count = in.read(data, 0, CarzUpdater.BYTE_SIZE)) != -1) {
 				downloaded += count;
 				fout.write(data, 0, count);
 				md.update(data, 0, count);
@@ -428,11 +428,11 @@ public class Updater {
 			if (!md5.equals(this.versionMD5)) {
 				this.plugin.getLogger().warning("Downloaded file did not match the remote file!");
 				this.fileIOOrError(updateFile, updateFile.delete(), false);
-				this.result = Updater.UpdateResult.FAIL_DOWNLOAD;
+				this.result = CarzUpdater.UpdateResult.FAIL_DOWNLOAD;
 			}
 		} catch (final Exception ex) {
 			this.plugin.getLogger().log(Level.WARNING, "The auto-updater tried to download a new update, but was unsuccessful.", ex);
-			this.result = Updater.UpdateResult.FAIL_DOWNLOAD;
+			this.result = CarzUpdater.UpdateResult.FAIL_DOWNLOAD;
 		}
 	}
 
@@ -495,12 +495,12 @@ public class Updater {
 				if (!entry.isDirectory()) {
 					try (BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
 					     FileOutputStream fos = new FileOutputStream(destinationFilePath);
-					     BufferedOutputStream bos = new BufferedOutputStream(fos, Updater.BYTE_SIZE);) {
+					     BufferedOutputStream bos = new BufferedOutputStream(fos, CarzUpdater.BYTE_SIZE);) {
 
 						int b;
-						final byte[] buffer = new byte[Updater.BYTE_SIZE];
+						final byte[] buffer = new byte[CarzUpdater.BYTE_SIZE];
 
-						while ((b = bis.read(buffer, 0, Updater.BYTE_SIZE)) != -1) {
+						while ((b = bis.read(buffer, 0, CarzUpdater.BYTE_SIZE)) != -1) {
 							bos.write(buffer, 0, b);
 						}
 						bos.flush();
@@ -520,7 +520,7 @@ public class Updater {
 
 		} catch (final IOException e) {
 			this.plugin.getLogger().log(Level.SEVERE, "The auto-updater tried to unzip a new update file, but was unsuccessful.", e);
-			this.result = Updater.UpdateResult.FAIL_DOWNLOAD;
+			this.result = CarzUpdater.UpdateResult.FAIL_DOWNLOAD;
 		} finally {
 			this.fileIOOrError(fSourceZip, fSourceZip.delete(), false);
 		}
@@ -598,7 +598,7 @@ public class Updater {
 
 				if (this.hasTag(localVersion) || !this.shouldUpdate(localVersion, remoteVersion)) {
 					// We already have the latest version, or this build is tagged for no-update
-					this.result = Updater.UpdateResult.NO_UPDATE;
+					this.result = CarzUpdater.UpdateResult.NO_UPDATE;
 					return false;
 				}
 			} else {
@@ -608,7 +608,7 @@ public class Updater {
 				this.plugin.getLogger().warning("The author of this plugin" + authorInfo + " has misconfigured their Auto Update system");
 				this.plugin.getLogger().warning("File versions should follow the format 'PluginName vVERSION'");
 				this.plugin.getLogger().warning("Please notify the author of this error.");
-				this.result = Updater.UpdateResult.FAIL_NOVERSION;
+				this.result = CarzUpdater.UpdateResult.FAIL_NOVERSION;
 				return false;
 			}
 		}
@@ -648,7 +648,7 @@ public class Updater {
 	 * @return true if updating should be disabled.
 	 */
 	private boolean hasTag(final String version) {
-		for (final String string : Updater.NO_UPDATE_TAG) {
+		for (final String string : CarzUpdater.NO_UPDATE_TAG) {
 			if (version.contains(string)) {
 				return true;
 			}
@@ -672,7 +672,7 @@ public class Updater {
 				conn.addRequestProperty("X-API-Key", this.apiKey);
 			}
 
-			conn.addRequestProperty("User-Agent", Updater.USER_AGENT);
+			conn.addRequestProperty("User-Agent", CarzUpdater.USER_AGENT);
 
 			conn.setDoOutput(true);
 
@@ -769,7 +769,7 @@ public class Updater {
 		 *
 		 * @param updater The updater instance
 		 */
-		void onFinish(Updater updater);
+		void onFinish(CarzUpdater updater);
 	}
 
 	private class UpdateRunnable implements Runnable {

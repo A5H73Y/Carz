@@ -15,6 +15,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
+
 /**
  * Console-related Carz commands handling.
  */
@@ -55,7 +57,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                     return false;
                 }
 
-                CarUtils.givePlayerOwnedCar(player);
+                CarUtils.givePlayerCar(player, args.length > 2 ? args[2] : DEFAULT_CAR);
                 TranslationUtils.sendTranslation("Car.Spawned", sender, player);
                 break;
 

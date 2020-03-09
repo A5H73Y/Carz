@@ -5,7 +5,7 @@ import io.github.a5h73y.model.Car;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bukkit.entity.Player;
 
-public class UpgradePurchase implements Purchasable {
+public class UpgradePurchase extends Purchasable {
 
 	private static final String FROM_SPEED_PLACEHOLDER = "%FROM%";
 	private static final String TO_SPEED_PLACEHOLDER = "%TO%";
@@ -17,6 +17,7 @@ public class UpgradePurchase implements Purchasable {
 		double upgradeAmount = Carz.getInstance().getConfig().getDouble("Speed.Upgrade.Increment");
 		previousTopSpeed = currentCar.getMaxSpeed();
 		newTopSpeed = currentCar.getMaxSpeed() + upgradeAmount;
+		setCost(Carz.getInstance().getConfig().getDouble("Other.Vault.Cost.Upgrade"));
 	}
 
 	@Override
@@ -35,10 +36,5 @@ public class UpgradePurchase implements Purchasable {
 	public void performPurchase(Player player) {
 		Carz.getInstance().getCarController().upgradeCarSpeed(player);
 		TranslationUtils.sendTranslation("Purchase.Success.Upgrade", player);
-	}
-
-	@Override
-	public double getCost() {
-		return Carz.getInstance().getConfig().getDouble("Other.Vault.Cost.Upgrade");
 	}
 }

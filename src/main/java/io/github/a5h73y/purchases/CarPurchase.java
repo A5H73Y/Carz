@@ -6,7 +6,7 @@ import io.github.a5h73y.utility.StringUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import org.bukkit.entity.Player;
 
-public class CarPurchase implements Purchasable {
+public class CarPurchase extends Purchasable {
 
 	private static final String CAR_TYPE_PLACEHOLDER = "%TYPE%";
 
@@ -14,6 +14,7 @@ public class CarPurchase implements Purchasable {
 
 	public CarPurchase(String carType) {
 		this.carType = carType.toLowerCase();
+		setCost(Carz.getInstance().getConfig().getDouble("CarTypes." + carType + ".Cost"));
 	}
 
 	@Override
@@ -31,16 +32,11 @@ public class CarPurchase implements Purchasable {
 
 	@Override
 	public void performPurchase(Player player) {
-		CarUtils.givePlayerOwnedCar(player, carType);
+		CarUtils.givePlayerCar(player, carType, true);
 
 		String successMessage = TranslationUtils.getTranslation("Purchase.Success.Car")
 				.replace(CAR_TYPE_PLACEHOLDER, StringUtils.standardizeText(carType));
 
 		player.sendMessage(successMessage);
-	}
-
-	@Override
-	public double getCost() {
-		return Carz.getInstance().getConfig().getDouble("CarTypes." + carType + ".Cost");
 	}
 }

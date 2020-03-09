@@ -178,7 +178,7 @@ public class CarController extends AbstractPluginReceiver {
         }
 
         removeDriver(player.getName());
-        CarUtils.givePlayerOwnedCar(player, vehicle);
+        CarUtils.transferVehicleToItemStack(player, vehicle);
         destroyCar(vehicle);
     }
 

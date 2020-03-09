@@ -2,73 +2,88 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="//bootswatch.com/4/flatly/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" id="theme_link" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="css/navbar-fixed-left.min.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
     <title>Carz Tutorials</title>
 </head>
 
 <body>
-<div class="wrapper">
-    <div id="navigation-placeholder"></div>
+<div id="navigation-placeholder"></div>
 
-    <section>
-        <div class="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h1>Part 1 - The Basics</h1>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-xl-8">
+                <h1>Part 1: The Basics</h1>
 
-                        <div id="contents-placeholder"></div>
+                <div id="contents-placeholder"></div>
 
-                        <h2 id="aboutCarz">About Carz</h2>
-                        <p>Carz was a plugin created to add role-play to my City server. You are able to purchase a Car (Minecart) and lock it to your player, upgrade your car's speed and manage your fuel. Everything is configurable to match the needs of any server.</p>
-                        <p>When you become the owner of a Car, no other player will be able to enter / break your car.</p>
-                        <p>The players are able to interact with signs instead of commands, to allow for a more immersive experience; for example putting a fuel sign in a Petrol station.</p>
-                        <p>Carz can integrate with any Economy / Vault compatible plugin to allow for monetary purchases.</p>
+                <h2 id="aboutCarz">About Carz</h2>
+                <p>Carz was a plugin created to add role-play to my City server. You are able to purchase a Car (Minecart) and lock it to your player, upgrade your car's speed and manage your fuel. Everything is configurable to match the needs of any server.</p>
+                <p>When you become the owner of a Car, no other player will be able to enter / break your car.</p>
+                <p>The players are able to interact with signs instead of commands, to allow for a more immersive experience; for example putting a fuel sign in a Petrol station.</p>
+                <p>Carz can integrate with any Economy / Vault compatible plugin to allow for monetary purchases.</p>
 
-                        <h2 id="commandHelp">Carz Commands</h2>
-                        <p>Each individual command can be disabled in the config.yml, to allow for full configuration. The available commands are as follows:</p>
-                        <img src="https://i.imgur.com/obke0UC.png" alt="All commands." class="img-thumbnail">
+                <h2 id="commandHelp">Carz Commands</h2>
+                <p class="no-margin">Every available command can be found in-game using <strong>/carz cmds</strong>. The list will be built based on permissions and configuration.</p>
+                <p class="italic">For console commands, use <strong>/carzc cmds</strong></p>
+                <img src="https://i.imgur.com/obke0UC.png" alt="All commands." class="img-thumbnail">
 
-                        <h4>/carz fuel</h4>
-                        <p>Display's the current cars fuel level. <span class="italic">If Fuel is enabled.</span></p>
-                        <img src="https://i.imgur.com/m9fpKcS.png" alt="/pa fuel usage" class="img-thumbnail"/>
+                <h4>/carz fuel</h4>
+                <p>Display's the current cars fuel level. <span class="italic">If Fuel is enabled.</span></p>
+                <img src="https://i.imgur.com/m9fpKcS.png" alt="/carz fuel usage" class="img-thumbnail"/>
 
-                        <h4>/carz refuel</h4>
-                        <p class="no-margin">Make a purchase to fill the fuel in your current car.</p>
-                        <p class="italic">No extra permission is required, but if Economy is used, a player must have sufficient funds before successfully purchasing.</p>
-                        <img src="" alt="Command usage"/>
+                <h4>/carz details <small class="text-muted">New in v7.0.</small></h4>
+                <p>Display's the current car's details.</p>
+                <img src="" alt="Command usage"/>
 
-                        <h4>/carz purchase</h4>
-                        <p class="no-margin">Add an owned car to your inventory. You will have full ownership of the car and no other player will be able to unlock it once placed.</p>
-                        <p class="italic">Permission <strong>Carz.Purchase</strong> is required. If Economy is used, a player must have sufficient funds before successfully purchasing.</p>
-                        <img src="" alt="Command usage"/>
+                <h4>/carz refuel</h4>
+                <p class="no-margin">Make a purchase to fill the fuel in your current car.</p>
+                <p class="italic">No extra permission is required, but if Economy is used, a player must have sufficient funds before successfully purchasing.</p>
+                <img src="" alt="Command usage"/>
 
-                        <h4>/carz stash</h4>
-                        <p class="no-margin">Stash the car you are currently in, back into your inventory. This can also be achieved by hitting the car.</p>
+                <h4>/carz purchase</h4>
+                <p class="no-margin">Add an owned car to your inventory. You will have full ownership of the car and no other player will be able to unlock it once placed.</p>
+                <p class="italic">Permission <strong>Carz.Purchase</strong> is required. If Economy is used, a player must have sufficient funds before successfully purchasing.</p>
+                <img src="" alt="Command usage"/>
 
-                        <h4>/carz upgrade</h4>
-                        <p class="no-margin">Upgrade the speed of the Car you are currently sat in. This will play a sound and the car will immediately be increased in speed. </p>
-                        <p class="italic">Permission <strong>Carz.Upgrade</strong> is required. If Economy is used, a player must have sufficient funds before successfully purchasing.</p>
-                        <img src="" alt="Command usage"/>
+                <h4>/carz upgrade</h4>
+                <p class="no-margin">Upgrade the speed of the Car you are currently sat in. This will play a sound and the car will immediately be increased in speed. </p>
+                <p class="italic">Permission <strong>Carz.Upgrade</strong> is required. If Economy is used, a player must have sufficient funds before successfully purchasing.</p>
+                <img src="" alt="Command usage"/>
 
-                        <h4>/carz addCB</h4>
-                        <p class="no-margin">Add a Material to the list of Climbable Blocks.</p>
-                        <p class="italic">Permission <strong>Carz.Admin</strong> is required.</p>
+                <h4>/carz stash</h4>
+                <p class="no-margin">Stash the car you are currently in, back into your inventory. This can also be achieved by hitting the car.</p>
 
-                        <h4>/carz reload</h4>
-                        <p class="no-margin">Reload the Carz configuration file.</p>
-                        <p class="italic">Permission <strong>Carz.Admin</strong> is required.</p>
+                <h4>/carz addCB</h4>
+                <p class="no-margin">Add a Material to the list of Climbable Blocks.</p>
+                <p class="italic">Permission <strong>Carz.Admin</strong> is required.</p>
 
-                    </div>
-                </div>
+                <h4>/carz createtype <small class="text-muted">New in v7.0.</small></h4>
+                <p class="no-margin">Create a new type of Car. A conversation will be started to allow you to fully customise the car.</p>
+                <p class="italic">Permission <strong>Carz.Admin</strong> is required.</p>
+
+                <h4>/carz cartypes <small class="text-muted">New in v7.0.</small></h4>
+                <p class="no-margin">List the currently available Car types to choose.</p>
+                <p class="italic">Permission <strong>Carz.Purchase</strong> is required.</p>
+
+                <h4>/carz spawn</h4>
+                <p class="no-margin">An admin only command which allows a Carz car to be spawned.</p>
+                <p class="italic">Permission <strong>Carz.Admin</strong> is required.</p>
+
+                <h4>/carz reload</h4>
+                <p class="no-margin">Reload the Carz configuration file.</p>
+                <p class="italic">Permission <strong>Carz.Admin</strong> is required.</p>
             </div>
         </div>
-    </section>
+    </div>
 </div>
 
 <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="js/script.js"></script>
 </body>
 

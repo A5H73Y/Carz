@@ -2,35 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="//bootswatch.com/4/flatly/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" id="theme_link" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/4.3.1/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="css/navbar-fixed-left.min.css"/>
     <link rel="stylesheet" href="css/style.css"/>
     <link rel="shortcut icon" type="image/x-icon" href="img/favicon.ico" />
     <title>Carz Tutorials</title>
 </head>
 
 <body>
-<div class="wrapper">
-    <div id="navigation-placeholder"></div>
+<div id="navigation-placeholder"></div>
 
-    <section>
-        <div class="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <h1>Part 3 - Economy</h1>
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-xl-8">
+                <h1>Part 3: Economy</h1>
 
-                        <div id="contents-placeholder"></div>
+                <div id="contents-placeholder"></div>
 
-                        <h2 id="description">Description</h2>
-                        <p>Carz can link to any Economy plugin that uses <a href="vault">Vault</a>. When linked, each Carz function can have an associated cost. These function will be prevented until the player has earned enough money (for example buying a car).</p>
-                    </div>
-                </div>
+                <h2 id="description">Description</h2>
+                <p>Carz can link to any Economy plugin that uses <a href="https://dev.bukkit.org/projects/vault">Vault</a>. When linked, each Carz purchase type can have an associated cost. Any economy based purchases will be prevented until the player has earned enough money (for example buying a car).</p>
+
+                <h3 id="confirmation">Purchase Confirmation <small class="text-muted">New in v7.0.</small></h3>
+                <p>The player can be asked to confirm purchases before the cost amount is deducted from their account. This acts as a good way to provide a summary of what the user is about to do, for example purchase a car.</p>
             </div>
         </div>
-    </section>
+    </div>
 </div>
 
 <script src="//code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<script src="//stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="js/script.js"></script>
 </body>
 

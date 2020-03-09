@@ -9,13 +9,15 @@ import org.bukkit.entity.Player;
  * this ensures that the user still has the amount they had at the time of request and prevents cheating.
  * Even if Economy is disabled, or purchase request is disabled, the `performPurchase(player)` is invoked every time.
  */
-public interface Purchasable {
+public abstract class Purchasable {
 
-	String COST_PLACEHOLDER = "%COST%";
+	protected static final String COST_PLACEHOLDER = "%COST%";
 
-	String CURRENCY_PLACEHOLDER = "%CURRENCY%";
+	protected static final String CURRENCY_PLACEHOLDER = "%CURRENCY%";
 
-	String CONFIRM_PURCHASE_MESSAGE = "Purchase.Confirm.Purchase";
+	protected static final String CONFIRM_PURCHASE_MESSAGE = "Purchase.Confirm.Purchase";
+
+	private double cost;
 
 	/**
 	 * Send the player a summary of the purchase.
@@ -23,7 +25,7 @@ public interface Purchasable {
 	 * This will only be invoked if purchase confirmation is enabled in the settings.
 	 * @param player
 	 */
-	void sendConfirmationMessage(Player player);
+	public abstract void sendConfirmationMessage(Player player);
 
 	/**
 	 * The player has confirmed the purchase or confirmation wasn't necessary.
@@ -31,12 +33,21 @@ public interface Purchasable {
 	 * This will be invoked regardless of settings.
 	 * @param player player
 	 */
-	void performPurchase(Player player);
+	public abstract void performPurchase(Player player);
 
 	/**
 	 * Calculate the cost of the purchase.
 	 * @return total cost
 	 */
-	double getCost();
+	public double getCost() {
+		return cost;
+	}
 
+	/**
+	 * Override the default cost.
+	 * @param cost
+	 */
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
 }

@@ -9,7 +9,7 @@ import io.github.a5h73y.controllers.FuelController;
 import io.github.a5h73y.listeners.PlayerListener;
 import io.github.a5h73y.listeners.SignListener;
 import io.github.a5h73y.listeners.VehicleListener;
-import io.github.a5h73y.other.Updater;
+import io.github.a5h73y.other.CarzUpdater;
 import io.github.a5h73y.plugin.BountifulAPI;
 import io.github.a5h73y.plugin.EconomyAPI;
 import io.github.a5h73y.utility.ItemMetaUtils;
@@ -77,7 +77,7 @@ public class Carz extends JavaPlugin {
 
     private void updatePlugin() {
         if (getConfig().getBoolean("Other.UpdateCheck")) {
-            new Updater(this, 42269, this.getFile(), Updater.UpdateType.DEFAULT, true);
+            new CarzUpdater(this, 42269, this.getFile(), CarzUpdater.UpdateType.DEFAULT, true);
         }
     }
 

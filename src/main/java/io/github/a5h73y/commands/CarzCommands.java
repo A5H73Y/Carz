@@ -6,8 +6,8 @@ import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.AbstractPluginReceiver;
+import io.github.a5h73y.other.CarzHelp;
 import io.github.a5h73y.other.DelayTasks;
-import io.github.a5h73y.other.Help;
 import io.github.a5h73y.other.PluginUtils;
 import io.github.a5h73y.purchases.CarPurchase;
 import io.github.a5h73y.purchases.Purchasable;
@@ -68,7 +68,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                CarUtils.givePlayerOwnedCar(player);
+                CarUtils.givePlayerCar(player, args.length > 1 ? args[1] : DEFAULT_CAR);
                 TranslationUtils.sendTranslation("Car.Spawned", player);
                 break;
 
@@ -81,8 +81,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                String carType = args.length > 1 ? args[1] : DEFAULT_CAR;
-                carz.getEconomyAPI().requestPurchase(player, new CarPurchase(carType));
+                carz.getEconomyAPI().requestPurchase(player, new CarPurchase(args.length > 1 ? args[1] : DEFAULT_CAR));
                 break;
 
             case "upgrade":
@@ -173,6 +172,14 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 TranslationUtils.sendTranslation("Purchase.Cancelled", player);
                 break;
 
+            case "economy":
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+                }
+
+                carz.getEconomyAPI().sendInformation(player);
+                break;
+
             case "reload":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
@@ -183,7 +190,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "cmds":
-                Help.displayCommands(player);
+                CarzHelp.displayCommands(player);
                 break;
 
             default:

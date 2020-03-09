@@ -9,7 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-public class Help {
+public class CarzHelp {
 
     /**
      * Display Help menu to player.
