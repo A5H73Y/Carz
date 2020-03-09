@@ -60,7 +60,7 @@ public class EconomyAPI extends PluginWrapper {
 	 * @return boolean
 	 */
 	public boolean canPurchase(Player player, double cost) {
-		return canPurchase(player, cost, false);
+		return canPurchase(player, cost, true);
 	}
 
 	public boolean canPurchase(Player player, double cost, boolean message) {
@@ -164,7 +164,7 @@ public class EconomyAPI extends PluginWrapper {
 			return true;
 		}
 
-		if (!canPurchase(player, cost, true)) {
+		if (!canPurchase(player, cost)) {
 			return false;
 		}
 

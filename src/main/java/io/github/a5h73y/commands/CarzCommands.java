@@ -144,9 +144,12 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "details":
-                if (carz.getCarController().isDriving(player.getName())) {
-                    player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
+                if (!carz.getCarController().isDriving(player.getName())) {
+                    TranslationUtils.sendTranslation("Error.NotInCar", player);
+                    return false;
                 }
+
+                player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
                 break;
 
             case "confirm":

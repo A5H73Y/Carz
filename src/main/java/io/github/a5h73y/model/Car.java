@@ -2,12 +2,11 @@ package io.github.a5h73y.model;
 
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.controllers.CarController;
+import io.github.a5h73y.utility.StringUtils;
 
 public class Car {
 
 	private int entityId;
-
-	private String owner;
 
 	private CarDetails carDetails;
 
@@ -18,16 +17,11 @@ public class Car {
 	private double currentFuel;
 
 	public Car(final int entityId) {
-		this(entityId, null, null);
+		this(entityId, null);
 	}
 
 	public Car(final int entityId, final String carType) {
-		this(entityId, carType, null);
-	}
-
-	public Car(final int entityId, final String carType, final String owner) {
 		this.entityId = entityId;
-		this.owner = owner;
 		this.currentSpeed = 0.0;
 
 		this.carDetails = Carz.getInstance().getCarController().getCarTypes().get(
@@ -57,26 +51,16 @@ public class Car {
 
 	@Override
 	public String toString() {
-		return "Car{" +
-				"entityId=" + entityId +
-				", owner='" + owner + '\'' +
-				", carDetails=" + carDetails +
-				", maxSpeed=" + maxSpeed +
-				", currentSpeed=" + currentSpeed +
-				", currentFuel=" + currentFuel +
-				'}';
+		return StringUtils.getStandardHeading("Car Details") +
+				"\nentityId = " + entityId +
+				", \nmaxSpeed = " + maxSpeed +
+				", \ncurrentSpeed = " + currentSpeed +
+				", \ncurrentFuel = " + currentFuel +
+				"\n" + carDetails;
 	}
 
 	public int getEntityId() {
 		return entityId;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
 	}
 
 	public Double getCurrentFuel() {

@@ -18,6 +18,7 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_SPEED;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
@@ -67,11 +68,11 @@ public class CarController extends AbstractPluginReceiver {
         String carType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, vehicle);
         Car car = getOrCreateCar(vehicle.getEntityId(), carType);
 
-        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
-            car.setOwner(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle));
-        }
         if (carz.getItemMetaUtils().has(VEHICLE_SPEED, vehicle)) {
             car.setMaxSpeed(Double.parseDouble(carz.getItemMetaUtils().getValue(VEHICLE_SPEED, vehicle)));
+        }
+        if (carz.getItemMetaUtils().has(VEHICLE_FUEL, vehicle)) {
+            car.setCurrentFuel(Double.parseDouble(carz.getItemMetaUtils().getValue(VEHICLE_FUEL, vehicle)));
         }
 
         playersDriving.put(playerName, car.getEntityId());
@@ -172,8 +173,9 @@ public class CarController extends AbstractPluginReceiver {
             return;
         }
 
-        if (!player.getName().equals(getCar(vehicle.getEntityId()).getOwner())
-                && !PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+        String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle);
+
+        if (!player.getName().equals(owner) && !PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
             return;
         }
 

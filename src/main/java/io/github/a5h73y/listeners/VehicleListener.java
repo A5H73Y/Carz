@@ -31,6 +31,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
 
 /**
@@ -143,11 +144,10 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        Integer carId = event.getPlayer().getVehicle().getEntityId();
-        Car car = carz.getCarController().getCar(carId);
+        Vehicle vehicle = (Vehicle) event.getPlayer().getVehicle();
+        Car car = carz.getCarController().getCar(vehicle.getEntityId());
 
-        if (carz.getSettings().isOnlyOwnedCarsDrive()
-                && (car == null || car.getOwner() == null)) {
+        if (carz.getSettings().isOnlyOwnedCarsDrive() && !carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
             return;
         }
 
@@ -165,9 +165,10 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         if (carz.getCarController().isDriving(player.getName())) {
             carz.getCarController().removeDriver(player.getName());
-            carz.getCarController().getCar(carId).resetSpeed();
+            car.resetSpeed();
             minecart.setMaxSpeed(0D);
             TranslationUtils.sendTranslation("Car.EngineStop", player);
+            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, minecart, car.getCurrentFuel().toString());
 
         } else {
             carz.getCarController().startDriving(player.getName(), minecart);
@@ -265,23 +266,23 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        Car car = carz.getCarController().getCar(event.getVehicle().getEntityId());
-
-        if (car == null || car.getOwner() == null) {
+        if (!carz.getItemMetaUtils().has(VEHICLE_OWNER, event.getVehicle())) {
             carz.getCarController().destroyCar(event.getVehicle());
             return;
         }
 
         event.setCancelled(true);
+        String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, event.getVehicle());
 
-        if (!car.getOwner().equals(event.getAttacker().getName()) &&
+        if (!event.getAttacker().getName().equals(owner) &&
                 !PermissionUtils.hasStrictPermission((Player) event.getAttacker(), Permissions.ADMIN, false)) {
 
-            event.getAttacker().sendMessage(Carz.getPrefix() + "This vehicle is owned by another player!");
-            return;
-        }
+            String ownedMessage = TranslationUtils.getTranslation("Error.Owned").replace("%OWNER%", owner);
+            event.getAttacker().sendMessage(ownedMessage);
 
-        carz.getCarController().stashCar((Player) event.getAttacker(), event.getVehicle());
+        } else {
+            carz.getCarController().stashCar((Player) event.getAttacker(), event.getVehicle());
+        }
     }
 
     /**
@@ -310,8 +311,10 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Car car = carz.getCarController().getCar(event.getVehicle().getEntityId());
         car.resetSpeed();
+        carz.getItemMetaUtils().setValue(VEHICLE_FUEL, event.getVehicle(), car.getCurrentFuel().toString());
 
-        if (player.getName().equals(car.getOwner())) {
+        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, event.getVehicle())
+                && player.getName().equals(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, event.getVehicle()))) {
             TranslationUtils.sendTranslation("Car.CarLocked", player);
         }
     }

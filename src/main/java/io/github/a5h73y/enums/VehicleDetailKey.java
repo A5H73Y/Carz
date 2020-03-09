@@ -7,7 +7,8 @@ public enum VehicleDetailKey {
 
 	VEHICLE_TYPE(new NamespacedKey(Carz.getInstance(), "vehicle-type-key")),
 	VEHICLE_OWNER(new NamespacedKey(Carz.getInstance(), "vehicle-owner-key")),
-	VEHICLE_SPEED(new NamespacedKey(Carz.getInstance(), "vehicle-speed-key"));
+	VEHICLE_SPEED(new NamespacedKey(Carz.getInstance(), "vehicle-speed-key")),
+	VEHICLE_FUEL(new NamespacedKey(Carz.getInstance(), "vehicle-fuel-key"));
 
 	private NamespacedKey namespacedKey;
 

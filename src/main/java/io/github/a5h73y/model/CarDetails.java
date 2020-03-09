@@ -55,12 +55,11 @@ public class CarDetails {
 
 	@Override
 	public String toString() {
-		return "CarDetails{" +
-				"startMaxSpeed=" + startMaxSpeed +
-				", maxUpgradeSpeed=" + maxUpgradeSpeed +
-				", acceleration=" + acceleration +
-				", fuelUsage=" + fuelUsage +
-				", fillMaterial=" + fillMaterial +
-				'}';
+		return
+				"\nstartMaxSpeed = " + startMaxSpeed +
+				", \nmaxUpgradeSpeed = " + maxUpgradeSpeed +
+				", \nacceleration = " + acceleration +
+				", \nfuelUsage = " + fuelUsage +
+				", \nfillMaterial = " + fillMaterial;
 	}
 }
