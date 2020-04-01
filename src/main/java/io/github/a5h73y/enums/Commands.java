@@ -6,10 +6,10 @@ package io.github.a5h73y.enums;
  */
 public enum Commands {
 
-    SPAWN("Command.Spawn"),
-    PURCHASE("Command.Purchase"),
-    REFUEL("Command.Refuel"),
-    UPGRADE("Command.Upgrade");
+    SPAWN("CommandEnabled.Spawn"),
+    PURCHASE("CommandEnabled.Purchase"),
+    REFUEL("CommandEnabled.Refuel"),
+    UPGRADE("CommandEnabled.Upgrade");
 
     private final String configPath;
 

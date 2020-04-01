@@ -13,7 +13,6 @@ public class RefuelPurchase extends Purchasable {
 
 	public RefuelPurchase(Car currentCar) {
 		this.currentCar = currentCar;
-		setCost(Carz.getInstance().getEconomyAPI().getRefuelCost(currentCar));
 	}
 
 	@Override
@@ -22,7 +21,7 @@ public class RefuelPurchase extends Purchasable {
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Refuel")
 				.replace(PERCENT_PLACEHOLDER, String.valueOf(fillPercent))
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));;
+				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);
 		TranslationUtils.sendTranslation(CONFIRM_PURCHASE_MESSAGE, false, player);
@@ -30,7 +29,12 @@ public class RefuelPurchase extends Purchasable {
 
 	@Override
 	public void performPurchase(Player player) {
-		Carz.getInstance().getFuelController().refuel(currentCar, player);
+		Carz.getInstance().getFuelController().refuel(currentCar);
 		TranslationUtils.sendTranslation("Purchase.Success.Refuel", player);
+	}
+
+	@Override
+	protected double getDefaultCost() {
+		return Carz.getInstance().getEconomyAPI().getRefuelCost(currentCar.getCurrentFuel());
 	}
 }

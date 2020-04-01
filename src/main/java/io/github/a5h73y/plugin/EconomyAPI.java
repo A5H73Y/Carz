@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.a5h73y.Carz;
-import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.PluginUtils;
 import io.github.a5h73y.purchases.Purchasable;
 import io.github.a5h73y.utility.StringUtils;
@@ -42,7 +41,7 @@ public class EconomyAPI extends PluginWrapper {
 					getServer().getServicesManager().getRegistration(Economy.class);
 
 			if (economyProvider == null) {
-				PluginUtils.log("[Economy] Carz failed to connect to Economy service. Disabling Economy.", 2);
+				PluginUtils.log("[Economy] Carz failed to connect to Vault's Economy service. Disabling Economy.", 2);
 				enabled = false;
 				return;
 			}
@@ -102,7 +101,7 @@ public class EconomyAPI extends PluginWrapper {
 		}
 
 		// if the user has to confirm their purchases
-		if (enabled && Carz.getInstance().getConfig().getBoolean("Other.Vault.ConfirmPurchases")) {
+		if (enabled && Carz.getInstance().getConfig().getBoolean("Vault.ConfirmPurchases")) {
 			purchasable.sendConfirmationMessage(player);
 			purchasing.put(player.getName(), purchasable);
 
@@ -175,14 +174,14 @@ public class EconomyAPI extends PluginWrapper {
 	/**
 	 * Calculate the cost of refueling.
 	 * If the settings enable cost scaling, use the remaining Car's fuel to determine the cost to fully refuel.
-	 * @param car
+	 * @param remainingFuel
 	 * @return refuel cost
 	 */
-	public double getRefuelCost(Car car) {
-		double cost = Carz.getInstance().getConfig().getDouble("Other.Vault.Cost.Refuel");
+	public double getRefuelCost(double remainingFuel) {
+		double cost = Carz.getInstance().getConfig().getDouble("Vault.Cost.Refuel");
 
 		if (Carz.getInstance().getSettings().isFuelScaleCost()) {
-			cost *= Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(car.getCurrentFuel());
+			cost *= Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(remainingFuel);
 		}
 
 		return cost;
@@ -203,9 +202,9 @@ public class EconomyAPI extends PluginWrapper {
 		if (enabled) {
 			FileConfiguration config = Carz.getInstance().getConfig();
 			player.sendMessage("Economy: " + economy.getName());
-			player.sendMessage("Purchase Confirmation: " + config.getBoolean("Other.Vault.ConfirmPurchases"));
-			player.sendMessage("Upgrade Cost: " + config.getDouble("Other.Vault.Cost.Upgrade"));
-			player.sendMessage("Refuel Cost: " + config.getDouble("Other.Vault.Cost.Refuel"));
+			player.sendMessage("Purchase Confirmation: " + config.getBoolean("Vault.ConfirmPurchases"));
+			player.sendMessage("Upgrade Cost: " + config.getDouble("Vault.Cost.Upgrade"));
+			player.sendMessage("Refuel Cost: " + config.getDouble("Vault.Cost.Refuel"));
 
 			player.sendMessage("CarTypes:");
 			for (String carType : Carz.getInstance().getCarController().getCarTypes().keySet()) {

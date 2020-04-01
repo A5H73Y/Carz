@@ -56,7 +56,6 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             allowedCommands.add("addCB");
         }
 
-
         for (String allowedCommand : allowedCommands) {
             if (allowedCommand.startsWith(args[args.length - 1])) {
                 filteredCommands.add(allowedCommand);

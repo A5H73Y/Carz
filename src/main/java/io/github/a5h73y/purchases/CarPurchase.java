@@ -14,7 +14,6 @@ public class CarPurchase extends Purchasable {
 
 	public CarPurchase(String carType) {
 		this.carType = carType.toLowerCase();
-		setCost(Carz.getInstance().getConfig().getDouble("CarTypes." + carType + ".Cost"));
 	}
 
 	@Override
@@ -38,5 +37,10 @@ public class CarPurchase extends Purchasable {
 				.replace(CAR_TYPE_PLACEHOLDER, StringUtils.standardizeText(carType));
 
 		player.sendMessage(successMessage);
+	}
+
+	@Override
+	protected double getDefaultCost() {
+		return Carz.getInstance().getConfig().getDouble("CarTypes." + carType + ".Cost");
 	}
 }

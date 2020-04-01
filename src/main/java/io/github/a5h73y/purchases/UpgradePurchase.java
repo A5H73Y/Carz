@@ -14,10 +14,9 @@ public class UpgradePurchase extends Purchasable {
 	private double newTopSpeed;
 
 	public UpgradePurchase(Car currentCar) {
-		double upgradeAmount = Carz.getInstance().getConfig().getDouble("Speed.Upgrade.Increment");
+		double upgradeAmount = Carz.getInstance().getSettings().getUpgradeIncrement();
 		previousTopSpeed = currentCar.getMaxSpeed();
 		newTopSpeed = currentCar.getMaxSpeed() + upgradeAmount;
-		setCost(Carz.getInstance().getConfig().getDouble("Other.Vault.Cost.Upgrade"));
 	}
 
 	@Override
@@ -26,7 +25,7 @@ public class UpgradePurchase extends Purchasable {
 				.replace(FROM_SPEED_PLACEHOLDER, String.valueOf(previousTopSpeed))
 				.replace(TO_SPEED_PLACEHOLDER, String.valueOf(newTopSpeed))
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));;
+				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);
 		TranslationUtils.sendTranslation(CONFIRM_PURCHASE_MESSAGE, false, player);
@@ -36,5 +35,10 @@ public class UpgradePurchase extends Purchasable {
 	public void performPurchase(Player player) {
 		Carz.getInstance().getCarController().upgradeCarSpeed(player);
 		TranslationUtils.sendTranslation("Purchase.Success.Upgrade", player);
+	}
+
+	@Override
+	protected double getDefaultCost() {
+		return Carz.getInstance().getConfig().getDouble("Vault.Cost.Upgrade");
 	}
 }

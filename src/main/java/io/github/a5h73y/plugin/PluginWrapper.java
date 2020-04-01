@@ -40,7 +40,7 @@ public abstract class PluginWrapper {
 	 */
 	protected void initialise() {
 		// if the config prevents integration, don't start setup.
-		if (!Carz.getInstance().getConfig().getBoolean("Other." + getPluginName() + ".Enabled")) {
+		if (!Carz.getInstance().getConfig().getBoolean(getPluginName() + ".Enabled")) {
 			return;
 		}
 

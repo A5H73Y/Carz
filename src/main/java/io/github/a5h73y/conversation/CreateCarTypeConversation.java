@@ -17,7 +17,7 @@ import org.bukkit.conversations.NumericPrompt;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
 
-public class CreateCarType extends CarzConversation {
+public class CreateCarTypeConversation extends CarzConversation {
 
 	private static final String SESSION_CAR_TYPE = "carType";
 
@@ -32,7 +32,7 @@ public class CreateCarType extends CarzConversation {
 			new CarDetailQuestion("Fill Material", "FillMaterial", "AIR", STRING_PATTERN)
 	);
 
-	public CreateCarType(Conversable player) {
+	public CreateCarTypeConversation(Conversable player) {
 		super(player);
 	}
 

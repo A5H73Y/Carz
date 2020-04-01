@@ -23,7 +23,7 @@ public class FuelController extends AbstractPluginReceiver {
      */
     public FuelController(final Carz carz) {
         super(carz);
-        USE_FUEL = carz.getConfig().getBoolean("Fuel.Enable");
+        USE_FUEL = carz.getConfig().getBoolean("Fuel.Enabled");
         MAX_FUEL = carz.getConfig().getDouble("Fuel.StartAmount");
         GAUGE_SCALE = carz.getConfig().getInt("Fuel.GaugeScale");
     }
@@ -60,11 +60,6 @@ public class FuelController extends AbstractPluginReceiver {
 
     public void refuel(Car car) {
         car.setCurrentFuel(MAX_FUEL);
-    }
-
-    public void refuel(Car car, Player player) {
-        refuel(car);
-        TranslationUtils.sendTranslation("Car.Refuel", player);
     }
 
     /**

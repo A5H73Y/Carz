@@ -11,7 +11,6 @@ import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_OWNER;
 import static io.github.a5h73y.enums.VehicleDetailKey.VEHICLE_TYPE;
 

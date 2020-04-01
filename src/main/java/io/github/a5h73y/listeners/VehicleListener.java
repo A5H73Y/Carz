@@ -12,6 +12,7 @@ import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
@@ -215,6 +216,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         if (drivingCar.isFuelConsumed()) {
             carz.getCarController().removeDriver(player.getName());
+            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, event.getVehicle(), "0");
             TranslationUtils.sendTranslation("Car.FuelEmpty", player);
             return;
         }
@@ -233,11 +235,11 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         playerLocation.setPitch(0f);
 
         Location twoBlocksAhead = playerLocation.add(playerLocation.getDirection().multiply(2));
-        //TODO set Y to minecart + offset
         twoBlocksAhead.setY(Math.max(playerLocation.getY() + 1, twoBlocksAhead.getY()));
 
         // if there is a block ahead of us
-        if (twoBlocksAhead.getBlock().getType() != Material.AIR) {
+        if (twoBlocksAhead.getBlock().getType() != Material.AIR
+                || twoBlocksAhead.getBlock().getBlockData() instanceof Slab) {
             Location above = twoBlocksAhead.add(0, 1, 0);
 
             // if the block above it is AIR, allow to climb

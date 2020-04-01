@@ -212,13 +212,13 @@ public class CarController extends AbstractPluginReceiver {
         Car car = getCar(vehicle.getEntityId());
         double currentMax = car.getMaxSpeed();
         double maxSpeed = car.getCarDetails().getMaxUpgradeSpeed();
-        double upgradeBy = carz.getSettings().getUpgradeIncrement();
+        double upgradeAmount = carz.getSettings().getUpgradeIncrement();
 
-        if ((currentMax + upgradeBy) > maxSpeed) {//&& !event.getPlayer().hasPermission("Carz.Admin"))
+        if ((currentMax + upgradeAmount) > maxSpeed) {//&& !event.getPlayer().hasPermission("Carz.Admin"))
             return;
         }
 
-        car.setMaxSpeed(currentMax + upgradeBy);
+        car.setMaxSpeed(currentMax + upgradeAmount);
         carz.getItemMetaUtils().setValue(VEHICLE_SPEED, vehicle, String.valueOf(car.getMaxSpeed()));
     }
 

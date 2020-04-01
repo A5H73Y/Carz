@@ -51,23 +51,32 @@ public class Settings extends AbstractPluginReceiver {
         carz.getConfig().addDefault("Key.Glow", true);
         carz.getConfig().addDefault("Key.GiveOnCarEnter", true);
         carz.getConfig().addDefault("Key.RequireCarzKey", true);
+        carz.getConfig().addDefault("Key.ManualLocking.Enabled", true);
+        carz.getConfig().addDefault("Key.ManualLocking.ShiftAction", true);
 
-        carz.getConfig().addDefault("Speed.Start", 50.0);
         carz.getConfig().addDefault("Speed.Upgrade.Increment", 25.0);
         carz.getConfig().addDefault("Speed.Upgrade.Max", 200.0);
 
-        carz.getConfig().addDefault("Command.Spawn", true);
-        carz.getConfig().addDefault("Command.Purchase", true);
-        carz.getConfig().addDefault("Command.Refuel", true);
-        carz.getConfig().addDefault("Command.Upgrade", true);
+        carz.getConfig().addDefault("CommandEnabled.Spawn", true);
+        carz.getConfig().addDefault("CommandEnabled.Purchase", true);
+        carz.getConfig().addDefault("CommandEnabled.Refuel", true);
+        carz.getConfig().addDefault("CommandEnabled.Upgrade", true);
 
-        carz.getConfig().addDefault("Fuel.Enable", true);
+        carz.getConfig().addDefault("Fuel.Enabled", true);
         carz.getConfig().addDefault("Fuel.ScaleCost", true);
         carz.getConfig().addDefault("Fuel.StartAmount", 3000.0);
         carz.getConfig().addDefault("Fuel.GaugeScale", 40);
 
+        carz.getConfig().addDefault("ClimbBlocks.AllBlocks", true);
         carz.getConfig().addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
         carz.getConfig().addDefault("ClimbBlocks.Strength", 0.05D);
+
+        carz.getConfig().addDefault("Vault.Enabled", true);
+        carz.getConfig().addDefault("Vault.ConfirmPurchases", true);
+        carz.getConfig().addDefault("Vault.Cost.Upgrade", 8.0);
+        carz.getConfig().addDefault("Vault.Cost.Refuel", 2.0);
+
+        carz.getConfig().addDefault("BountifulAPI.Enabled", true);
 
         carz.getConfig().addDefault("Other.ControlCarsWhileFalling", true);
         carz.getConfig().addDefault("Other.DamageEntities.Enabled", true);
@@ -79,12 +88,6 @@ public class Settings extends AbstractPluginReceiver {
         carz.getConfig().addDefault("Other.UseAutoTabCompletion", true);
         carz.getConfig().addDefault("Other.UseEffects", true);
         carz.getConfig().addDefault("Other.UsePermissions", true);
-
-        carz.getConfig().addDefault("Other.BountifulAPI.Enabled", true);
-        carz.getConfig().addDefault("Other.Vault.Enabled", true);
-        carz.getConfig().addDefault("Other.Vault.ConfirmPurchases", true);
-        carz.getConfig().addDefault("Other.Vault.Cost.Upgrade", 8.0);
-        carz.getConfig().addDefault("Other.Vault.Cost.Refuel", 2.0);
 
         carz.getConfig().addDefault("CarTypes.default.StartMaxSpeed", 60.0);
         carz.getConfig().addDefault("CarTypes.default.MaxUpgradeSpeed", 200.0);
@@ -203,10 +206,6 @@ public class Settings extends AbstractPluginReceiver {
 
     public boolean isFuelScaleCost() {
         return carz.getConfig().getBoolean("Fuel.ScaleCost");
-    }
-
-    public double getStartSpeed() {
-        return carz.getConfig().getDouble("Speed.Start");
     }
 
     public double getUpgradeIncrement() {

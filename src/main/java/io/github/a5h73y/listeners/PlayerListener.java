@@ -2,9 +2,9 @@ package io.github.a5h73y.listeners;
 
 import io.github.a5h73y.Carz;
 import io.github.a5h73y.enums.Permissions;
+import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.other.DelayTasks;
 import io.github.a5h73y.other.XMaterial;
-import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.utility.PermissionUtils;
 import io.github.a5h73y.utility.PlayerUtils;
 import io.github.a5h73y.utility.TranslationUtils;

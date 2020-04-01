@@ -1,7 +1,7 @@
 package io.github.a5h73y.commands;
 
 import io.github.a5h73y.Carz;
-import io.github.a5h73y.conversation.CreateCarType;
+import io.github.a5h73y.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.enums.Permissions;
 import io.github.a5h73y.model.Car;
@@ -77,7 +77,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                if (!ValidationUtils.canPurchaseCar(player, args)) {
+                if (!ValidationUtils.canPurchaseCar(player, args.length > 1 ? args[1] : DEFAULT_CAR)) {
                     return false;
                 }
 
@@ -132,7 +132,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                new CreateCarType(player).begin();
+                new CreateCarTypeConversation(player).begin();
                 break;
 
             case "cartypes":

@@ -21,6 +21,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
+
 public class SignListener extends AbstractPluginReceiver implements Listener {
 
     public SignListener(Carz carz) {
@@ -44,31 +46,43 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         Player player = event.getPlayer();
 
         if (!PermissionUtils.hasPermission(player, Permissions.CREATE_SIGN)) {
-            event.getBlock().breakNaturally();
-            event.setCancelled(true);
+            breakSignAndCancelEvent(event);
             return;
         }
 
         // if it's a valid command, break, otherwise it's unknown, so cancel
         switch (event.getLine(1).toLowerCase()) {
-            case "refuel":
             case "purchase":
+                if (ValidationUtils.isStringValid(event.getLine(2))
+                        && !carz.getCarController().doesCarTypeExist(event.getLine(2))) {
+                    player.sendMessage(Carz.getPrefix() + "That doesn't exist.");
+                    breakSignAndCancelEvent(event);
+                    return;
+                }
+            case "refuel":
             case "upgrade":
                 break;
             default:
                 TranslationUtils.sendTranslation("Error.UnknownSignCommand", player);
                 player.sendMessage(Carz.getPrefix() + "Valid signs: refuel, purchase, upgrade");
-                event.getBlock().breakNaturally();
-                event.setCancelled(true);
+                breakSignAndCancelEvent(event);
                 return;
         }
 
-        //TODO handle each one
+        if (ValidationUtils.isStringValid(event.getLine(3))) {
+            if (ValidationUtils.isDouble(event.getLine(3))) {
+                event.setLine(3, ChatColor.RED + event.getLine(3));
+
+            } else {
+                player.sendMessage(Carz.getPrefix() + "The Cost override must be numeric");
+                breakSignAndCancelEvent(event);
+                return;
+            }
+        }
+
         String title = StringUtils.standardizeText(event.getLine(1));
         player.sendMessage(Carz.getPrefix() + title + " sign created");
-
         event.setLine(0, Carz.getInstance().getSettings().getSignHeader());
-//        event.setLine(3, ChatColor.RED + String.valueOf(PurchaseType.fromString(title).getCost()));
     }
 
     /**
@@ -142,18 +156,20 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         }
 
         event.setCancelled(true);
+        boolean hasOverriddenPrice = ValidationUtils.isDouble(lines[3]);
 
         switch (lines[1].toLowerCase()) {
             case "purchase":
-                if (!ValidationUtils.canPurchaseCar(player, new String[0])) {
+                String carType = ValidationUtils.isStringValid(lines[2]) ? lines[2].toLowerCase() : DEFAULT_CAR;
+                if (!ValidationUtils.canPurchaseCar(player, carType, hasOverriddenPrice)) {
                     return;
                 }
 
-                carz.getEconomyAPI().requestPurchase(player, new CarPurchase(lines[2]));
+                carz.getEconomyAPI().requestPurchase(player, new CarPurchase(carType));
                 break;
 
             case "upgrade":
-                if (!ValidationUtils.canPurchaseUpgrade(player)) {
+                if (!ValidationUtils.canPurchaseUpgrade(player, hasOverriddenPrice)) {
                     return;
                 }
 
@@ -162,7 +178,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 break;
 
             case "refuel":
-                if (!ValidationUtils.canPurchaseFuel(player)) {
+                if (!ValidationUtils.canPurchaseFuel(player, hasOverriddenPrice)) {
                     return;
                 }
 
@@ -175,8 +191,13 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 return;
         }
 
-        if (ValidationUtils.isDouble(lines[3]) && carz.getEconomyAPI().isPurchasing(player)) {
-            carz.getEconomyAPI().getPurchasing(player).setCost(Double.parseDouble(lines[3]));
+        if (hasOverriddenPrice && carz.getEconomyAPI().isPurchasing(player)) {
+            carz.getEconomyAPI().getPurchasing(player).setCostOverride(Double.parseDouble(lines[3]));
         }
+    }
+
+    private void breakSignAndCancelEvent(SignChangeEvent event) {
+        event.getBlock().breakNaturally();
+        event.setCancelled(true);
     }
 }

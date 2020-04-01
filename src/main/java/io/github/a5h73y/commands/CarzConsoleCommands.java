@@ -1,7 +1,7 @@
 package io.github.a5h73y.commands;
 
 import io.github.a5h73y.Carz;
-import io.github.a5h73y.conversation.CreateCarType;
+import io.github.a5h73y.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.other.PluginUtils;
@@ -77,7 +77,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 break;
 
             case "createtype":
-                new CreateCarType((ConsoleCommandSender) sender).begin();
+                new CreateCarTypeConversation((ConsoleCommandSender) sender).begin();
                 break;
 
             case "cmds":
