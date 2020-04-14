@@ -166,7 +166,7 @@ public class ValidationUtils {
 	 * @return boolean
 	 */
 	public static boolean canPurchaseFuel(Player player) {
-		return canPurchaseUpgrade(player, true);
+		return canPurchaseFuel(player, true);
 	}
 
 	/**

@@ -28,32 +28,45 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             return null;
         }
 
+        Player player = (Player) sender;
         List<String> allowedCommands = new ArrayList<>();
         List<String> filteredCommands = new ArrayList<>();
 
-        if (carz.getFuelController().isFuelEnabled()) {
+        allowedCommands.add("cmds");
+        allowedCommands.add("claim");
+        allowedCommands.add("details");
+
+        if (Carz.getInstance().getFuelController().isFuelEnabled()) {
             allowedCommands.add("fuel");
+
             if (carz.getConfig().getBoolean(Commands.REFUEL.getConfigPath())) {
                 allowedCommands.add("refuel");
             }
         }
 
-        if (carz.getConfig().getBoolean(Commands.PURCHASE.getConfigPath())) {
-            allowedCommands.add("purchase");
+        if (PermissionUtils.hasStrictPermission(player, Permissions.PURCHASE, false)) {
             allowedCommands.add("stash");
+            allowedCommands.add("cartypes");
+
+            if (carz.getConfig().getBoolean(Commands.PURCHASE.getConfigPath())) {
+                allowedCommands.add("purchase");
+            }
         }
 
-        if (carz.getConfig().getBoolean(Commands.UPGRADE.getConfigPath())) {
-            allowedCommands.add("upgrade");
+        if (carz.getConfig().getBoolean(Commands.UPGRADE.getConfigPath())
+                && PermissionUtils.hasStrictPermission(player, Permissions.UPGRADE, false)) {
+            allowedCommands.add( "upgrade");
         }
 
-        if (PermissionUtils.hasStrictPermission((Player) sender, Permissions.ADMIN, false)) {
+        if (PermissionUtils.hasStrictPermission(player, Permissions.ADMIN, false)) {
+            allowedCommands.add("addCB");
+            allowedCommands.add("createtype");
+            allowedCommands.add("economy");
+            allowedCommands.add("reload");
+
             if (carz.getConfig().getBoolean(Commands.SPAWN.getConfigPath())) {
                 allowedCommands.add("spawn");
             }
-
-            allowedCommands.add("reload");
-            allowedCommands.add("addCB");
         }
 
         for (String allowedCommand : allowedCommands) {

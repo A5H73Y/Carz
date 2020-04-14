@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>me.A5H73Y</groupId>
+    <groupId>io.github.a5h73y</groupId>
     <artifactId>Carz</artifactId>
     <version>7.0</version>
     <packaging>jar</packaging>
@@ -30,7 +30,7 @@
     </licenses>
 
     <repositories>
-        <!-- Spigot API -->
+        <!-- Spigot API Repo -->
         <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
@@ -38,12 +38,12 @@
         <!-- Vault Repo -->
         <repository>
             <id>vault-repo</id>
-            <url>https://jitpack.io</url>
+            <url>https://jitpack.io/</url>
         </repository>
         <!-- bStats Repo -->
         <repository>
             <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
         <!-- My Bintray repo -->
         <repository>
@@ -53,28 +53,28 @@
     </repositories>
 
     <dependencies>
-        <!--Spigot API-->
+        <!-- Spigot API -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!--Bukkit API-->
+        <!-- Bukkit API -->
         <dependency>
             <groupId>org.bukkit</groupId>
             <artifactId>bukkit</artifactId>
             <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!--Vault API-->
+        <!-- Vault API -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
             <scope>provided</scope>
         </dependency>
-        <!--Bountiful API-->
+        <!-- Bountiful API -->
         <dependency>
             <groupId>com.connorlinfoot</groupId>
             <artifactId>BountifulAPI</artifactId>
@@ -142,7 +142,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
+                <version>3.2.2</version>
                 <configuration>
                     <artifactSet>
                         <includes>
@@ -152,7 +152,7 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>me.A5H73Y.Carz</shadedPattern>
+                            <shadedPattern>io.github.a5h73y.Carz</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

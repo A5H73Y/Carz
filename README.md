@@ -36,7 +36,7 @@ Add a whole new level of role-play to any server that uses roads, perfect for ci
 
 ```
 <dependency>
-    <groupId>me.A5H73Y</groupId>
+    <groupId>io.github.a5h73y</groupId>
     <artifactId>Carz</artifactId>
     <version>7.0</version>
     <type>jar</type>
@@ -54,5 +54,5 @@ repositories {
 ```
 
 ```
-compile 'me.A5H73Y:Carz:7.0'
+compile 'io.github.a5h73y:Carz:7.0'
 ```

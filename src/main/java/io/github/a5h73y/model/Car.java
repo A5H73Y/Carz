@@ -6,9 +6,11 @@ import io.github.a5h73y.utility.StringUtils;
 
 public class Car {
 
-	private int entityId;
+	private final int entityId;
 
-	private CarDetails carDetails;
+	private final String carType;
+
+	private final CarDetails carDetails;
 
 	private double maxSpeed;
 
@@ -23,9 +25,8 @@ public class Car {
 	public Car(final int entityId, final String carType) {
 		this.entityId = entityId;
 		this.currentSpeed = 0.0;
-
-		this.carDetails = Carz.getInstance().getCarController().getCarTypes().get(
-				carType == null ? CarController.DEFAULT_CAR : carType);
+		this.carType = carType != null ? carType : CarController.DEFAULT_CAR;
+		this.carDetails = Carz.getInstance().getCarController().getCarTypes().get(carType);
 		this.currentFuel = Carz.getInstance().getFuelController().getStartAmount();
 		this.maxSpeed = this.carDetails.getStartMaxSpeed();
 	}
@@ -53,6 +54,7 @@ public class Car {
 	public String toString() {
 		return StringUtils.getStandardHeading("Car Details") +
 				"\nentityId = " + entityId +
+				", \ncarType = " + carType +
 				", \nmaxSpeed = " + maxSpeed +
 				", \ncurrentSpeed = " + currentSpeed +
 				", \ncurrentFuel = " + currentFuel +
@@ -61,6 +63,10 @@ public class Car {
 
 	public int getEntityId() {
 		return entityId;
+	}
+
+	public String getCarType() {
+		return carType;
 	}
 
 	public Double getCurrentFuel() {

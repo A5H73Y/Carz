@@ -4,6 +4,7 @@ import io.github.a5h73y.Carz;
 import io.github.a5h73y.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.enums.Commands;
 import io.github.a5h73y.enums.Permissions;
+import io.github.a5h73y.enums.VehicleDetailKey;
 import io.github.a5h73y.model.Car;
 import io.github.a5h73y.other.AbstractPluginReceiver;
 import io.github.a5h73y.other.CarzHelp;
@@ -15,13 +16,16 @@ import io.github.a5h73y.purchases.RefuelPurchase;
 import io.github.a5h73y.purchases.UpgradePurchase;
 import io.github.a5h73y.utility.CarUtils;
 import io.github.a5h73y.utility.PermissionUtils;
+import io.github.a5h73y.utility.StringUtils;
 import io.github.a5h73y.utility.TranslationUtils;
 import io.github.a5h73y.utility.ValidationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 
 import static io.github.a5h73y.controllers.CarController.DEFAULT_CAR;
 
@@ -53,6 +57,23 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
         switch (args[0].toLowerCase()) {
             case "fuel":
                 carz.getFuelController().displayFuelLevel(player);
+                break;
+
+            case "claim":
+                if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)
+                        || !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
+                    TranslationUtils.sendTranslation("Error.NotInCar", player);
+                    return false;
+                }
+
+                if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
+                    String owner = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+                    player.sendMessage(TranslationUtils.getTranslation("Error.Owned").replace("%PLAYER%", owner));
+                    return false;
+                }
+
+                carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle(), player.getName());
+                TranslationUtils.sendTranslation("Car.Claimed", player);
                 break;
 
             case "spawn":
@@ -140,11 +161,13 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
+                player.sendMessage(StringUtils.getStandardHeading("Car Types"));
                 carz.getCarController().getCarTypes().keySet().forEach(player::sendMessage);
                 break;
 
             case "details":
-                if (!carz.getCarController().isDriving(player.getName())) {
+                if (!player.isInsideVehicle()
+                        || carz.getCarController().getCar(player.getVehicle().getEntityId()) == null) {
                     TranslationUtils.sendTranslation("Error.NotInCar", player);
                     return false;
                 }

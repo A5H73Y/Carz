@@ -124,6 +124,7 @@ public class Settings extends AbstractPluginReceiver {
         stringsConfig.addDefault("Car.UpgradeSpeed", "New top speed: %SPEED%");
         stringsConfig.addDefault("Car.Key.Display", "&b%PLAYER%&f's key");
         stringsConfig.addDefault("Car.Key.Received", "You receive a key.");
+        stringsConfig.addDefault("Car.Claimed", "You are now the owner of this car.");
 
         stringsConfig.addDefault("Purchase.Confirm.Purchase","&7Enter &a/carz confirm &7to confirm, or &c/carz cancel &7to cancel the purchase.");
         stringsConfig.addDefault("Purchase.Confirm.Car","You are about to purchase a &b%TYPE% &7car, costing &b%COST%&7.");

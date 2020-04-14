@@ -20,29 +20,40 @@ public class CarzHelp {
         FileConfiguration config = Carz.getInstance().getConfig();
         player.sendMessage(StringUtils.getStandardHeading("Carz Commands"));
 
+        displayCommandUsage(player, "claim", "Claim an unowned car");
+        displayCommandUsage(player, "details", "Display the current car's details");
+
         if (Carz.getInstance().getFuelController().isFuelEnabled()) {
-            displayCommandUsage(player, "fuel", "Display the car's fuel");
+            displayCommandUsage(player, "fuel", "Display the car's remaining fuel");
+
             if (config.getBoolean(Commands.REFUEL.getConfigPath())) {
-                displayCommandUsage(player, "refuel", "Refuel your car");
+                displayCommandUsage(player, "refuel", "Request to refuel your car");
             }
         }
 
-        if (config.getBoolean(Commands.SPAWN.getConfigPath()) && player.isOp()) {
-            displayCommandUsage(player, "spawn", "Spawn a car at your location");
+        if (PermissionUtils.hasStrictPermission(player, Permissions.PURCHASE, false)) {
+            if (config.getBoolean(Commands.PURCHASE.getConfigPath())) {
+                displayCommandUsage(player, "purchase", "Request to purchase a car");
+            }
+
+            displayCommandUsage(player, "stash", "Stash your car back into your inventory");
+            displayCommandUsage(player, "cartypes", "Displays all the available car types");
         }
 
-        if (config.getBoolean(Commands.PURCHASE.getConfigPath())) {
-            displayCommandUsage(player, "purchase", "Purchase a car");
-            displayCommandUsage(player, "stash", "Stash your owned car back into your inventory");
-        }
-
-        if (config.getBoolean(Commands.UPGRADE.getConfigPath())) {
+        if (config.getBoolean(Commands.UPGRADE.getConfigPath())
+                && PermissionUtils.hasStrictPermission(player, Permissions.UPGRADE, false)) {
             displayCommandUsage(player, "upgrade", "Upgrade your car");
         }
 
         if (PermissionUtils.hasStrictPermission(player, Permissions.ADMIN, false)) {
-            displayCommandUsage(player, "reload", "Reload the config");
+            if (config.getBoolean(Commands.SPAWN.getConfigPath())) {
+                displayCommandUsage(player, "spawn", "Receive an un-owned car");
+            }
+
             displayCommandUsage(player, "addCB", "Add a ClimbBlock to the list");
+            displayCommandUsage(player, "createtype", "Create a new Car Type");
+            displayCommandUsage(player, "economy", "View Economy information");
+            displayCommandUsage(player, "reload", "Reload the config");
         }
     }
 
