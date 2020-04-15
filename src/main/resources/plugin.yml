@@ -1,0 +1,12 @@
+name: Carz
+version: ${project.version}
+description: ${project.description}
+softdepend: [Vault, BountifulAPI]
+author: A5H73Y
+main: io.github.a5h73y.carz.Carz
+api-version: "1.14"
+commands:
+  carz:
+    description: Carz commands
+  carzc:
+    description: Carz non-player commands

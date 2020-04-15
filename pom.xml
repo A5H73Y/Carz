@@ -84,7 +84,7 @@
         <!-- bStats -->
         <dependency>
             <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
+            <artifactId>bstats-bukkit-lite</artifactId>
             <version>1.7</version>
             <scope>compile</scope>
         </dependency>
@@ -104,16 +104,12 @@
 
     <build>
         <finalName>${project.artifactId}</finalName>
-        <defaultGoal>clean compile resources:resources package shade:shade</defaultGoal>
+        <defaultGoal>clean package</defaultGoal>
 
         <resources>
             <resource>
-                <targetPath>.</targetPath>
+                <directory>src/main/resources</directory>
                 <filtering>true</filtering>
-                <directory>${basedir}</directory>
-                <includes>
-                    <include>plugin.yml</include>
-                </includes>
             </resource>
         </resources>
 
@@ -144,15 +140,24 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.2</version>
                 <configuration>
+                    <createDependencyReducedPom>false</createDependencyReducedPom>
                     <artifactSet>
                         <includes>
                             <include>org.bstats:*</include>
                         </includes>
                     </artifactSet>
+                    <filters>
+                        <filter>
+                            <artifact>*:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>io.github.a5h73y.Carz</shadedPattern>
+                            <shadedPattern>io.github.a5h73y.carz</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
