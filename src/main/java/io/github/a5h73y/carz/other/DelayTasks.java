@@ -10,28 +10,25 @@ import org.bukkit.scheduler.BukkitRunnable;
 /**
  * Delay sensitive tasks.
  */
-public class DelayTasks {
+public enum DelayTasks {
 
-    private static DelayTasks instance = null;
+    INSTANCE;
 
-    private Map<String, Long> delays = new HashMap<>();
+    private final Map<String, Long> delays = new HashMap<>();
 
-    public static DelayTasks getInstance() {
-        if (instance == null) {
-            instance = new DelayTasks();
-            instance.runCleanup();
-        }
-
-        return instance;
+    DelayTasks() {
+        initialiseCleanup();
     }
 
-    private DelayTasks() {
+    public static DelayTasks getInstance() {
+        return INSTANCE;
     }
 
     /**
      * Delay an event from firing several times.
-     * @param player
-     * @return can player perform task?
+     *
+     * @param player target player
+     * @return player able to perform event
      */
     public boolean delayPlayer(Player player, int secondsDelay) {
         if (!delays.containsKey(player.getName())) {
@@ -54,7 +51,7 @@ public class DelayTasks {
      * Clear the cleanup cache every hour.
      * To keep the size of the map relatively small.
      */
-    private void runCleanup() {
+    private void initialiseCleanup() {
         new BukkitRunnable() {
             @Override
             public void run() {

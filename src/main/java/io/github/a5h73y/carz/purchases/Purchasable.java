@@ -22,6 +22,7 @@ public abstract class Purchasable {
 	/**
 	 * Get the final cost of the purchase.
 	 * This will be calculated every time in case the cost needs to be recalculated.
+	 *
 	 * @return calculated cost.
 	 */
 	public double getCost() {
@@ -32,7 +33,8 @@ public abstract class Purchasable {
 	 * Send the player a summary of the purchase.
 	 * This is contextual based on the type of purchase.
 	 * This will only be invoked if purchase confirmation is enabled in the settings.
-	 * @param player
+	 *
+	 * @param player requesting player.
 	 */
 	public abstract void sendConfirmationMessage(Player player);
 
@@ -40,18 +42,21 @@ public abstract class Purchasable {
 	 * The player has confirmed the purchase or confirmation wasn't necessary.
 	 * Purchase action is executed, which is contextual based on the type of purchase.
 	 * This will be invoked regardless of settings, no validation should be performed here.
-	 * @param player player
+	 *
+	 * @param player requesting player.
 	 */
 	public abstract void performPurchase(Player player);
 
 	/**
 	 * The default cost of the purchase.
+	 *
 	 * @return cost
 	 */
 	protected abstract double getDefaultCost();
 
 	/**
 	 * Set a cost override of the default cost.
+	 *
 	 * @return total cost
 	 */
 	public double getCostOverride() {
@@ -60,7 +65,8 @@ public abstract class Purchasable {
 
 	/**
 	 * Override the default cost.
-	 * @param costOverride
+	 *
+	 * @param costOverride new cost
 	 */
 	public void setCostOverride(double costOverride) {
 		this.costOverride = costOverride;

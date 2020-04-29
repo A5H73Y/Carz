@@ -2,7 +2,7 @@ package io.github.a5h73y.carz.enums;
 
 /**
  * The configurable Commands.
- * Each can be configured to be disabled.
+ * Each can be configured to be enabled / disabled.
  */
 public enum Commands {
 

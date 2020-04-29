@@ -5,7 +5,6 @@ import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.other.DelayTasks;
-import io.github.a5h73y.carz.other.XMaterial;
 import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.PlayerUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
@@ -13,6 +12,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Rail;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,6 +21,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Player related Events.
+ */
 public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
     public PlayerListener(Carz carz) {
@@ -30,7 +33,8 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
     /**
      * When the player places a Minecart.
      * Determine if it's an owned Car.
-     * @param event
+     *
+     * @param event {@link PlayerInteractEvent}
      */
     @EventHandler
     public void onPlaceMinecart(PlayerInteractEvent event) {
@@ -42,9 +46,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
             return;
         }
 
-        if (event.getClickedBlock().getType() == XMaterial.RAIL.parseMaterial()
-                || event.getClickedBlock().getType() == XMaterial.POWERED_RAIL.parseMaterial()
-                || event.getClickedBlock().getType() == XMaterial.DETECTOR_RAIL.parseMaterial()) {
+        if (event.getClickedBlock().getBlockData() instanceof Rail) {
             return;
         }
 
@@ -54,7 +56,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
             return;
         }
 
-        ItemStack carInHand = PlayerUtils.getItemStackInPlayersHand(player);
+        ItemStack carInHand = player.getInventory().getItemInMainHand();
 
         if (!carInHand.hasItemMeta() || !carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, carInHand)) {
             return;

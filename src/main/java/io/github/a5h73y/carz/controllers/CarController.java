@@ -40,6 +40,10 @@ public class CarController extends AbstractPluginReceiver {
         populateCarTypes();
     }
 
+    /**
+     * Populate the available Car Types.
+     * Cache the available Car Types from the Config using the name as the key.
+     */
     public void populateCarTypes() {
         carTypes.clear();
         Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
@@ -57,6 +61,7 @@ public class CarController extends AbstractPluginReceiver {
 
     /**
      * Register the player as the driving for the Car.
+     *
      * @param playerName player driving
      * @param vehicle vehicle the player is driving
      */
@@ -65,10 +70,12 @@ public class CarController extends AbstractPluginReceiver {
         Car car = getOrCreateCar(vehicle.getEntityId(), carType);
 
         if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_SPEED, vehicle)) {
-            car.setMaxSpeed(Double.parseDouble(carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
+            car.setMaxSpeed(Double.parseDouble(
+                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
         }
         if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
-            car.setCurrentFuel(Double.parseDouble(carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
+            car.setCurrentFuel(Double.parseDouble(
+                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
         }
 
         playersDriving.put(playerName, car.getEntityId());
@@ -77,8 +84,9 @@ public class CarController extends AbstractPluginReceiver {
     /**
      * Get the matching known Car.
      * Otherwise, create a new entry for the car.
-     * @param entityId
-     * @param carType
+     *
+     * @param entityId vehicle entity id
+     * @param carType requested car type
      * @return matching or new Car
      */
     public Car getOrCreateCar(Integer entityId, String carType) {
@@ -87,16 +95,18 @@ public class CarController extends AbstractPluginReceiver {
 
     /**
      * Register a new car.
-     * Set the default car speed, and start the fuel management
-     * @param entityId
+     * Sets the default car speed, and starts the fuel management.
+     *
+     * @param entityId vehicle entity id
      */
     public Car getOrCreateCar(Integer entityId) {
         return getOrCreateCar(entityId, DEFAULT_CAR);
     }
 
     /**
-     * Player has stopped driving.
-     * @param playerName
+     * Remove player from players driving.
+     *
+     * @param playerName player name
      */
     public void removeDriver(String playerName) {
         playersDriving.remove(playerName);
@@ -104,7 +114,8 @@ public class CarController extends AbstractPluginReceiver {
 
     /**
      * Is the player currently driving a Car.
-     * @param playerName
+     *
+     * @param playerName requested player name
      * @return player driving?
      */
     public boolean isDriving(String playerName) {
@@ -113,32 +124,34 @@ public class CarController extends AbstractPluginReceiver {
 
     /**
      * Completely remove a vehicle.
-     * Eject a player, remove the ownership and fuel management
-     * @param vehicle
+     * Eject player(s), remove the ownership and fuel management.
+     *
+     * @param vehicle {@link Vehicle}
      */
     public void destroyCar(Vehicle vehicle) {
         entityIdToCar.remove(vehicle.getEntityId());
-        //TODO improve this (1.7)
-        tryAndRemovePlayerFromCar(vehicle);
+        removeAllDriversFromVehicle(vehicle);
         EffectUtils.createDamageEffect(vehicle);
         vehicle.eject();
         vehicle.remove();
     }
 
     /**
-     * Attempt to remove the passenger from the Vehicle.
-     * @param car
+     * Remove the passenger(s) from the Vehicle.
+     *
+     * @param vehicle {@link Vehicle}
      */
-    private void tryAndRemovePlayerFromCar(Vehicle car) {
-        if (car == null || car.getPassengers().isEmpty()) {
+    private void removeAllDriversFromVehicle(Vehicle vehicle) {
+        if (vehicle == null || vehicle.getPassengers().isEmpty()) {
             return;
         }
 
-        car.getPassengers().forEach(entity -> removeDriver(entity.getName()));
+        vehicle.getPassengers().forEach(entity -> removeDriver(entity.getName()));
     }
 
     /**
      * Get the matching Car based on entityId.
+     *
      * @param carID entity ID.
      * @return Car
      */
@@ -147,24 +160,42 @@ public class CarController extends AbstractPluginReceiver {
     }
 
     /**
+     * Try and find the matching {@link Car} for the Vehicle.
+     * If it doesn't exist, enter a field if it has a vehicle type (it was once registered).
+     *
+     * @param vehicle {@link Vehicle}
+     * @return Car
+     */
+    public Car getCar(Minecart vehicle) {
+        Car car = getCar(vehicle.getEntityId());
+        if (car == null && carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, vehicle)) {
+            car = getOrCreateCar(vehicle.getEntityId(),
+                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle));
+        }
+        return car;
+    }
+
+    /**
      * Stash the Player's current vehicle to their inventory.
-     * @param player
+     *
+     * @param player requesting player
      */
     public void stashCar(Player player) {
         if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
-            player.sendMessage(Carz.getPrefix() + "You need to be inside your owned car!");
+            TranslationUtils.sendTranslation("Error.NotInCar", player);
             return;
         }
 
-        stashCar(player, (Vehicle) player.getVehicle());
+        stashCar(player, (Minecart) player.getVehicle());
     }
 
     /**
      * Stash the Vehicle to the Player's inventory.
-     * @param player
-     * @param vehicle
+     *
+     * @param player requesting player
+     * @param vehicle minecart to stash
      */
-    public void stashCar(Player player, Vehicle vehicle) {
+    public void stashCar(Player player, Minecart vehicle) {
         if (vehicle == null) {
             return;
         }
@@ -176,20 +207,21 @@ public class CarController extends AbstractPluginReceiver {
         }
 
         removeDriver(player.getName());
-        CarUtils.transferVehicleToItemStack(player, vehicle);
+        CarUtils.transferMinecartToInventory(player, vehicle);
         destroyCar(vehicle);
     }
 
     /**
      * Upgrade the Car the player is in.
-     * @param player
+     *
+     * @param player requesting player
      */
     public void upgradeCarSpeed(Player player) {
-        if (player.getVehicle() == null) {
+        if (player.getVehicle() == null || !(player.getVehicle() instanceof Minecart)) {
             return;
         }
 
-        upgradeCarSpeed((Vehicle) player.getVehicle());
+        upgradeCarSpeed((Minecart) player.getVehicle());
         Car car = getCar(player.getVehicle().getEntityId());
         EffectUtils.playEffect(player, Effect.ZOMBIE_CHEW_WOODEN_DOOR);
         player.sendMessage(TranslationUtils.getTranslation("Car.UpgradeSpeed")
@@ -199,29 +231,42 @@ public class CarController extends AbstractPluginReceiver {
     }
 
     /**
-     * Apply a speed upgrade to the vehicle
-     * The current speed of the car will be increased by the upgrade speed
+     * Apply a speed upgrade to the vehicle.
+     * The current speed of the car will be increased by the upgrade speed amount
      * until the current speed reaches the maximum upgrade limit.
-     * @param vehicle
+     *
+     * @param vehicle minecart to upgrade
      */
-    private void upgradeCarSpeed(Vehicle vehicle) {
+    private void upgradeCarSpeed(Minecart vehicle) {
         Car car = getCar(vehicle.getEntityId());
         double currentMax = car.getMaxSpeed();
         double maxSpeed = car.getCarDetails().getMaxUpgradeSpeed();
         double upgradeAmount = carz.getSettings().getUpgradeIncrement();
 
-        if ((currentMax + upgradeAmount) > maxSpeed) {//&& !event.getPlayer().hasPermission("Carz.Admin"))
+        if ((currentMax + upgradeAmount) > maxSpeed) {
             return;
         }
 
         car.setMaxSpeed(currentMax + upgradeAmount);
-        carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_SPEED, vehicle, String.valueOf(car.getMaxSpeed()));
+        carz.getItemMetaUtils().setValue(
+                VehicleDetailKey.VEHICLE_SPEED, vehicle, String.valueOf(car.getMaxSpeed()));
     }
 
+    /**
+     * Available Car Types.
+     *
+     * @return car types.
+     */
     public Map<String, CarDetails> getCarTypes() {
         return carTypes;
     }
 
+    /**
+     * Check if the requested car type exists.
+     * @param carType car type
+     *
+     * @return car types exist.
+     */
     public boolean doesCarTypeExist(String carType) {
         return carTypes.containsKey(carType.toLowerCase());
     }

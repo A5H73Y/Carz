@@ -4,7 +4,7 @@ import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.utility.PermissionUtils;
-import io.github.a5h73y.carz.utility.StringUtils;
+import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,13 +12,14 @@ import org.bukkit.entity.Player;
 public class CarzHelp {
 
     /**
-     * Display Help menu to player.
-     * All enabled and permission granted commands are displayed.
-     * @param player
+     * Display Help Menu to player.
+     * Content is populated based on config and permissions.
+     *
+     * @param player requesting player
      */
     public static void displayCommands(Player player) {
         FileConfiguration config = Carz.getInstance().getConfig();
-        player.sendMessage(StringUtils.getStandardHeading("Carz Commands"));
+        TranslationUtils.sendHeading("Carz Commands", player);
 
         displayCommandUsage(player, "claim", "Claim an unowned car");
         displayCommandUsage(player, "details", "Display the current car's details");
@@ -50,7 +51,7 @@ public class CarzHelp {
                 displayCommandUsage(player, "spawn", "Receive an un-owned car");
             }
 
-            displayCommandUsage(player, "addCB", "Add a ClimbBlock to the list");
+            displayCommandUsage(player, "addclimb", "Add a ClimbBlock to the list");
             displayCommandUsage(player, "createtype", "Create a new Car Type");
             displayCommandUsage(player, "economy", "View Economy information");
             displayCommandUsage(player, "reload", "Reload the config");
@@ -58,10 +59,11 @@ public class CarzHelp {
     }
 
     /**
-     * Format and display command usage
-     * @param player
-     * @param title
-     * @param description
+     * Format and display command usage.
+     *
+     * @param player target player
+     * @param title command title
+     * @param description command description
      */
     private static void displayCommandUsage(Player player, String title, String description) {
         player.sendMessage(ChatColor.DARK_AQUA + "/carz " + ChatColor.AQUA + title

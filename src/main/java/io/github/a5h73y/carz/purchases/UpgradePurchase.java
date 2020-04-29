@@ -10,9 +10,15 @@ public class UpgradePurchase extends Purchasable {
 	private static final String FROM_SPEED_PLACEHOLDER = "%FROM%";
 	private static final String TO_SPEED_PLACEHOLDER = "%TO%";
 
-	private double previousTopSpeed;
-	private double newTopSpeed;
+	private final double previousTopSpeed;
+	private final double newTopSpeed;
 
+	/**
+	 * Upgrade Car Purchase Request.
+	 * Details are calculated based on the {@link Car} passed in.
+	 *
+	 * @param currentCar car
+	 */
 	public UpgradePurchase(Car currentCar) {
 		double upgradeAmount = Carz.getInstance().getSettings().getUpgradeIncrement();
 		previousTopSpeed = currentCar.getMaxSpeed();
@@ -25,7 +31,8 @@ public class UpgradePurchase extends Purchasable {
 				.replace(FROM_SPEED_PLACEHOLDER, String.valueOf(previousTopSpeed))
 				.replace(TO_SPEED_PLACEHOLDER, String.valueOf(newTopSpeed))
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));
+				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI()
+						.getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);
 		TranslationUtils.sendTranslation(CONFIRM_PURCHASE_MESSAGE, false, player);

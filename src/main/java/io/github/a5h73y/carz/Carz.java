@@ -10,17 +10,18 @@ import io.github.a5h73y.carz.listeners.PlayerListener;
 import io.github.a5h73y.carz.listeners.SignListener;
 import io.github.a5h73y.carz.listeners.VehicleListener;
 import io.github.a5h73y.carz.other.CarzUpdater;
-import io.github.a5h73y.carz.other.PluginUtils;
 import io.github.a5h73y.carz.plugin.BountifulAPI;
 import io.github.a5h73y.carz.plugin.EconomyAPI;
 import io.github.a5h73y.carz.utility.ItemMetaUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bstats.bukkit.MetricsLite;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carz extends JavaPlugin {
 
-    private static final int PLUGIN_ID = 42269;
+    private static final int BUKKIT_PLUGIN_ID = 42269;
+    private static final int SPIGOT_PLUGIN_ID = 56255;
     private static Carz instance;
 
     private BountifulAPI bountifulAPI;
@@ -50,7 +51,7 @@ public class Carz extends JavaPlugin {
         setupPlugins();
 
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
-        new MetricsLite(this, PLUGIN_ID);
+        new MetricsLite(this, BUKKIT_PLUGIN_ID);
         updatePlugin();
     }
 
@@ -85,7 +86,7 @@ public class Carz extends JavaPlugin {
 
     private void updatePlugin() {
         if (getConfig().getBoolean("Other.UpdateCheck")) {
-            new CarzUpdater(this, PLUGIN_ID, this.getFile(), CarzUpdater.UpdateType.DEFAULT, true);
+            new CarzUpdater(this, SPIGOT_PLUGIN_ID).checkForUpdateAsync();
         }
     }
 

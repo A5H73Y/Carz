@@ -12,11 +12,17 @@ import org.bukkit.conversations.Prompt;
 
 public abstract class CarzConversation implements ConversationAbandonedListener {
 
-    private ConversationFactory conversationFactory;
-    private Conversable player;
+    private final ConversationFactory conversationFactory;
+    private final Conversable player;
 
     public abstract Prompt getEntryPrompt();
 
+    /**
+     * Carz Conversation abstract class.
+     * Each conversation must take a Conversable in the constructor.
+     *
+     * @param player conversable {@link Conversable}
+     */
     public CarzConversation(Conversable player) {
         this.player = player;
 

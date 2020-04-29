@@ -9,40 +9,51 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 
 /**
- * Fuel related functionality.
+ * All fuel related functionality.
  */
 public class FuelController extends AbstractPluginReceiver {
 
-    private final double MAX_FUEL;
-    private final boolean USE_FUEL;
-    private final int GAUGE_SCALE;
+    private final boolean useFuel;
+    private final double maxCapacity;
+    private final int gaugeScale;
 
     /**
      * Initialise the global fuel variables.
-     * @param carz
+     *
+     * @param carz plugin instance
      */
     public FuelController(final Carz carz) {
         super(carz);
-        USE_FUEL = carz.getConfig().getBoolean("Fuel.Enabled");
-        MAX_FUEL = carz.getConfig().getDouble("Fuel.StartAmount");
-        GAUGE_SCALE = carz.getConfig().getInt("Fuel.GaugeScale");
+        useFuel = carz.getConfig().getBoolean("Fuel.Enabled");
+        maxCapacity = carz.getConfig().getDouble("Fuel.MaxCapacity");
+        gaugeScale = carz.getConfig().getInt("Fuel.GaugeScale");
     }
 
+    /**
+     * Check if the Fuel System enabled.
+     *
+     * @return fuel enabled
+     */
     public boolean isFuelEnabled() {
-        return USE_FUEL;
+        return useFuel;
     }
 
-    public double getStartAmount() {
-        return MAX_FUEL;
+    /**
+     * Maximum / Initial capacity for the cars.
+     * @return maximum capacity
+     */
+    public double getMaxCapacity() {
+        return maxCapacity;
     }
 
     /**
      * Display the formatted fuel level of the Car.
      * If fuel is disabled, or the player is not inside a vehicle an error will appear instead.
-     * @param player
+     *
+     * @param player requesting player
      */
     public void displayFuelLevel(Player player) {
-        if (!USE_FUEL) {
+        if (!useFuel) {
             TranslationUtils.sendTranslation("Error.FuelDisabled", player);
             return;
         }
@@ -54,23 +65,29 @@ public class FuelController extends AbstractPluginReceiver {
 
         Car car = carz.getCarController().getCar(player.getVehicle().getEntityId());
         if (car != null) {
-            Carz.getInstance().getBountifulAPI().sendActionBar(player, formattedFuelLevel(car));
+            carz.getBountifulAPI().sendActionBar(player, formattedFuelLevel(car));
         }
     }
 
+    /**
+     * Refuel the car to max capacity.
+     *
+     * @param car requesting car
+     */
     public void refuel(Car car) {
-        car.setCurrentFuel(MAX_FUEL);
+        car.setCurrentFuel(maxCapacity);
     }
 
     /**
-     * Build a formatted string of the fuel gauge, to resemble how much fuel is remaining
-     * @param car
+     * Build a formatted string of the fuel gauge, to resemble how much fuel is remaining.
+     *
+     * @param car requesting car
      * @return Formatted fuel gauge: E |||||| F
      */
     private String formattedFuelLevel(Car car) {
         StringBuilder sb = new StringBuilder();
-        double fuelRemaining = Math.floor((car.getCurrentFuel() / MAX_FUEL) * GAUGE_SCALE);
-        double fuelMissing = GAUGE_SCALE - fuelRemaining;
+        final double fuelRemaining = Math.floor((car.getCurrentFuel() / maxCapacity) * gaugeScale);
+        final double fuelMissing = gaugeScale - fuelRemaining;
 
         sb.append(ChatColor.RED);
         sb.append("E ");
@@ -97,11 +114,12 @@ public class FuelController extends AbstractPluginReceiver {
      *  0 / 3000 fuel left = 100% of cost refuel
      *  1500 / 3000 fuel left = 50% of cost refuel
      *  2999 / 3000 fuel left = 25% of cost refuel (to avoid exploit)
+     *
      * @param remaining remaining fuel amount
      * @return cost multiplier
      */
     public double determineScaleOfCostMultiplier(double remaining) {
-        double percentRemaining = remaining / MAX_FUEL;
+        double percentRemaining = remaining / maxCapacity;
         return 1 - (Math.floor(percentRemaining * 4) / 4);
     }
 }

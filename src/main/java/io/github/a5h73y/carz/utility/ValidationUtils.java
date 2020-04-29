@@ -4,86 +4,90 @@ import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.model.Car;
-import io.github.a5h73y.carz.other.XMaterial;
 import org.bukkit.Material;
+import org.bukkit.block.data.Rail;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 
+/**
+ * Validation related utility methods.
+ */
 public class ValidationUtils {
 
 	/**
-	 * Validate if the input is a populated String
-	 * @param input
-	 * @return whether the input is a valid String
+	 * Validate if the input is a valid String.
+	 *
+	 * @param input text
+	 * @return input is a valid String
 	 */
 	public static boolean isStringValid(String input) {
 		return input != null && !input.trim().isEmpty();
 	}
 
 	/**
-	 * Check if the argument is an integer.
-	 * "1" - true, "Hi" - false
-	 * @param text
-	 * @return whether the input is an integer
+	 * Validate if the input is a valid Integer.
+	 *
+	 * @param input text
+	 * @return input is an Integer
 	 */
-	public static boolean isInteger(String text) {
+	public static boolean isInteger(String input) {
 		try {
-			Integer.parseInt(text);
+			Integer.parseInt(input);
 			return true;
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) { }
 		return false;
 	}
 
 	/**
-	 * Check if the argument is a double.
-	 * "1" - true, "Hi" - false
-	 * @param text
-	 * @return whether the input is a double
+	 * Validate if the input is a valid Double.
+	 *
+	 * @param input text
+	 * @return input is a Double
 	 */
-	public static boolean isDouble(String text) {
+	public static boolean isDouble(String input) {
 		try {
-			Double.parseDouble(text);
+			Double.parseDouble(input);
 			return true;
-		} catch (Exception ignored) {}
+		} catch (Exception ignored) { }
 		return false;
 	}
 
 	/**
-	 * Validate that the vehicle is a valid Carz vehicle
-	 * Checks to see if the vehicle is a Minecart that isn't on rails
-	 * @param cart
-	 * @return boolean
+	 * Validate that the vehicle is a valid Carz vehicle.
+	 * Checks to see if the vehicle is a Minecart that isn't on rails.
+	 *
+	 * @param vehicle vehicle
+	 * @return is Carz vehicle
 	 */
-	public static boolean isACarzVehicle(Vehicle cart) {
-		if (!(cart instanceof Minecart)) {
+	public static boolean isACarzVehicle(Vehicle vehicle) {
+		if (!(vehicle instanceof Minecart)) {
 			return false;
 		}
 
-		Material material = cart.getLocation().getBlock().getType();
-		return (material != XMaterial.RAIL.parseMaterial())
-				&& (material != Material.POWERED_RAIL)
-				&& (material != Material.DETECTOR_RAIL);
+		return !(vehicle.getLocation().getBlock().getBlockData() instanceof Rail);
 	}
 
 	/**
-	 * Check to see if the player is currently able to purchase a car
-	 * This includes checking the permission status
-	 * @param player
-	 * @param carType
-	 * @return boolean
+	 * Validate if the player is currently able to purchase a car.
+	 * This includes checking the permission status and economy funds.
+	 *
+	 * @param player target player
+	 * @param carType requested car type
+	 * @return player can purchase
 	 */
 	public static boolean canPurchaseCar(Player player, String carType) {
 		return canPurchaseCar(player, carType, true);
 	}
 
 	/**
-	 * Check to see if the player is currently able to purchase a car
-	 * This includes checking the permission status
-	 * @param player
-	 * @param carType
-	 * @param checkEconomy
-	 * @return boolean
+	 * Validate if the player is currently able to purchase a car.
+	 * This includes checking the permission status.
+	 *
+	 * @param player target player
+	 * @param carType requested car type
+	 * @param checkEconomy validate the economy
+	 * @return player can purchase
 	 */
 	public static boolean canPurchaseCar(Player player, String carType, boolean checkEconomy) {
 		if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
@@ -106,7 +110,8 @@ public class ValidationUtils {
 		}
 
 		if (checkEconomy) {
-			double cost = Carz.getInstance().getConfig().getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
+			double cost = Carz.getInstance().getConfig()
+					.getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
 			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 		} else {
 			return true;
@@ -114,21 +119,23 @@ public class ValidationUtils {
 	}
 
 	/**
-	 * Check to see if the player is currently able to purchase an upgrade
-	 * This includes checking the permission status
-	 * @param player
-	 * @return boolean
+	 * Validate if the player is currently able to purchase an upgrade.
+	 * This includes checking the permission status and economy funds.
+	 *
+	 * @param player target player
+	 * @return player can upgrade
 	 */
 	public static boolean canPurchaseUpgrade(Player player) {
 		return canPurchaseUpgrade(player, true);
 	}
 
 	/**
-	 * Check to see if the player is currently able to purchase an upgrade
-	 * This includes checking the permission status
-	 * @param player
-	 * @param checkEconomy
-	 * @return boolean
+	 * Validate if the player is currently able to purchase an upgrade.
+	 * This includes checking the permission status.
+	 *
+	 * @param player target player
+	 * @param checkEconomy validate the economy
+	 * @return player can upgrade
 	 */
 	public static boolean canPurchaseUpgrade(Player player, boolean checkEconomy) {
 		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
@@ -160,21 +167,23 @@ public class ValidationUtils {
 	}
 
 	/**
-	 * Check to see if the player is currently able to purchase fuel
-	 * There will be no permission node to purchase fuel, as this would be silly
-	 * @param player
-	 * @return boolean
+	 * Validate if the player is currently able to purchase fuel.
+	 * There is no permission node to purchase fuel.
+	 *
+	 * @param player target player
+	 * @return player can refuel
 	 */
 	public static boolean canPurchaseFuel(Player player) {
 		return canPurchaseFuel(player, true);
 	}
 
 	/**
-	 * Check to see if the player is currently able to purchase fuel
-	 * There will be no permission node to purchase fuel, as this would be silly
-	 * @param player
-	 * @param checkEconomy
-	 * @return boolean
+	 * Validate if the player is currently able to purchase fuel.
+	 * There is no permission node to purchase fuel.
+	 *
+	 * @param player target player
+	 * @param checkEconomy validate the economy
+	 * @return player can refuel
 	 */
 	public static boolean canPurchaseFuel(Player player, boolean checkEconomy) {
 		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
@@ -187,12 +196,13 @@ public class ValidationUtils {
 		}
 
 		if (!Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, player.getVehicle())) {
-			player.sendMessage(Carz.getPrefix() + "This car hasn't been driven yet.");
+			TranslationUtils.sendTranslation("Error.CarNotDriven", player);
 			return false;
 		}
 
 		if (checkEconomy) {
-			double remainingFuel = Double.parseDouble(Carz.getInstance().getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, player.getVehicle()));
+			double remainingFuel = Double.parseDouble(Carz.getInstance().getItemMetaUtils().getValue(
+					VehicleDetailKey.VEHICLE_FUEL, player.getVehicle()));
 			double cost = Carz.getInstance().getEconomyAPI().getRefuelCost(remainingFuel);
 			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 		} else {

@@ -4,9 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.github.a5h73y.carz.Carz;
-import io.github.a5h73y.carz.other.PluginUtils;
 import io.github.a5h73y.carz.purchases.Purchasable;
-import io.github.a5h73y.carz.utility.StringUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -17,6 +16,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import static org.bukkit.Bukkit.getServer;
 
 /**
+ * {@link Economy} integration.
  * When the EconomyAPI class is initialised, an attempt is made to connect to Vault / Economy.
  * If the outcome succeeds and a provider is found, economy will be enabled.
  * If Carz does not link to a Economy plugin, all attempted purchases will be successful.
@@ -36,13 +36,13 @@ public class EconomyAPI extends PluginWrapper {
 	protected void initialise() {
 		super.initialise();
 
-		if (enabled) {
+		if (isEnabled()) {
 			RegisteredServiceProvider<Economy> economyProvider =
 					getServer().getServicesManager().getRegistration(Economy.class);
 
 			if (economyProvider == null) {
-				PluginUtils.log("[Economy] Carz failed to connect to Vault's Economy service. Disabling Economy.", 2);
-				enabled = false;
+				PluginUtils.log("[Economy] Failed to connect to Vault's Economy service. Disabling Economy.", 2);
+				setEnabled(false);
 				return;
 			}
 
@@ -52,20 +52,32 @@ public class EconomyAPI extends PluginWrapper {
 
 	/**
 	 * Check to see if the player is able to purchase the parameter.
-	 * If Economy is disabled this will return true
-	 * If Economy is enabled it will query if the player has sufficient funds
-	 * @param player
-	 * @param cost
-	 * @return boolean
+	 * If Economy is disabled this will return true.
+	 * If Economy is enabled it will query if the player has sufficient funds.
+	 * Player will be sent a message if purchase would be unsuccessful.
+	 *
+	 * @param player requesting player
+	 * @param cost cost of purchase
+	 * @return player can purchase
 	 */
 	public boolean canPurchase(Player player, double cost) {
 		return canPurchase(player, cost, true);
 	}
 
+	/**
+	 * Check to see if the player is able to purchase the parameter.
+	 * If Economy is disabled this will return true.
+	 * If Economy is enabled it will query if the player has sufficient funds.
+	 *
+	 * @param player requesting player
+	 * @param cost cost of purchase
+	 * @param message display failure message
+	 * @return player can purchase
+	 */
 	public boolean canPurchase(Player player, double cost, boolean message) {
 		boolean success = true;
 
-		if (enabled && !economy.has(player, cost)) {
+		if (isEnabled() && !economy.has(player, cost)) {
 			success = false;
 
 			if (message) {
@@ -84,10 +96,11 @@ public class EconomyAPI extends PluginWrapper {
 	/**
 	 * Request to make a purchase.
 	 * Economy does not have to be enabled, each payment request will go into this flow.
-	 * If confirmation is required, an entry will be made in the `purchasing` Map, requiring user action to confirm purchase.
+	 * If confirmation is required, an entry will be made in the `purchasing` Map,
+	 * requiring user action to confirm purchase.
 	 *
-	 * @param player
-	 * @param purchasable
+	 * @param player requesting player
+	 * @param purchasable {@link Purchasable}
 	 */
 	public void requestPurchase(Player player, Purchasable purchasable) {
 		if (!canPurchase(player, purchasable.getCost())) {
@@ -101,7 +114,7 @@ public class EconomyAPI extends PluginWrapper {
 		}
 
 		// if the user has to confirm their purchases
-		if (enabled && Carz.getInstance().getConfig().getBoolean("Vault.ConfirmPurchases")) {
+		if (isEnabled() && Carz.getInstance().getConfig().getBoolean("Vault.ConfirmPurchases")) {
 			purchasable.sendConfirmationMessage(player);
 			purchasing.put(player.getName(), purchasable);
 
@@ -112,10 +125,22 @@ public class EconomyAPI extends PluginWrapper {
 		}
 	}
 
+	/**
+	 * Find the matching {@link Purchasable} for the player.
+	 *
+	 * @param player requesting player
+	 * @return {@link Purchasable}
+	 */
 	public Purchasable getPurchasing(Player player) {
 		return purchasing.get(player.getName());
 	}
 
+	/**
+	 * Check to see if the player has an outstanding {@link Purchasable}.
+	 *
+	 * @param player requesting player
+	 * @return player has outstanding {@link Purchasable}
+	 */
 	public boolean isPurchasing(Player player) {
 		return purchasing.containsKey(player.getName());
 	}
@@ -124,8 +149,9 @@ public class EconomyAPI extends PluginWrapper {
 	 * Attempt to make the purchase of the parameter type for the player.
 	 * If the validation check fails, no attempt to deduct the money will be made.
 	 * If the attempt is unsuccessful, the amount of money required is displayed to the user.
-	 * @param player
-	 * @param price
+	 *
+	 * @param player requesting player
+	 * @param price total payable amount
 	 * @return purchase successful
 	 */
 	public boolean processPurchase(Player player, double price) {
@@ -134,8 +160,9 @@ public class EconomyAPI extends PluginWrapper {
 
 	/**
 	 * Get the currency name based on amount.
-	 * @param amount
-	 * @return currency name
+	 *
+	 * @param amount requested amount
+	 * @return matching currency name
 	 */
 	public String getCurrencyName(double amount) {
 		String value;
@@ -151,15 +178,16 @@ public class EconomyAPI extends PluginWrapper {
 
 	/**
 	 * Process the purchase attempt.
-	 * If economy is disabled, the purchase will succeed
+	 * If economy is disabled, the purchase will succeed.
 	 * If the player passes validation checks, an attempt will be made to withdraw the cost
 	 * from the players bank.
-	 * @param player
-	 * @param cost
+	 *
+	 * @param player requesting player
+	 * @param cost total payable amount
 	 * @return purchase successful
 	 */
 	private boolean purchase(Player player, double cost) {
-		if (!enabled) {
+		if (!isEnabled()) {
 			return true;
 		}
 
@@ -174,7 +202,8 @@ public class EconomyAPI extends PluginWrapper {
 	/**
 	 * Calculate the cost of refueling.
 	 * If the settings enable cost scaling, use the remaining Car's fuel to determine the cost to fully refuel.
-	 * @param remainingFuel
+	 *
+	 * @param remainingFuel car's remaining fuel
 	 * @return refuel cost
 	 */
 	public double getRefuelCost(double remainingFuel) {
@@ -188,18 +217,24 @@ public class EconomyAPI extends PluginWrapper {
 	}
 
 	/**
-	 * Remove the player from the purchasing map.
-	 * @param player
+	 * Remove the player's current purchase request.
+	 *
+	 * @param player requesting player
 	 */
 	public void removePurchase(Player player) {
 		purchasing.remove(player.getName());
 	}
 
-	public void sendInformation(Player player) {
-		player.sendMessage(StringUtils.getStandardHeading("Economy Details"));
-		player.sendMessage("Enabled: " + enabled);
+	/**
+	 * Send the player a summary of the Economy information.
+	 *
+	 * @param player requesting player
+	 */
+	public void sendEconomyInformation(Player player) {
+		TranslationUtils.sendHeading("Economy Details", player);
+		player.sendMessage("Enabled: " + isEnabled());
 
-		if (enabled) {
+		if (isEnabled()) {
 			FileConfiguration config = Carz.getInstance().getConfig();
 			player.sendMessage("Economy: " + economy.getName());
 			player.sendMessage("Purchase Confirmation: " + config.getBoolean("Vault.ConfirmPurchases"));
@@ -208,7 +243,8 @@ public class EconomyAPI extends PluginWrapper {
 
 			player.sendMessage("CarTypes:");
 			for (String carType : Carz.getInstance().getCarController().getCarTypes().keySet()) {
-				player.sendMessage(carType + " cost: " + config.getDouble("CarTypes." + carType + ".Cost"));
+				player.sendMessage(carType + " cost: "
+						+ config.getDouble("CarTypes." + carType + ".Cost"));
 			}
 		}
 	}

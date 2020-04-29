@@ -9,17 +9,17 @@ import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.other.CarzHelp;
 import io.github.a5h73y.carz.other.DelayTasks;
-import io.github.a5h73y.carz.other.PluginUtils;
 import io.github.a5h73y.carz.purchases.CarPurchase;
 import io.github.a5h73y.carz.purchases.Purchasable;
 import io.github.a5h73y.carz.purchases.RefuelPurchase;
 import io.github.a5h73y.carz.purchases.UpgradePurchase;
 import io.github.a5h73y.carz.utility.CarUtils;
 import io.github.a5h73y.carz.utility.PermissionUtils;
-import io.github.a5h73y.carz.utility.StringUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ import org.bukkit.entity.Vehicle;
 import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
 
 /**
- * Player-related Carz commands handling.
+ * Player related Carz commands handling.
  */
 public class CarzCommands extends AbstractPluginReceiver implements CommandExecutor {
 
@@ -67,8 +67,10 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 }
 
                 if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
-                    String owner = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
-                    player.sendMessage(TranslationUtils.getTranslation("Error.Owned").replace("%PLAYER%", owner));
+                    String owner = carz.getItemMetaUtils()
+                            .getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+                    player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
+                            .replace("%PLAYER%", owner));
                     return false;
                 }
 
@@ -114,7 +116,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                Car upgradeCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
+                Car upgradeCar = carz.getCarController().getCar((Minecart) player.getVehicle());
                 carz.getEconomyAPI().requestPurchase(player, new UpgradePurchase(upgradeCar));
                 break;
 
@@ -127,7 +129,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                Car refuelCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
+                Car refuelCar = carz.getCarController().getCar((Minecart) player.getVehicle());
                 carz.getEconomyAPI().requestPurchase(player, new RefuelPurchase(refuelCar));
                 break;
 
@@ -140,12 +142,23 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "addcb":
+            case "addclimb":
             case "addclimbblock":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
                 }
 
                 PluginUtils.addClimbBlock(player, args);
+                break;
+
+            case "addsb":
+            case "addspeed":
+            case "addspeedblock":
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+                }
+
+                PluginUtils.addSpeedBlock(player, args);
                 break;
 
             case "createtype":
@@ -161,18 +174,26 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                player.sendMessage(StringUtils.getStandardHeading("Car Types"));
+                TranslationUtils.sendHeading("Car Types", player);
                 carz.getCarController().getCarTypes().keySet().forEach(player::sendMessage);
                 break;
 
             case "details":
-                if (!player.isInsideVehicle()
-                        || carz.getCarController().getCar(player.getVehicle().getEntityId()) == null) {
+                if (player.isInsideVehicle()
+                        && carz.getCarController().getCar(player.getVehicle().getEntityId()) != null) {
+                    TranslationUtils.sendHeading("Car Details", player);
+                    player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
+
+                } else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART) {
+                    TranslationUtils.sendHeading("Car Details", player);
+                    carz.getItemMetaUtils().sendDataDetails(player,
+                            player.getInventory().getItemInMainHand().getItemMeta());
+
+                } else {
                     TranslationUtils.sendTranslation("Error.NotInCar", player);
                     return false;
                 }
 
-                player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
                 break;
 
             case "confirm":
@@ -203,7 +224,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                carz.getEconomyAPI().sendInformation(player);
+                carz.getEconomyAPI().sendEconomyInformation(player);
                 break;
 
             case "reload":

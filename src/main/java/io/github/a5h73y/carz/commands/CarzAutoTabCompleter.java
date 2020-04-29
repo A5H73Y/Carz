@@ -22,13 +22,17 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         super(carz);
     }
 
+    /**
+     * List of commands will be built based on the configuration and player permissions.
+     * {@inheritDoc}
+     */
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         if (!(sender instanceof Player)) {
             return null;
         }
 
-        Player player = (Player) sender;
+        final Player player = (Player) sender;
         List<String> allowedCommands = new ArrayList<>();
         List<String> filteredCommands = new ArrayList<>();
 
@@ -36,7 +40,7 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         allowedCommands.add("claim");
         allowedCommands.add("details");
 
-        if (Carz.getInstance().getFuelController().isFuelEnabled()) {
+        if (carz.getFuelController().isFuelEnabled()) {
             allowedCommands.add("fuel");
 
             if (carz.getConfig().getBoolean(Commands.REFUEL.getConfigPath())) {
@@ -55,11 +59,12 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
 
         if (carz.getConfig().getBoolean(Commands.UPGRADE.getConfigPath())
                 && PermissionUtils.hasStrictPermission(player, Permissions.UPGRADE, false)) {
-            allowedCommands.add( "upgrade");
+            allowedCommands.add("upgrade");
         }
 
         if (PermissionUtils.hasStrictPermission(player, Permissions.ADMIN, false)) {
-            allowedCommands.add("addCB");
+            allowedCommands.add("addclimb");
+            allowedCommands.add("addspeed");
             allowedCommands.add("createtype");
             allowedCommands.add("economy");
             allowedCommands.add("reload");

@@ -4,7 +4,7 @@ import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
-import io.github.a5h73y.carz.other.PluginUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.CarUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bukkit.Bukkit;
@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
 
 /**
- * Console-related Carz commands handling.
+ * Console related Carz commands handling.
  */
 public class CarzConsoleCommands extends AbstractPluginReceiver implements CommandExecutor {
 
@@ -62,8 +62,15 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 break;
 
             case "addcb":
+            case "addclimb":
             case "addclimbblock":
                 PluginUtils.addClimbBlock(sender, args);
+                break;
+
+            case "addsb":
+            case "addspeed":
+            case "addspeedblock":
+                PluginUtils.addSpeedBlock(sender, args);
                 break;
 
             case "destroyall":

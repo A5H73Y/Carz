@@ -4,29 +4,34 @@ import org.bukkit.Material;
 
 public class CarDetails {
 
-	private double startMaxSpeed = 1.0;
+	private final double startMaxSpeed;
 
-	private double maxUpgradeSpeed = 5.0;
+	private final double maxUpgradeSpeed;
 
-	private double acceleration = 1.0;
+	private final double acceleration;
 
-	private double fuelUsage = 1.0;
+	private final double fuelUsage;
 
 	private Material fillMaterial = Material.AIR;
 
-	public CarDetails(double startMaxSpeed, double maxUpgradeSpeed, double acceleration, double fuelUsage, String fillMaterial) {
-		if (startMaxSpeed > 0.0) {
-			this.startMaxSpeed = startMaxSpeed;
-		}
-		if (maxUpgradeSpeed > 0.0) {
-			this.maxUpgradeSpeed = maxUpgradeSpeed;
-		}
-		if (acceleration > 0.0) {
-			this.acceleration = acceleration;
-		}
-		if (fuelUsage > 0.0) {
-			this.fuelUsage = fuelUsage;
-		}
+	/**
+	 * Car Details model.
+	 * Populate the car details, with a validation to ensure the numbers are positive.
+	 *
+	 * @param startMaxSpeed initial maximum speed of the car
+	 * @param maxUpgradeSpeed absolute maximum speed of the car
+	 * @param acceleration acceleration speed of the car
+	 * @param fuelUsage amount of fuel used during acceleration
+	 * @param fillMaterial material to place inside the Minecart
+	 */
+	public CarDetails(double startMaxSpeed, double maxUpgradeSpeed, double acceleration,
+	                  double fuelUsage, String fillMaterial) {
+
+		this.startMaxSpeed = Math.max(0.0, startMaxSpeed);
+		this.maxUpgradeSpeed = Math.max(0.0, maxUpgradeSpeed);
+		this.acceleration = Math.max(0.0, acceleration);
+		this.fuelUsage = Math.max(0.0, fuelUsage);
+
 		Material material = Material.getMaterial(fillMaterial);
 		if (material != null) {
 			this.fillMaterial = material;
@@ -55,10 +60,10 @@ public class CarDetails {
 
 	@Override
 	public String toString() {
-		return "\nstartMaxSpeed = " + startMaxSpeed +
-				", \nmaxUpgradeSpeed = " + maxUpgradeSpeed +
-				", \nacceleration = " + acceleration +
-				", \nfuelUsage = " + fuelUsage +
-				", \nfillMaterial = " + fillMaterial;
+		return "\nstartMaxSpeed = " + startMaxSpeed
+				+ ", \nmaxUpgradeSpeed = " + maxUpgradeSpeed
+				+ ", \nacceleration = " + acceleration
+				+ ", \nfuelUsage = " + fuelUsage
+				+ ", \nfillMaterial = " + fillMaterial;
 	}
 }

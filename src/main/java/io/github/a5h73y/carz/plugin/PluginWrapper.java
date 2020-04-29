@@ -1,7 +1,7 @@
 package io.github.a5h73y.carz.plugin;
 
 import io.github.a5h73y.carz.Carz;
-import io.github.a5h73y.carz.other.PluginUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import org.bukkit.plugin.Plugin;
 
 import static org.bukkit.Bukkit.getServer;
@@ -12,10 +12,11 @@ import static org.bukkit.Bukkit.getServer;
  */
 public abstract class PluginWrapper {
 
-	protected boolean enabled = false;
+	private boolean enabled = false;
 
 	/**
-	 * What is the name of the 3rd party plugin.
+	 * The name of the 3rd party plugin.
+	 *
 	 * @return plugin name.
 	 */
 	public abstract String getPluginName();
@@ -28,18 +29,10 @@ public abstract class PluginWrapper {
 	}
 
 	/**
-	 * Flag to indicate if the plugin started correctly.
-	 * @return plugin enabled.
-	 */
-	public boolean isEnabled() {
-		return enabled;
-	}
-
-	/**
 	 * Initialise the setup of the 3rd party plugin.
 	 */
 	protected void initialise() {
-		// if the config prevents integration, don't start setup.
+		// if the config prevents integration, don't begin setup.
 		if (!Carz.getInstance().getConfig().getBoolean(getPluginName() + ".Enabled")) {
 			return;
 		}
@@ -55,8 +48,26 @@ public abstract class PluginWrapper {
 
 		} else {
 			PluginUtils.log("[" + getPluginName() + "] Plugin is missing, disabling config option.", 1);
-			Carz.getInstance().getConfig().set("Other." + getPluginName() + ".Enabled", false);
+			Carz.getInstance().getConfig().set(getPluginName() + ".Enabled", false);
 			Carz.getInstance().saveConfig();
 		}
+	}
+
+	/**
+	 * Flag to indicate if the plugin started correctly.
+	 *
+	 * @return plugin enabled.
+	 */
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	/**
+	 * Flag to indicate if the plugin is enabled.
+	 *
+	 * @param enabled plugin enabled.
+	 */
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

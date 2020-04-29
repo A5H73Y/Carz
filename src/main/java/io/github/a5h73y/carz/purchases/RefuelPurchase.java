@@ -9,8 +9,14 @@ public class RefuelPurchase extends Purchasable {
 
 	private static final String PERCENT_PLACEHOLDER = "%PERCENT%";
 
-	private Car currentCar;
+	private final Car currentCar;
 
+	/**
+	 * Refuel Car Purchase Request.
+	 * Details are calculated based on the {@link Car} passed in.
+	 *
+	 * @param currentCar car
+	 */
 	public RefuelPurchase(Car currentCar) {
 		this.currentCar = currentCar;
 	}
@@ -18,10 +24,12 @@ public class RefuelPurchase extends Purchasable {
 	@Override
 	public void sendConfirmationMessage(Player player) {
 		double fillPercent = Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(currentCar.getCurrentFuel());
+
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Refuel")
-				.replace(PERCENT_PLACEHOLDER, String.valueOf(fillPercent))
+				.replace(PERCENT_PLACEHOLDER, fillPercent * 100 + "%")
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI().getCurrencyName(getCost()));
+				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI()
+						.getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);
 		TranslationUtils.sendTranslation(CONFIRM_PURCHASE_MESSAGE, false, player);

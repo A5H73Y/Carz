@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
@@ -21,15 +21,15 @@ public class CreateCarTypeConversation extends CarzConversation {
 
 	private static final String SESSION_CAR_TYPE = "carType";
 
-	private static final Pattern DOUBLE_PATTERN = Pattern.compile("\\d+\\.\\d+");
+	private static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+(\\.\\d+)?");
 	private static final Pattern STRING_PATTERN = Pattern.compile("^[A-Za-z]+$");
 
-	private static List<CarDetailQuestion> carTypeConversion = Arrays.asList(
-			new CarDetailQuestion("Car's Start Speed", "StartMaxSpeed", 60.0, DOUBLE_PATTERN),
-			new CarDetailQuestion("Car's Max Upgrade Speed", "MaxUpgradeSpeed", 5.0, DOUBLE_PATTERN),
-			new CarDetailQuestion("Car's Acceleration", "Acceleration", 1.0, DOUBLE_PATTERN),
-			new CarDetailQuestion("Fuel Usage", "FuelUsage", 1.0, DOUBLE_PATTERN),
-			new CarDetailQuestion("Fill Material", "FillMaterial", "AIR", STRING_PATTERN)
+	private static final List<CarDetailQuestion> carTypeConversion = Arrays.asList(
+			new CarDetailQuestion("StartMaxSpeed", NUMBER_PATTERN),
+			new CarDetailQuestion("MaxUpgradeSpeed", NUMBER_PATTERN),
+			new CarDetailQuestion("Acceleration", NUMBER_PATTERN),
+			new CarDetailQuestion("FuelUsage", NUMBER_PATTERN),
+			new CarDetailQuestion("FillMaterial", STRING_PATTERN)
 	);
 
 	public CreateCarTypeConversation(Conversable player) {
@@ -45,7 +45,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 
 		@Override
 		public String getPromptText(ConversationContext context) {
-			return "What would you like this car to be called?";
+			return TranslationUtils.getTranslation("CarType.Create.Name", false);
 		}
 
 		@Override
@@ -53,12 +53,14 @@ public class CreateCarTypeConversation extends CarzConversation {
 			List<String> existingCarTypes = Carz.getInstance().getConfig().getStringList("CarTypes");
 
 			if (!STRING_PATTERN.matcher(input).matches()) {
-				sendErrorMessage(context, "Invalid Car name");
+				sendErrorMessage(context, TranslationUtils
+						.getTranslation("CarType.Error.InvalidName", false));
 				return this;
 			}
 
 			if (existingCarTypes.contains(input.toLowerCase())) {
-				sendErrorMessage(context, "This car type is already taken");
+				sendErrorMessage(context, TranslationUtils
+						.getTranslation("CarType.Error.AlreadyExists", false));
 				return this;
 			}
 			context.setSessionData(SESSION_CAR_TYPE, input.toLowerCase());
@@ -69,13 +71,12 @@ public class CreateCarTypeConversation extends CarzConversation {
 	private class ChooseCarDetails extends StringPrompt {
 
 		private int progress = 0;
-		private Map<String, String> answers = new HashMap<>();
+		private final Map<String, String> answers = new HashMap<>();
 
 		@Override
 		public String getPromptText(ConversationContext context) {
 			CarDetailQuestion question = carTypeConversion.get(progress);
-			return ChatColor.LIGHT_PURPLE + " What should the " + question.getTitle() + " be?\n" +
-					ChatColor.GREEN + " (default = " + question.getDefaultValue() + ")";
+			return TranslationUtils.getTranslation("CarType.Create." + question.getConfigEntry(), false);
 		}
 
 		@Override
@@ -83,21 +84,21 @@ public class CreateCarTypeConversation extends CarzConversation {
 			CarDetailQuestion question = carTypeConversion.get(progress);
 
 			if (!question.matchesExpected(choice)) {
-				sendErrorMessage(context, "Invalid value");
+				sendErrorMessage(context, TranslationUtils
+						.getTranslation("CarType.Error.InvalidValue", false));
 				return this;
 			}
 
 			if (question.getConfigEntry().equals("FillMaterial")) {
 				if (Material.getMaterial(choice) == null) {
-					sendErrorMessage(context, "Unknown Material: " + choice.toUpperCase());
+					sendErrorMessage(context, TranslationUtils
+							.getTranslation("Error.UnknownMaterial", false) + choice.toUpperCase());
 					return this;
 				}
 				choice = choice.toUpperCase();
 			}
 
 			answers.put(question.getConfigEntry(), choice);
-			context.getForWhom().sendRawMessage("Set " + question.getTitle() + " to " + choice);
-
 			progress++;
 
 			if (progress != carTypeConversion.size()) {
@@ -107,9 +108,8 @@ public class CreateCarTypeConversation extends CarzConversation {
 				String carTypeName = (String) context.getSessionData(SESSION_CAR_TYPE);
 				FileConfiguration config = Carz.getInstance().getConfig();
 
-				answers.forEach((configKey, value) -> {
-					config.set("CarTypes." + carTypeName + "." + configKey, calculateValue(value));
-				});
+				answers.forEach((configKey, value) ->
+						config.set("CarTypes." + carTypeName + "." + configKey, calculateValue(value)));
 				Carz.getInstance().saveConfig();
 
 				if (Carz.getInstance().getEconomyAPI().isEnabled()) {
@@ -131,12 +131,11 @@ public class CreateCarTypeConversation extends CarzConversation {
 		}
 	}
 
-	private class ChooseCarCost extends NumericPrompt {
+	private static class ChooseCarCost extends NumericPrompt {
 
 		@Override
 		public String getPromptText(ConversationContext context) {
-			return ChatColor.LIGHT_PURPLE + "How much should the car cost?\n" +
-					ChatColor.GREEN + " (default = 10.0)";
+			return TranslationUtils.getTranslation("CarType.Create.Cost", false);
 		}
 
 		@Override
@@ -147,55 +146,30 @@ public class CreateCarTypeConversation extends CarzConversation {
 			Carz.getInstance().saveConfig();
 
 			Carz.getInstance().getCarController().populateCarTypes();
-			context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
+			context.getForWhom().sendRawMessage(TranslationUtils
+					.getTranslation("CarType.Create.Success", false)
+					.replace("%VALUE%", carTypeName));
 			return Prompt.END_OF_CONVERSATION;
 		}
 	}
 
 	private static class CarDetailQuestion {
 
-		private String title;
-		private String configEntry;
-		private String defaultValue;
-		private Pattern expectedInput;
+		private final String configEntry;
+		private final Pattern expectedInput;
 
-		public CarDetailQuestion(String title, String configEntry, String defaultValue, Pattern expectedInput) {
-			this.title = title;
+		public CarDetailQuestion(String configEntry, Pattern expectedInput) {
 			this.configEntry = configEntry;
-			this.defaultValue = defaultValue;
 			this.expectedInput = expectedInput;
-		}
-
-		public CarDetailQuestion(String title, String configEntry, double defaultValue, Pattern expectedInput) {
-			this(title, configEntry, String.valueOf(defaultValue), expectedInput);
 		}
 
 		public boolean matchesExpected(String input) {
 			return expectedInput.matcher(input).matches();
 		}
 
-		public String getTitle() {
-			return title;
-		}
-
-		public void setTitle(String title) {
-			this.title = title;
-		}
-
 		public String getConfigEntry() {
 			return configEntry;
 		}
 
-		public void setConfigEntry(String configEntry) {
-			this.configEntry = configEntry;
-		}
-
-		public String getDefaultValue() {
-			return defaultValue;
-		}
-
-		public void setDefaultValue(String defaultValue) {
-			this.defaultValue = defaultValue;
-		}
 	}
 }

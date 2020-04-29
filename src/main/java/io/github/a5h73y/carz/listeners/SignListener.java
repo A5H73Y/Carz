@@ -23,6 +23,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
 
+/**
+ * Sign Related Events.
+ */
 public class SignListener extends AbstractPluginReceiver implements Listener {
 
     public SignListener(Carz carz) {
@@ -33,13 +36,12 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
      * When a Sign is created.
      * Check if it was a Car's related Sign.
      * If it's a valid PurchaseType, display a price.
-     * @param event
+     *
+     * @param event {@link SignChangeEvent}
      */
     @EventHandler
     public void onSignCreate(SignChangeEvent event) {
-        //TODO this needs a major refactor
-
-        if (!event.getLine(0).equalsIgnoreCase("[carz]")) {
+        if (!carz.getSettings().getStrippedSignHeader().equalsIgnoreCase(event.getLine(0))) {
             return;
         }
 
@@ -55,7 +57,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
             case "purchase":
                 if (ValidationUtils.isStringValid(event.getLine(2))
                         && !carz.getCarController().doesCarTypeExist(event.getLine(2))) {
-                    player.sendMessage(Carz.getPrefix() + "That doesn't exist.");
+                    TranslationUtils.sendTranslation("Error.UnknownCarType", player);
                     breakSignAndCancelEvent(event);
                     return;
                 }
@@ -81,14 +83,16 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         }
 
         String title = StringUtils.standardizeText(event.getLine(1));
-        player.sendMessage(Carz.getPrefix() + title + " sign created");
-        event.setLine(0, Carz.getInstance().getSettings().getSignHeader());
+        player.sendMessage(TranslationUtils.getTranslation("Carz.SignCreated")
+                .replace("%TYPE%", title));
+        event.setLine(0, carz.getSettings().getSignHeader());
     }
 
     /**
      * When a Carz sign is broken.
      * Attempt to protect the sign if invalid.
-     * @param event
+     *
+     * @param event {@link PlayerInteractEvent}
      */
     @EventHandler
     public void onSignBreak(PlayerInteractEvent event) {
@@ -101,13 +105,13 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
             return;
         }
 
-        if (!Carz.getInstance().getConfig().getBoolean("Other.SignProtection")) {
+        if (!carz.getConfig().getBoolean("Other.SignProtection")) {
             return;
         }
 
         String[] lines = ((Sign) event.getClickedBlock().getState()).getLines();
 
-        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase("[carz]")) {
+        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(carz.getSettings().getStrippedSignHeader())) {
             return;
         }
 
@@ -124,7 +128,8 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
     /**
      * On Carz sign interaction.
      * Attempt to process a purchase if requested.
-     * @param event
+     *
+     * @param event {@link PlayerInteractEvent}
      */
     @EventHandler
     public void onSignInteract(PlayerInteractEvent event) {
@@ -140,10 +145,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         Sign sign = (Sign) event.getClickedBlock().getState();
         String[] lines = sign.getLines();
 
-        String signHeader = ChatColor.stripColor(
-                StringUtils.colour(Carz.getInstance().getSettings().getSignHeader()));
-
-        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(signHeader)) {
+        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(carz.getSettings().getStrippedSignHeader())) {
             return;
         }
 
