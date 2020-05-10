@@ -1,8 +1,10 @@
 package io.github.a5h73y.carz.purchases;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.event.PurchaseFuelEvent;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class RefuelPurchase extends Purchasable {
@@ -39,6 +41,7 @@ public class RefuelPurchase extends Purchasable {
 	public void performPurchase(Player player) {
 		Carz.getInstance().getFuelController().refuel(currentCar);
 		TranslationUtils.sendTranslation("Purchase.Success.Refuel", player);
+		Bukkit.getServer().getPluginManager().callEvent(new PurchaseFuelEvent(player, this));
 	}
 
 	@Override

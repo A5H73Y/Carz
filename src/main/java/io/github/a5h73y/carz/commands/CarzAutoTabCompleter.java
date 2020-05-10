@@ -32,6 +32,10 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             return null;
         }
 
+        if (args.length > 1) {
+            return new ArrayList<>();
+        }
+
         final Player player = (Player) sender;
         List<String> allowedCommands = new ArrayList<>();
         List<String> filteredCommands = new ArrayList<>();
@@ -65,6 +69,8 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         if (PermissionUtils.hasStrictPermission(player, Permissions.ADMIN, false)) {
             allowedCommands.add("addclimb");
             allowedCommands.add("addspeed");
+            allowedCommands.add("removeclimb");
+            allowedCommands.add("removespeed");
             allowedCommands.add("createtype");
             allowedCommands.add("economy");
             allowedCommands.add("reload");

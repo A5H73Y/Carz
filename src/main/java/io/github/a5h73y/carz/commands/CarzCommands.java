@@ -60,22 +60,11 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "claim":
-                if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)
-                        || !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
-                    TranslationUtils.sendTranslation("Error.NotInCar", player);
+                if (!ValidationUtils.canClaimCar(player)) {
                     return false;
                 }
 
-                if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
-                    String owner = carz.getItemMetaUtils()
-                            .getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
-                    player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-                            .replace("%PLAYER%", owner));
-                    return false;
-                }
-
-                carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle(), player.getName());
-                TranslationUtils.sendTranslation("Car.Claimed", player);
+                carz.getCarController().claimOwnership(player);
                 break;
 
             case "spawn":
@@ -151,6 +140,16 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 PluginUtils.addClimbBlock(player, args);
                 break;
 
+            case "removecb":
+            case "removeclimb":
+            case "removeclimbblock":
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+                }
+
+                PluginUtils.removeClimbBlock(player, args);
+                break;
+
             case "addsb":
             case "addspeed":
             case "addspeedblock":
@@ -159,6 +158,16 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 }
 
                 PluginUtils.addSpeedBlock(player, args);
+                break;
+
+            case "removesb":
+            case "removespeed":
+            case "removespeedblock":
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+                }
+
+                PluginUtils.removeSpeedBlock(player, args);
                 break;
 
             case "createtype":

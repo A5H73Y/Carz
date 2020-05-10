@@ -1,7 +1,7 @@
 name: Carz
 version: ${project.version}
 description: ${project.description}
-softdepend: [Vault, BountifulAPI]
+softdepend: [Vault, BountifulAPI, PlaceholderAPI]
 author: A5H73Y
 main: io.github.a5h73y.carz.Carz
 api-version: "1.14"

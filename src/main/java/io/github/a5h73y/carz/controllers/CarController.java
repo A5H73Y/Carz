@@ -7,6 +7,7 @@ import java.util.Set;
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
+import io.github.a5h73y.carz.event.CarStashEvent;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.model.CarDetails;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
@@ -14,6 +15,7 @@ import io.github.a5h73y.carz.utility.CarUtils;
 import io.github.a5h73y.carz.utility.EffectUtils;
 import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
@@ -41,44 +43,29 @@ public class CarController extends AbstractPluginReceiver {
     }
 
     /**
-     * Populate the available Car Types.
-     * Cache the available Car Types from the Config using the name as the key.
+     * Get the matching Car based on entityId.
+     *
+     * @param carID entity ID.
+     * @return Car
      */
-    public void populateCarTypes() {
-        carTypes.clear();
-        Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
-
-        for (String carType : allCarTypes) {
-            String configPath = "CarTypes." + carType;
-            double startSpeed = carz.getConfig().getDouble(configPath + ".StartMaxSpeed");
-            double maxSpeed = carz.getConfig().getDouble(configPath + ".MaxUpgradeSpeed");
-            double acceleration = carz.getConfig().getDouble(configPath + ".Acceleration");
-            double fuelUsage = carz.getConfig().getDouble(configPath + ".FuelUsage");
-            String fillMaterial = carz.getConfig().getString(configPath + ".FillMaterial");
-            carTypes.put(carType, new CarDetails(startSpeed, maxSpeed, acceleration, fuelUsage, fillMaterial));
-        }
+    public Car getCar(Integer carID) {
+        return entityIdToCar.get(carID);
     }
 
     /**
-     * Register the player as the driving for the Car.
+     * Try and find the matching {@link Car} for the Vehicle.
+     * If it doesn't exist, check if it has a vehicle type (it was once registered).
      *
-     * @param playerName player driving
-     * @param vehicle vehicle the player is driving
+     * @param vehicle {@link Vehicle}
+     * @return Car
      */
-    public void startDriving(String playerName, Vehicle vehicle) {
-        String carType = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle);
-        Car car = getOrCreateCar(vehicle.getEntityId(), carType);
-
-        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_SPEED, vehicle)) {
-            car.setMaxSpeed(Double.parseDouble(
-                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
+    public Car getCar(Minecart vehicle) {
+        Car car = getCar(vehicle.getEntityId());
+        if (car == null && carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, vehicle)) {
+            car = getOrCreateCar(vehicle.getEntityId(),
+                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle));
         }
-        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
-            car.setCurrentFuel(Double.parseDouble(
-                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
-        }
-
-        playersDriving.put(playerName, car.getEntityId());
+        return car;
     }
 
     /**
@@ -101,6 +88,28 @@ public class CarController extends AbstractPluginReceiver {
      */
     public Car getOrCreateCar(Integer entityId) {
         return getOrCreateCar(entityId, DEFAULT_CAR);
+    }
+
+    /**
+     * Register the player as the driving for the Car.
+     *
+     * @param playerName player driving
+     * @param vehicle vehicle the player is driving
+     */
+    public void startDriving(String playerName, Vehicle vehicle) {
+        String carType = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle);
+        Car car = getOrCreateCar(vehicle.getEntityId(), carType);
+
+        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_SPEED, vehicle)) {
+            car.setMaxSpeed(Double.parseDouble(
+                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
+        }
+        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
+            car.setCurrentFuel(Double.parseDouble(
+                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
+        }
+
+        playersDriving.put(playerName, car.getEntityId());
     }
 
     /**
@@ -150,32 +159,6 @@ public class CarController extends AbstractPluginReceiver {
     }
 
     /**
-     * Get the matching Car based on entityId.
-     *
-     * @param carID entity ID.
-     * @return Car
-     */
-    public Car getCar(Integer carID) {
-        return entityIdToCar.get(carID);
-    }
-
-    /**
-     * Try and find the matching {@link Car} for the Vehicle.
-     * If it doesn't exist, enter a field if it has a vehicle type (it was once registered).
-     *
-     * @param vehicle {@link Vehicle}
-     * @return Car
-     */
-    public Car getCar(Minecart vehicle) {
-        Car car = getCar(vehicle.getEntityId());
-        if (car == null && carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, vehicle)) {
-            car = getOrCreateCar(vehicle.getEntityId(),
-                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle));
-        }
-        return car;
-    }
-
-    /**
      * Stash the Player's current vehicle to their inventory.
      *
      * @param player requesting player
@@ -206,6 +189,7 @@ public class CarController extends AbstractPluginReceiver {
             return;
         }
 
+        Bukkit.getServer().getPluginManager().callEvent(new CarStashEvent(player, vehicle));
         removeDriver(player.getName());
         CarUtils.transferMinecartToInventory(player, vehicle);
         destroyCar(vehicle);
@@ -269,5 +253,38 @@ public class CarController extends AbstractPluginReceiver {
      */
     public boolean doesCarTypeExist(String carType) {
         return carTypes.containsKey(carType.toLowerCase());
+    }
+
+    /**
+     * Populate the available Car Types.
+     * Cache the available Car Types from the Config using the name as the key.
+     */
+    public void populateCarTypes() {
+        carTypes.clear();
+        Set<String> allCarTypes = carz.getConfig().getConfigurationSection("CarTypes").getKeys(false);
+
+        for (String carType : allCarTypes) {
+            String configPath = "CarTypes." + carType;
+            double startSpeed = carz.getConfig().getDouble(configPath + ".StartMaxSpeed");
+            double maxSpeed = carz.getConfig().getDouble(configPath + ".MaxUpgradeSpeed");
+            double acceleration = carz.getConfig().getDouble(configPath + ".Acceleration");
+            double fuelUsage = carz.getConfig().getDouble(configPath + ".FuelUsage");
+            String fillMaterial = carz.getConfig().getString(configPath + ".FillMaterial");
+            carTypes.put(carType, new CarDetails(startSpeed, maxSpeed, acceleration, fuelUsage, fillMaterial));
+        }
+    }
+
+    /**
+     * Set the Owner of the car to the Player.
+     *
+     * @param player requesting player
+     */
+    public void claimOwnership(Player player) {
+        if (!player.isInsideVehicle()) {
+            return;
+        }
+
+        carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle(), player.getName());
+        TranslationUtils.sendTranslation("Car.Claimed", player);
     }
 }

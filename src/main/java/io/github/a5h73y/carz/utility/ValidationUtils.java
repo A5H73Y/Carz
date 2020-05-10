@@ -209,4 +209,29 @@ public class ValidationUtils {
 			return true;
 		}
 	}
+
+	/**
+	 * Validate if the player is currently able to claim a car.
+	 * There is no permission node to claim a car.
+	 *
+	 * @param player target player
+	 * @return player can claim car
+	 */
+	public static boolean canClaimCar(Player player) {
+		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)
+				|| !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
+			TranslationUtils.sendTranslation("Error.NotInCar", player);
+			return false;
+		}
+
+		if (Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
+			String owner = Carz.getInstance().getItemMetaUtils()
+					.getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
+					.replace("%PLAYER%", owner));
+			return false;
+		}
+
+		return true;
+	}
 }

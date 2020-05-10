@@ -8,6 +8,7 @@ import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Commands;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 /**
  * Plugin related utility methods.
@@ -97,12 +98,40 @@ public class PluginUtils {
             return;
         }
 
+        if (Carz.getInstance().getSettings().getClimbBlocks().contains(material)) {
+            player.sendMessage(Carz.getPrefix() + args[1] + " is already a climb block!");
+            return;
+        }
+
         Carz.getInstance().getSettings().addClimbBlock(material);
         player.sendMessage(Carz.getPrefix() + material.name() + " added to ClimbBlocks!");
     }
 
     /**
-     * Add a speed block to the configured list.
+     * Remove a ClimbBlock from the configured list.
+     *
+     * @param player player requesting
+     * @param args command arguments
+     */
+    public static void removeClimbBlock(CommandSender player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(Carz.getPrefix() + "Invalid syntax: /carz removeclimb (material)");
+            return;
+        }
+
+        Material material = Material.getMaterial(args[1].toUpperCase());
+
+        if (material == null || !Carz.getInstance().getSettings().getClimbBlocks().contains(material)) {
+            player.sendMessage(Carz.getPrefix() + args[1] + " is not a climb block!");
+            return;
+        }
+
+        Carz.getInstance().getSettings().removeClimbBlock(material);
+        player.sendMessage(Carz.getPrefix() + material.name() + " removed from climb blocks!");
+    }
+
+    /**
+     * Add a SpeedBlock to the configured list.
      *
      * @param player player requesting
      * @param args command arguments
@@ -120,6 +149,11 @@ public class PluginUtils {
             return;
         }
 
+        if (Carz.getInstance().getSettings().getSpeedBlocks().contains(material.name())) {
+            player.sendMessage(Carz.getPrefix() + args[1] + " is already a speed block!");
+            return;
+        }
+
         if (!ValidationUtils.isDouble(args[2])) {
             player.sendMessage(Carz.getPrefix() + args[2] + " is not a valid number!");
             return;
@@ -127,5 +161,28 @@ public class PluginUtils {
 
         Carz.getInstance().getSettings().addSpeedBlock(material, Double.parseDouble(args[2]));
         player.sendMessage(Carz.getPrefix() + material.name() + " added as a speed block!");
+    }
+
+    /**
+     * Remove a SpeedBlock from the configured list.
+     *
+     * @param player player requesting
+     * @param args command arguments
+     */
+    public static void removeSpeedBlock(CommandSender player, String[] args) {
+        if (args.length < 2) {
+            player.sendMessage(Carz.getPrefix() + "Invalid syntax: /carz removespeed (material)");
+            return;
+        }
+
+        Material material = Material.getMaterial(args[1].toUpperCase());
+
+        if (material == null || !Carz.getInstance().getSettings().getSpeedBlocks().contains(args[1].toUpperCase())) {
+            player.sendMessage(Carz.getPrefix() + args[1] + " is not a speed block!");
+            return;
+        }
+
+        Carz.getInstance().getSettings().removeSpeedBlock(material);
+        player.sendMessage(Carz.getPrefix() + material.name() + " removed from speed blocks!");
     }
 }

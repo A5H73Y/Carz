@@ -2,6 +2,8 @@ package io.github.a5h73y.carz.listeners;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Permissions;
+import io.github.a5h73y.carz.event.EngineStartEvent;
+import io.github.a5h73y.carz.event.EngineStopEvent;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.other.DelayTasks;
@@ -10,6 +12,7 @@ import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.PlayerUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -31,6 +34,7 @@ import org.bukkit.util.Vector;
 
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
  * Vehicle related events.
@@ -107,12 +111,13 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         if (!event.getPlayer().isInsideVehicle()
-                || !(event.getPlayer().getVehicle() instanceof Minecart)
-                || !(event.getPlayer().getVehicle() instanceof Vehicle)) { // for some reason 1.15 needs this..?
+                || !(event.getPlayer().getVehicle() instanceof Vehicle)
+                || !(event.getPlayer().getVehicle() instanceof Minecart)) {
             return;
         }
 
-        if (!ValidationUtils.isACarzVehicle((Vehicle) event.getPlayer().getVehicle())) {
+        Vehicle vehicle = (Vehicle) event.getPlayer().getVehicle();
+        if (!ValidationUtils.isACarzVehicle(vehicle)) {
             return;
         }
 
@@ -121,7 +126,10 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        Vehicle vehicle = (Vehicle) event.getPlayer().getVehicle();
+        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, vehicle)) {
+            return;
+        }
+
         Car car = carz.getCarController().getCar(vehicle.getEntityId());
 
         if (carz.getSettings().isOnlyOwnedCarsDrive() && !carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
@@ -146,11 +154,13 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             minecart.setMaxSpeed(0D);
             TranslationUtils.sendTranslation("Car.EngineStop", player);
             carz.getItemMetaUtils().setValue(VEHICLE_FUEL, minecart, car.getCurrentFuel().toString());
+            Bukkit.getServer().getPluginManager().callEvent(new EngineStopEvent(player, car));
 
         } else {
             carz.getCarController().startDriving(player.getName(), minecart);
             minecart.setMaxSpeed(1000D);
             TranslationUtils.sendTranslation("Car.EngineStart", player);
+            Bukkit.getServer().getPluginManager().callEvent(new EngineStartEvent(player, car));
         }
     }
 
@@ -255,13 +265,19 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_OWNER, event.getVehicle())) {
-            carz.getCarController().destroyCar(event.getVehicle());
+        Minecart minecart = (Minecart) event.getVehicle();
+
+        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, minecart)) {
+            return;
+        }
+
+        if (!carz.getItemMetaUtils().has(VEHICLE_OWNER, minecart)) {
+            carz.getCarController().destroyCar(minecart);
             return;
         }
 
         event.setCancelled(true);
-        String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, event.getVehicle());
+        String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, minecart);
 
         if (!event.getAttacker().getName().equals(owner)
                 && !PermissionUtils.hasStrictPermission((Player) event.getAttacker(), Permissions.ADMIN, false)) {
@@ -270,7 +286,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             event.getAttacker().sendMessage(ownedMessage);
 
         } else {
-            carz.getCarController().stashCar((Player) event.getAttacker(), (Minecart) event.getVehicle());
+            carz.getCarController().stashCar((Player) event.getAttacker(), minecart);
         }
     }
 

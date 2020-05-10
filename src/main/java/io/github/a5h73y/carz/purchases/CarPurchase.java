@@ -1,9 +1,11 @@
 package io.github.a5h73y.carz.purchases;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.event.PurchaseCarEvent;
 import io.github.a5h73y.carz.utility.CarUtils;
 import io.github.a5h73y.carz.utility.StringUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CarPurchase extends Purchasable {
@@ -44,6 +46,7 @@ public class CarPurchase extends Purchasable {
 				.replace(CAR_TYPE_PLACEHOLDER, StringUtils.standardizeText(carType));
 
 		player.sendMessage(successMessage);
+		Bukkit.getServer().getPluginManager().callEvent(new PurchaseCarEvent(player, this));
 	}
 
 	@Override

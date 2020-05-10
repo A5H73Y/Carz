@@ -49,6 +49,10 @@ p {
     margin: 0 0 18px;
 }
 
+li > ul > li {
+    margin-bottom: 10px;
+}
+
 a {
     color: #C30000;
     font-weight: 200;
@@ -107,6 +111,9 @@ pre {
 
 code {
     font-family: monospace, monospace;
-    display: block;
     word-wrap: normal;
+}
+
+code.block {
+    display: block;
 }

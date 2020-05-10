@@ -4,8 +4,8 @@ import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
-import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.CarUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -67,10 +67,22 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 PluginUtils.addClimbBlock(sender, args);
                 break;
 
+            case "removecb":
+            case "removeclimb":
+            case "removeclimbblock":
+                PluginUtils.removeClimbBlock(sender, args);
+                break;
+
             case "addsb":
             case "addspeed":
             case "addspeedblock":
                 PluginUtils.addSpeedBlock(sender, args);
+                break;
+
+            case "removesb":
+            case "removespeed":
+            case "removespeedblock":
+                PluginUtils.removeSpeedBlock(sender, args);
                 break;
 
             case "destroyall":

@@ -84,7 +84,7 @@ public class FuelController extends AbstractPluginReceiver {
      * @param car requesting car
      * @return Formatted fuel gauge: E |||||| F
      */
-    private String formattedFuelLevel(Car car) {
+    public String formattedFuelLevel(Car car) {
         StringBuilder sb = new StringBuilder();
         final double fuelRemaining = Math.floor((car.getCurrentFuel() / maxCapacity) * gaugeScale);
         final double fuelMissing = gaugeScale - fuelRemaining;

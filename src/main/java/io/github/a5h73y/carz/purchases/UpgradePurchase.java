@@ -1,8 +1,10 @@
 package io.github.a5h73y.carz.purchases;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.event.PurchaseUpgradeEvent;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class UpgradePurchase extends Purchasable {
@@ -42,6 +44,7 @@ public class UpgradePurchase extends Purchasable {
 	public void performPurchase(Player player) {
 		Carz.getInstance().getCarController().upgradeCarSpeed(player);
 		TranslationUtils.sendTranslation("Purchase.Success.Upgrade", player);
+		Bukkit.getServer().getPluginManager().callEvent(new PurchaseUpgradeEvent(player, this));
 	}
 
 	@Override

@@ -101,6 +101,8 @@ public class Settings extends AbstractPluginReceiver {
 
         carz.getConfig().addDefault("BountifulAPI.Enabled", true);
 
+        carz.getConfig().addDefault("PlaceholderAPI.Enabled", true);
+
         carz.getConfig().addDefault("Other.ControlCarsWhileFalling", true);
         carz.getConfig().addDefault("Other.DamageEntities.Enabled", true);
         carz.getConfig().addDefault("Other.DamageEntities.Damage", 20.0);
@@ -222,6 +224,23 @@ public class Settings extends AbstractPluginReceiver {
     }
 
     /**
+     * Remove the Material from the list of Climb Blocks.
+     *
+     * @param material {@link Material}
+     */
+    public void removeClimbBlock(Material material) {
+        if (material == null) {
+            return;
+        }
+
+        List<String> materials = getRawClimbBlocks();
+        materials.remove(material.name());
+        carz.getConfig().set("ClimbBlocks.Materials", materials);
+        carz.saveConfig();
+        reloadClimbBlocks();
+    }
+
+    /**
      * Add the Material to the list of Speed Blocks.
      *
      * @param material {@link Material}
@@ -237,21 +256,19 @@ public class Settings extends AbstractPluginReceiver {
         reloadSpeedBlocks();
     }
 
-    private void reloadClimbBlocks() {
-        this.climbBlocks = PluginUtils.convertToValidMaterials(getRawClimbBlocks());
-    }
-
-    private void reloadSpeedBlocks() {
-        this.speedBlocks = new HashMap<>();
-        ConfigurationSection section = carz.getConfig().getConfigurationSection("SpeedBlocks");
-
-        if (section != null) {
-            Set<Material> test = PluginUtils.convertToValidMaterials(section.getKeys(false));
-
-            for (Material s : test) {
-                this.speedBlocks.put(s.name(), carz.getConfig().getDouble("SpeedBlocks." + s.name()));
-            }
+    /**
+     * Remove the Material from the list of Speed Blocks.
+     *
+     * @param material {@link Material}
+     */
+    public void removeSpeedBlock(Material material) {
+        if (material == null) {
+            return;
         }
+
+        carz.getConfig().set("SpeedBlocks." + material.name(), null);
+        carz.saveConfig();
+        reloadSpeedBlocks();
     }
 
     public Set<Material> getClimbBlocks() {
@@ -260,6 +277,10 @@ public class Settings extends AbstractPluginReceiver {
 
     public boolean containsSpeedBlock(Material material) {
         return this.speedBlocks.containsKey(material.name());
+    }
+
+    public Set<String> getSpeedBlocks() {
+        return this.speedBlocks.keySet();
     }
 
     public Double getSpeedModifier(Material material) {
@@ -331,5 +352,22 @@ public class Settings extends AbstractPluginReceiver {
         }
         stringsConfig = YamlConfiguration.loadConfiguration(stringsFile);
         return true;
+    }
+
+    private void reloadClimbBlocks() {
+        this.climbBlocks = PluginUtils.convertToValidMaterials(getRawClimbBlocks());
+    }
+
+    private void reloadSpeedBlocks() {
+        this.speedBlocks = new HashMap<>();
+        ConfigurationSection section = carz.getConfig().getConfigurationSection("SpeedBlocks");
+
+        if (section != null) {
+            Set<Material> test = PluginUtils.convertToValidMaterials(section.getKeys(false));
+
+            for (Material s : test) {
+                this.speedBlocks.put(s.name(), carz.getConfig().getDouble("SpeedBlocks." + s.name()));
+            }
+        }
     }
 }
