@@ -4,7 +4,6 @@ import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.enums.Permissions;
-import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.other.CarzHelp;
@@ -25,7 +24,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
 
 import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
 
@@ -192,10 +190,11 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                         && carz.getCarController().getCar(player.getVehicle().getEntityId()) != null) {
                     TranslationUtils.sendHeading("Car Details", player);
                     player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
+                    carz.getItemMetaUtils().printDataDetails(player, player.getVehicle());
 
                 } else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART) {
                     TranslationUtils.sendHeading("Car Details", player);
-                    carz.getItemMetaUtils().sendDataDetails(player,
+                    carz.getItemMetaUtils().printDataDetails(player,
                             player.getInventory().getItemInMainHand().getItemMeta());
 
                 } else {

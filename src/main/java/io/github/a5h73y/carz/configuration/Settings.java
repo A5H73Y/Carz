@@ -105,8 +105,9 @@ public class Settings extends AbstractPluginReceiver {
 
         carz.getConfig().addDefault("Other.ControlCarsWhileFalling", true);
         carz.getConfig().addDefault("Other.DamageEntities.Enabled", true);
-        carz.getConfig().addDefault("Other.DamageEntities.Damage", 20.0);
+        carz.getConfig().addDefault("Other.DamageEntities.Damage", 5.0);
         carz.getConfig().addDefault("Other.DestroyInLiquid", true);
+        carz.getConfig().addDefault("Other.AutomaticCarLock", true);
         carz.getConfig().addDefault("Other.OnlyOwnedCarsDrive", false);
         carz.getConfig().addDefault("Other.SignProtection", true);
         carz.getConfig().addDefault("Other.UpdateCheck", true);
@@ -317,6 +318,10 @@ public class Settings extends AbstractPluginReceiver {
 
     public boolean isFuelScaleCost() {
         return carz.getConfig().getBoolean("Fuel.ScaleCost");
+    }
+
+    public boolean isAutomaticCarLock() {
+        return carz.getConfig().getBoolean("Other.AutomaticCarLock");
     }
 
     public double getUpgradeIncrement() {

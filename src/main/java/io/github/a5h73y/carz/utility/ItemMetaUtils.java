@@ -91,6 +91,16 @@ public class ItemMetaUtils {
 	}
 
 	/**
+	 * Remove the key data from the data holder.
+	 *
+	 * @param keyName the {@link VehicleDetailKey}
+	 * @param persistentDataHolder the {@link PersistentDataHolder}
+	 */
+	public void remove(VehicleDetailKey keyName, PersistentDataHolder persistentDataHolder) {
+		persistentDataHolder.getPersistentDataContainer().remove(keyName.getNamespacedKey());
+	}
+
+	/**
 	 * Transfer the values from one data holder to another.
 	 * Each available {@link VehicleDetailKey} will be checked if it exists and then transferred.
 	 *
@@ -110,12 +120,12 @@ public class ItemMetaUtils {
 	}
 
 	/**
-	 * Send each summary detail to the requesting player.
+	 * Print each summary detail to the requesting player.
 	 *
 	 * @param player requesting player
 	 * @param dataHolder {@link PersistentDataHolder}
 	 */
-	public void sendDataDetails(Player player, PersistentDataHolder dataHolder) {
+	public void printDataDetails(Player player, PersistentDataHolder dataHolder) {
 		for (VehicleDetailKey value : VehicleDetailKey.values()) {
 			if (has(value, dataHolder)) {
 				String nameSpace = value.getNamespacedKey().getKey()

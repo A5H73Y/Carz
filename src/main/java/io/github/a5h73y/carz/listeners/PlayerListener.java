@@ -1,8 +1,8 @@
 package io.github.a5h73y.carz.listeners;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.enums.Permissions;
-import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.other.DelayTasks;
 import io.github.a5h73y.carz.utility.PermissionUtils;
@@ -21,6 +21,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
+
 /**
  * Player related Events.
  */
@@ -38,14 +42,17 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
      */
     @EventHandler
     public void onPlaceMinecart(PlayerInteractEvent event) {
-        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR)
+                && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
 
+        // check that they are right clicking the floor with a Minecart
         if (PlayerUtils.getMaterialInPlayersHand(event.getPlayer()) != Material.MINECART) {
             return;
         }
 
+        // make sure they aren't trying to place a normal Minecart (i.e on rails)
         if (event.getClickedBlock().getBlockData() instanceof Rail) {
             return;
         }
@@ -58,21 +65,32 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
         ItemStack carInHand = player.getInventory().getItemInMainHand();
 
-        if (!carInHand.hasItemMeta() || !carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, carInHand)) {
-            return;
+        // if only owned cars can drive and it doesn't have a vehicle type, ignore it.
+        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, carInHand)) {
+            if (carz.getSettings().isOnlyOwnedCarsDrive()) {
+                return;
+            }
+
+            carz.getItemMetaUtils().setValue(VEHICLE_TYPE, carInHand, CarController.DEFAULT_CAR);
         }
 
+        // prevent the player from creating mass amounts of Minecarts
         if (!DelayTasks.getInstance().delayPlayer(player, 3)) {
             return;
         }
 
-        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, carInHand)) {
-            String owner = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_OWNER, carInHand);
+        // if the Minecart has an owner
+        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, carInHand)) {
+            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, carInHand);
 
+            // check that the owner data matches the current player
             if (!owner.equalsIgnoreCase(player.getName())) {
-                TranslationUtils.sendTranslation("Error.Owned", player);
+                player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
+                        .replace("%PLAYER%", owner));
                 return;
             }
+            // lock the car by default when placed
+            carz.getItemMetaUtils().setValue(VEHICLE_LOCKED, carInHand, "true");
         }
 
         Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
@@ -80,7 +98,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
         carz.getItemMetaUtils().transferNamespaceKeyValues(carInHand.getItemMeta(), spawnedCar);
 
-        String vehicleType = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, spawnedCar);
+        String vehicleType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, spawnedCar);
         Material fillMaterial = carz.getCarController().getCarTypes().get(vehicleType).getFillMaterial();
 
         if (fillMaterial != null && fillMaterial != Material.AIR) {

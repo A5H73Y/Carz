@@ -132,17 +132,28 @@ public class CarController extends AbstractPluginReceiver {
     }
 
     /**
-     * Completely remove a vehicle.
+     * Remove all references to Car.
      * Eject player(s), remove the ownership and fuel management.
      *
      * @param vehicle {@link Vehicle}
      */
-    public void destroyCar(Vehicle vehicle) {
+    public void removeCar(Vehicle vehicle) {
         entityIdToCar.remove(vehicle.getEntityId());
         removeAllDriversFromVehicle(vehicle);
-        EffectUtils.createDamageEffect(vehicle);
+
         vehicle.eject();
         vehicle.remove();
+    }
+
+    /**
+     * Destroy a vehicle.
+     * Remove references from the Vehicle and play a damage effect.
+     *
+     * @param vehicle {@link Vehicle}
+     */
+    public void destroyCar(Vehicle vehicle) {
+        removeCar(vehicle);
+        EffectUtils.createDamageEffect(vehicle);
     }
 
     /**
@@ -190,9 +201,8 @@ public class CarController extends AbstractPluginReceiver {
         }
 
         Bukkit.getServer().getPluginManager().callEvent(new CarStashEvent(player, vehicle));
-        removeDriver(player.getName());
         CarUtils.transferMinecartToInventory(player, vehicle);
-        destroyCar(vehicle);
+        removeCar(vehicle);
     }
 
     /**
