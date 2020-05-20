@@ -227,20 +227,17 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Vector vehicleVelocity = event.getVehicle().getVelocity();
         Vector playerLocationVelocity = player.getLocation().getDirection();
+        Material materialBelow = event.getVehicle().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType();
+
+        if (carz.getSettings().containsSpeedBlock(materialBelow)) {
+            Double modifier = carz.getSettings().getSpeedModifier(materialBelow);
+            drivingCar.applySpeedModifier(modifier);
+        }
 
         double carSpeed = drivingCar.getCurrentSpeed();
 
         vehicleVelocity.setX((playerLocationVelocity.getX() / 100.0) * carSpeed);
         vehicleVelocity.setZ((playerLocationVelocity.getZ() / 100.0) * carSpeed);
-
-        Material materialBelow = event.getVehicle().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType();
-
-        if (carz.getSettings().containsSpeedBlock(materialBelow)) {
-            Double modifier = carz.getSettings().getSpeedModifier(materialBelow);
-
-            vehicleVelocity.setX(vehicleVelocity.getX() * modifier);
-            vehicleVelocity.setZ(vehicleVelocity.getZ() * modifier);
-        }
 
         Location playerLocation = player.getLocation().clone();
         playerLocation.setPitch(0f);

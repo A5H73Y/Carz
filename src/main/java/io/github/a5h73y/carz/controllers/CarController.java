@@ -98,13 +98,16 @@ public class CarController extends AbstractPluginReceiver {
      */
     public void startDriving(String playerName, Vehicle vehicle) {
         String carType = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle);
+        boolean existed = entityIdToCar.containsKey(vehicle.getEntityId());
+
         Car car = getOrCreateCar(vehicle.getEntityId(), carType);
 
         if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_SPEED, vehicle)) {
             car.setMaxSpeed(Double.parseDouble(
                     carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
         }
-        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
+        // if the car wasn't known and it has fuel data - set it.
+        if (!existed && carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
             car.setCurrentFuel(Double.parseDouble(
                     carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
         }

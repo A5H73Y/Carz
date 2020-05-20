@@ -158,26 +158,26 @@ public class Settings extends AbstractPluginReceiver {
         stringsConfig.addDefault("Car.Key.Received", "You receive a key.");
         stringsConfig.addDefault("Car.Claimed", "You are now the owner of this car.");
 
-        stringsConfig.addDefault("Purchase.Confirm.Purchase","&7Enter &a/carz confirm &7to confirm, or &c/carz cancel &7to cancel the purchase.");
-        stringsConfig.addDefault("Purchase.Confirm.Car","You are about to purchase a &b%TYPE% &7car, costing &b%COST%&7.");
-        stringsConfig.addDefault("Purchase.Confirm.Upgrade","You are about to upgrade your car from &b%FROM% &7to &b%TO%&7, costing &b%COST%&7.");
-        stringsConfig.addDefault("Purchase.Confirm.Refuel","You are about to refuel &b%PERCENT% &7of your car's fuel, costing &b%COST% %CURRENCY%&7.");
+        stringsConfig.addDefault("Purchase.Confirm.Purchase", "&7Enter &a/carz confirm &7to confirm, or &c/carz cancel &7to cancel the purchase.");
+        stringsConfig.addDefault("Purchase.Confirm.Car", "You are about to purchase a &b%TYPE% &7car, costing &b%COST%%CURRENCY%&7.");
+        stringsConfig.addDefault("Purchase.Confirm.Upgrade", "You are about to upgrade your car from &b%FROM% &7to &b%TO%&7, costing &b%COST%%CURRENCY%&7.");
+        stringsConfig.addDefault("Purchase.Confirm.Refuel", "You are about to refuel &b%PERCENT% &7of your car's fuel, costing &b%COST%%CURRENCY%&7.");
         stringsConfig.addDefault("Purchase.Success.Car", "&f%TYPE% &7car Purchased!");
-        stringsConfig.addDefault("Purchase.Success.Upgrade","Car Upgraded!");
-        stringsConfig.addDefault("Purchase.Success.Refuel","Car Refuelled!");
-        stringsConfig.addDefault("Purchase.Cancelled","Purchase cancelled.");
+        stringsConfig.addDefault("Purchase.Success.Upgrade", "Car Upgraded!");
+        stringsConfig.addDefault("Purchase.Success.Refuel", "Car Refuelled!");
+        stringsConfig.addDefault("Purchase.Cancelled", "Purchase cancelled.");
 
-        stringsConfig.addDefault("CarType.Create.Name","&d What would you like this car to be called?");
-        stringsConfig.addDefault("CarType.Create.StartMaxSpeed","&d What should the Car's Start Speed be?\n&a (default = 60.0)");
-        stringsConfig.addDefault("CarType.Create.MaxUpgradeSpeed","&d What should the Car's Max Upgrade Speed be?\n&a (default = 120.0)");
-        stringsConfig.addDefault("CarType.Create.Acceleration","&d What should the Car's Acceleration be?\n&a (default = 1.0)");
-        stringsConfig.addDefault("CarType.Create.FuelUsage","&d What should the Fuel Usage be?\n&a (default = 1.0)");
-        stringsConfig.addDefault("CarType.Create.FillMaterial","&d What should the Fill Material be?\n&a (default = AIR)");
-        stringsConfig.addDefault("CarType.Create.Cost","&d How much should the car cost?\n&a (default = 10.0)");
-        stringsConfig.addDefault("CarType.Create.Success","&d All done, &a%VALUE% &dcreated.");
-        stringsConfig.addDefault("CarType.Error.InvalidName","Invalid Car Type name.");
-        stringsConfig.addDefault("CarType.Error.InvalidValue","Invalid Value.");
-        stringsConfig.addDefault("CarType.Error.AlreadyExists","This Car Type already exists.");
+        stringsConfig.addDefault("CarType.Create.Name", "&d What would you like this car to be called?");
+        stringsConfig.addDefault("CarType.Create.StartMaxSpeed", "&d What should the Car's Start Speed be?\n&a (default = 60.0)");
+        stringsConfig.addDefault("CarType.Create.MaxUpgradeSpeed", "&d What should the Car's Max Upgrade Speed be?\n&a (default = 120.0)");
+        stringsConfig.addDefault("CarType.Create.Acceleration", "&d What should the Car's Acceleration be?\n&a (default = 1.0)");
+        stringsConfig.addDefault("CarType.Create.FuelUsage", "&d What should the Fuel Usage be?\n&a (default = 1.0)");
+        stringsConfig.addDefault("CarType.Create.FillMaterial", "&d What should the Fill Material be?\n&a (default = AIR)");
+        stringsConfig.addDefault("CarType.Create.Cost", "&d How much should the car cost?\n&a (default = 10.0)");
+        stringsConfig.addDefault("CarType.Create.Success", "&d All done, &a%VALUE% &dcreated.");
+        stringsConfig.addDefault("CarType.Error.InvalidName", "Invalid Car Type name.");
+        stringsConfig.addDefault("CarType.Error.InvalidValue", "Invalid Value.");
+        stringsConfig.addDefault("CarType.Error.AlreadyExists", "This Car Type already exists.");
 
         stringsConfig.addDefault("Error.NoPermission", "You do not have permission: &b%PERMISSION%");
         stringsConfig.addDefault("Error.SignProtected", "This sign is protected!");

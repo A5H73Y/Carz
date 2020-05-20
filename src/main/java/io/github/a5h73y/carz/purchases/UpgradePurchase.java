@@ -33,7 +33,7 @@ public class UpgradePurchase extends Purchasable {
 				.replace(FROM_SPEED_PLACEHOLDER, String.valueOf(previousTopSpeed))
 				.replace(TO_SPEED_PLACEHOLDER, String.valueOf(newTopSpeed))
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI()
+				.replace(CURRENCY_PLACEHOLDER, Carz.getInstance().getEconomyAPI()
 						.getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);

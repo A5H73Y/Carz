@@ -159,7 +159,15 @@ public class PluginUtils {
             return;
         }
 
-        Carz.getInstance().getSettings().addSpeedBlock(material, Double.parseDouble(args[2]));
+        double speed = Double.parseDouble(args[2]);
+
+        if (speed < 0 || speed > 100) {
+            player.sendMessage(Carz.getPrefix() + "Invalid Speed Modifier.");
+            player.sendMessage(Carz.getPrefix() + "If you are sure this is what you want, edit the config.yml file manually.");
+            return;
+        }
+
+        Carz.getInstance().getSettings().addSpeedBlock(material, speed);
         player.sendMessage(Carz.getPrefix() + material.name() + " added as a speed block!");
     }
 

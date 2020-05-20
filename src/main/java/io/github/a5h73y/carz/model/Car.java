@@ -43,10 +43,26 @@ public class Car {
 	 * The fuel will be decreased by its configured amount.
 	 */
 	public void accelerate() {
+		// if we haven't reached the top speed
 		if (this.currentSpeed < this.maxSpeed) {
 			this.currentSpeed += this.carDetails.getAcceleration();
+
+		} else if (this.currentSpeed > this.maxSpeed) {
+			// we have exceeded the maxSpeed (i.e. by boosting)
+			this.currentSpeed = Math.floor(Math.max(this.maxSpeed, this.currentSpeed * 0.8));
 		}
+
 		this.currentFuel -= this.carDetails.getFuelUsage();
+	}
+
+	/**
+	 * Apply speed modifier to current speed.
+	 * Used to slow or boost the vehicle's normal speed.
+	 *
+	 * @param modifier speed modifier
+	 */
+	public void applySpeedModifier(double modifier) {
+		this.currentSpeed = this.maxSpeed * modifier;
 	}
 
 	/**

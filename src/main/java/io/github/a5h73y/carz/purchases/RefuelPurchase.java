@@ -30,7 +30,7 @@ public class RefuelPurchase extends Purchasable {
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Refuel")
 				.replace(PERCENT_PLACEHOLDER, fillPercent * 100 + "%")
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER,  Carz.getInstance().getEconomyAPI()
+				.replace(CURRENCY_PLACEHOLDER, Carz.getInstance().getEconomyAPI()
 						.getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);
