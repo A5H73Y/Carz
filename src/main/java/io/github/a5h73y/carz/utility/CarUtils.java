@@ -5,10 +5,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -26,12 +24,30 @@ public class CarUtils {
 	 */
 	public static void destroyAllCars() {
 		for (World world : Bukkit.getWorlds()) {
-			for (Entity entity : world.getEntities()) {
-				if (entity instanceof Minecart) {
-					Carz.getInstance().getCarController().removeCar((Vehicle) entity);
-				}
+			for (Minecart entity : world.getEntitiesByClass(Minecart.class)) {
+				Carz.getInstance().getCarController().removeCar(entity);
 			}
 		}
+	}
+
+	/**
+	 * Get the number of owned Minecart entities for the player.
+	 *
+	 * @param player requesting player
+	 * @return player owned minecarts
+	 */
+	public static int numberOfOwnedCars(Player player) {
+		int number = 0;
+
+		ItemMetaUtils itemMetaUtils = Carz.getInstance().getItemMetaUtils();
+		for (Minecart vehicle : player.getWorld().getEntitiesByClass(Minecart.class)) {
+			if (itemMetaUtils.has(VEHICLE_OWNER, vehicle)
+					&& itemMetaUtils.getValue(VEHICLE_OWNER, vehicle).equals(player.getName())) {
+				number++;
+			}
+		}
+
+		return number;
 	}
 
 	/**
@@ -126,7 +142,7 @@ public class CarUtils {
 	 * @param player target player
 	 */
 	public static void givePlayerKey(Player player) {
-		ItemStack itemStack = new ItemStack(Carz.getInstance().getSettings().getKey());
+		ItemStack itemStack = new ItemStack(Carz.getDefaultConfig().getKey());
 		String keyName = TranslationUtils.getTranslation("Car.Key.Display", false)
 				.replace("%PLAYER%", player.getName());
 

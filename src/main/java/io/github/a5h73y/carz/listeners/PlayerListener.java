@@ -2,12 +2,10 @@ package io.github.a5h73y.carz.listeners;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.controllers.CarController;
-import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
-import io.github.a5h73y.carz.other.DelayTasks;
-import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.PlayerUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -42,8 +40,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
      */
     @EventHandler
     public void onPlaceMinecart(PlayerInteractEvent event) {
-        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR)
-                && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
             return;
         }
 
@@ -59,7 +56,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
         Player player = event.getPlayer();
 
-        if (!PermissionUtils.hasPermission(player, Permissions.PLACE)) {
+        if (!ValidationUtils.canPlaceCar(player, event.getClickedBlock().getType())) {
             return;
         }
 
@@ -67,16 +64,11 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
         // if only owned cars can drive and it doesn't have a vehicle type, ignore it.
         if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, carInHand)) {
-            if (carz.getSettings().isOnlyOwnedCarsDrive()) {
+            if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive()) {
                 return;
             }
 
             carz.getItemMetaUtils().setValue(VEHICLE_TYPE, carInHand, CarController.DEFAULT_CAR);
-        }
-
-        // prevent the player from creating mass amounts of Minecarts
-        if (!DelayTasks.getInstance().delayPlayer(player, 3)) {
-            return;
         }
 
         // if the Minecart has an owner

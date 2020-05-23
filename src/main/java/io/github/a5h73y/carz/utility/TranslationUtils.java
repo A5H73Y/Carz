@@ -1,6 +1,7 @@
 package io.github.a5h73y.carz.utility;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.enums.ConfigType;
 import org.bukkit.command.CommandSender;
 
 import static io.github.a5h73y.carz.utility.StringUtils.colour;
@@ -24,7 +25,7 @@ public class TranslationUtils {
 			return "Invalid translation.";
 		}
 
-		String translated = Carz.getInstance().getSettings().getStringsConfig().getString(translationKey);
+		String translated = Carz.getConfig(ConfigType.STRINGS).getString(translationKey);
 		translated = translated != null ? colour(translated) : "String not found: " + translationKey;
 		return prefix ? Carz.getPrefix().concat(translated) : translated;
 	}

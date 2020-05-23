@@ -3,9 +3,12 @@ package io.github.a5h73y.carz;
 import io.github.a5h73y.carz.commands.CarzAutoTabCompleter;
 import io.github.a5h73y.carz.commands.CarzCommands;
 import io.github.a5h73y.carz.commands.CarzConsoleCommands;
-import io.github.a5h73y.carz.configuration.Settings;
+import io.github.a5h73y.carz.configuration.CarzConfiguration;
+import io.github.a5h73y.carz.configuration.ConfigManager;
+import io.github.a5h73y.carz.configuration.impl.DefaultConfig;
 import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.controllers.FuelController;
+import io.github.a5h73y.carz.enums.ConfigType;
 import io.github.a5h73y.carz.listeners.PlayerListener;
 import io.github.a5h73y.carz.listeners.SignListener;
 import io.github.a5h73y.carz.listeners.VehicleListener;
@@ -29,18 +32,26 @@ public class Carz extends JavaPlugin {
 
     private FuelController fuelController;
     private CarController carController;
-    private Settings settings;
+    private ConfigManager configManager;
     private ItemMetaUtils itemMetaUtils;
 
+    /**
+     * Get the plugin's instance.
+     *
+     * @return Carz plugin instance.
+     */
     public static Carz getInstance() {
         return instance;
     }
 
+    /**
+     * Initialise the Carz plugin.
+     */
     @Override
     public void onEnable() {
         instance = this;
 
-        settings = new Settings(this);
+        configManager = new ConfigManager(this.getDataFolder());
         carController = new CarController(this);
         fuelController = new FuelController(this);
         itemMetaUtils = new ItemMetaUtils();
@@ -52,13 +63,67 @@ public class Carz extends JavaPlugin {
 
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
         new MetricsLite(this, BUKKIT_PLUGIN_ID);
-        updatePlugin();
+        checkForUpdates();
     }
 
+    /**
+     * Shutdown the plugin.
+     */
     @Override
     public void onDisable() {
         PluginUtils.log("Disabled Carz v" + getDescription().getVersion());
         instance = null;
+    }
+
+    /**
+     * The Carz message prefix.
+     * @return carz prefix from the config.
+     */
+    public static String getPrefix() {
+        return TranslationUtils.getTranslation("Carz.Prefix", false);
+    }
+
+    /**
+     * Get the matching {@link CarzConfiguration} for the given {@link ConfigType}.
+     *
+     * @param type {@link ConfigType}
+     * @return matching {@link CarzConfiguration}
+     */
+    public static CarzConfiguration getConfig(ConfigType type) {
+        return instance.configManager.get(type);
+    }
+
+    /**
+     * Get the default config.yml file.
+     *
+     * @return {@link DefaultConfig}
+     */
+    public static DefaultConfig getDefaultConfig() {
+        return (DefaultConfig) instance.configManager.get(ConfigType.DEFAULT);
+    }
+
+    public ConfigManager getConfigManager() {
+        return configManager;
+    }
+
+    public FuelController getFuelController() {
+        return fuelController;
+    }
+
+    public CarController getCarController() {
+        return carController;
+    }
+
+    public BountifulAPI getBountifulAPI() {
+        return bountifulAPI;
+    }
+
+    public EconomyAPI getEconomyAPI() {
+        return economyAPI;
+    }
+
+    public ItemMetaUtils getItemMetaUtils() {
+        return itemMetaUtils;
     }
 
     private void setupPlugins() {
@@ -80,37 +145,9 @@ public class Carz extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SignListener(this), this);
     }
 
-    public static String getPrefix() {
-        return TranslationUtils.getTranslation("Carz.Prefix", false);
-    }
-
-    private void updatePlugin() {
+    private void checkForUpdates() {
         if (getConfig().getBoolean("Other.UpdateCheck")) {
             new CarzUpdater(this, SPIGOT_PLUGIN_ID).checkForUpdateAsync();
         }
-    }
-
-    public Settings getSettings() {
-        return settings;
-    }
-
-    public FuelController getFuelController() {
-        return fuelController;
-    }
-
-    public CarController getCarController() {
-        return carController;
-    }
-
-    public BountifulAPI getBountifulAPI() {
-        return bountifulAPI;
-    }
-
-    public EconomyAPI getEconomyAPI() {
-        return economyAPI;
-    }
-
-    public ItemMetaUtils getItemMetaUtils() {
-        return itemMetaUtils;
     }
 }

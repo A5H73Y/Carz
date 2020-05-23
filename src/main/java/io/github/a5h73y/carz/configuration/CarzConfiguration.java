@@ -1,0 +1,91 @@
+package io.github.a5h73y.carz.configuration;
+
+import java.io.File;
+import java.io.IOException;
+
+import io.github.a5h73y.carz.utility.PluginUtils;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+/**
+ * Base Carz configuration file.
+ */
+public abstract class CarzConfiguration extends YamlConfiguration {
+
+	protected File file;
+
+	/**
+	 * The config file's name.
+	 *
+	 * @return file name
+	 */
+	protected abstract String getFileName();
+
+	/**
+	 * Initialise the configuration file.
+	 *
+	 * @throws IOException io exception
+	 */
+	protected abstract void initializeConfig() throws IOException;
+
+	/**
+	 * Setup the file.
+	 */
+	void setupFile(File dataFolder) {
+		file = new File(dataFolder, getFileName());
+		createIfNotExists();
+		reload();
+
+		try {
+			initializeConfig();
+			save();
+		} catch (IOException e) {
+			PluginUtils.log("Failed to load " + getFileName(), 2);
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Persist any changes to the file.
+	 */
+	public void save() {
+		try {
+			this.save(file);
+
+		} catch (IOException e) {
+			PluginUtils.log("Failed to save file: " + getFileName(), 2);
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Reload the configuration file.
+	 */
+	protected void reload() {
+		try {
+			this.load(file);
+
+		} catch (IOException | InvalidConfigurationException e) {
+			PluginUtils.log("Failed to load file: " + getFileName(), 2);
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * Create the physical file if it doesn't exist.
+	 */
+	private void createIfNotExists() {
+		if (file.exists()) {
+			return;
+		}
+
+		try {
+			file.createNewFile();
+			PluginUtils.log("Created " + getFileName());
+
+		} catch (Exception e) {
+			PluginUtils.log("Failed to create file: " + getFileName(), 2);
+			e.printStackTrace();
+		}
+	}
+}

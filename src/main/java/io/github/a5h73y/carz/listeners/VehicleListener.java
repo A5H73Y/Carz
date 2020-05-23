@@ -1,6 +1,7 @@
 package io.github.a5h73y.carz.listeners;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.event.EngineStartEvent;
 import io.github.a5h73y.carz.event.EngineStopEvent;
@@ -33,6 +34,7 @@ import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.util.Vector;
 
+import static io.github.a5h73y.carz.enums.ConfigType.BLOCKS;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
@@ -71,7 +73,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Player player = (Player) event.getEntered();
 
-        if (!carz.getSettings().isAutomaticCarLock() && player.isSneaking()) {
+        if (!Carz.getDefaultConfig().isAutomaticCarLock() && player.isSneaking()) {
             return;
         }
 
@@ -97,7 +99,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
                 carz.getItemMetaUtils().remove(VEHICLE_LOCKED, minecart);
                 TranslationUtils.sendTranslation("Car.CarUnlocked", player);
             }
-        } else if (carz.getSettings().isOnlyOwnedCarsDrive()) {
+        } else if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive()) {
             return;
         }
 
@@ -106,7 +108,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         if (carz.getConfig().getBoolean("Key.GiveOnCarEnter")
-                && !player.getInventory().contains(carz.getSettings().getKey())) {
+                && !player.getInventory().contains(Carz.getDefaultConfig().getKey())) {
             CarUtils.givePlayerKey(player);
         }
     }
@@ -146,12 +148,12 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Car car = carz.getCarController().getCar(vehicle.getEntityId());
 
-        if (carz.getSettings().isOnlyOwnedCarsDrive() && !carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
+        if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive() && !carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
             return;
         }
 
         if (carz.getConfig().getBoolean("Key.RequireCarzKey")
-                && PlayerUtils.getMaterialInPlayersHand(event.getPlayer()) != carz.getSettings().getKey()) {
+                && PlayerUtils.getMaterialInPlayersHand(event.getPlayer()) != Carz.getDefaultConfig().getKey()) {
             return;
         }
 
@@ -202,14 +204,14 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         if (event.getVehicle().getLocation().getBlock().isLiquid()
-                && carz.getSettings().isDestroyInLiquid()) {
+                && Carz.getDefaultConfig().isDestroyInLiquid()) {
             carz.getCarController().destroyCar(event.getVehicle());
             player.playEffect(player.getLocation(), Effect.EXTINGUISH, null);
             TranslationUtils.sendTranslation("Car.LiquidDamage", player);
             return;
         }
 
-        if (event.getVehicle().getFallDistance() > 1F && !carz.getSettings().isControlCarsWhileFalling()) {
+        if (event.getVehicle().getFallDistance() > 1F && !Carz.getDefaultConfig().isControlCarsWhileFalling()) {
             return;
         }
 
@@ -228,10 +230,16 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         Vector vehicleVelocity = event.getVehicle().getVelocity();
         Vector playerLocationVelocity = player.getLocation().getDirection();
         Material materialBelow = event.getVehicle().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType();
+        BlocksConfig blocksConfig = (BlocksConfig) Carz.getConfig(BLOCKS);
 
-        if (carz.getSettings().containsSpeedBlock(materialBelow)) {
-            Double modifier = carz.getSettings().getSpeedModifier(materialBelow);
+        if (blocksConfig.containsSpeedBlock(materialBelow)) {
+            Double modifier = blocksConfig.getSpeedModifier(materialBelow);
             drivingCar.applySpeedModifier(modifier);
+        }
+
+        if (blocksConfig.containsLaunchBlock(materialBelow)) {
+            Double amount = blocksConfig.getLaunchAmount(materialBelow);
+            vehicleVelocity.setY(vehicleVelocity.getY() + amount);
         }
 
         double carSpeed = drivingCar.getCurrentSpeed();
@@ -245,9 +253,12 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         Location twoBlocksAhead = playerLocation.add(playerLocation.getDirection().multiply(2));
         twoBlocksAhead.setY(Math.max(playerLocation.getY() + 1, twoBlocksAhead.getY()));
 
+        boolean isClimbable = twoBlocksAhead.getBlock().getType() != Material.AIR
+                && ((blocksConfig.getClimbBlocks().isEmpty() || twoBlocksAhead.getBlock().getBlockData() instanceof Slab)
+                || blocksConfig.getClimbBlocks().contains(twoBlocksAhead.getBlock().getType()));
+
         // if there is a block ahead of us
-        if (twoBlocksAhead.getBlock().getType() != Material.AIR
-                || twoBlocksAhead.getBlock().getBlockData() instanceof Slab) {
+        if (isClimbable && materialBelow != Material.AIR) {
             Location above = twoBlocksAhead.add(0, 1, 0);
 
             // if the block above it is AIR, allow to climb
@@ -331,7 +342,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             TranslationUtils.sendTranslation("Car.EngineStop", player);
         }
 
-        if (carz.getSettings().isAutomaticCarLock()
+        if (Carz.getDefaultConfig().isAutomaticCarLock()
                 && carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)
                 && player.getName().equals(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle))) {
             carz.getItemMetaUtils().setValue(VEHICLE_LOCKED, vehicle, "true");
@@ -406,7 +417,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (PlayerUtils.getMaterialInPlayersHand(event.getPlayer()) != carz.getSettings().getKey()) {
+        if (PlayerUtils.getMaterialInPlayersHand(event.getPlayer()) != Carz.getDefaultConfig().getKey()) {
             return;
         }
 

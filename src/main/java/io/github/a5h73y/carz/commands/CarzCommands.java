@@ -74,10 +74,6 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                if (!DelayTasks.getInstance().delayPlayer(player, 4)) {
-                    return false;
-                }
-
                 CarUtils.givePlayerCar(player, args.length > 1 ? args[1] : DEFAULT_CAR);
                 TranslationUtils.sendTranslation("Car.Spawned", player);
                 break;
@@ -128,44 +124,23 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 carz.getCarController().stashCar(player);
                 break;
 
-            case "addcb":
-            case "addclimb":
-            case "addclimbblock":
+            case "add":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+
+                } else if (!PluginUtils.validateArgs(player, args, 3, 4)) {
                     return false;
                 }
 
-                PluginUtils.addClimbBlock(player, args);
+                PluginUtils.addBlockType(player, args);
                 break;
 
-            case "removecb":
-            case "removeclimb":
-            case "removeclimbblock":
+            case "remove":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
                 }
 
-                PluginUtils.removeClimbBlock(player, args);
-                break;
-
-            case "addsb":
-            case "addspeed":
-            case "addspeedblock":
-                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
-                    return false;
-                }
-
-                PluginUtils.addSpeedBlock(player, args);
-                break;
-
-            case "removesb":
-            case "removespeed":
-            case "removespeedblock":
-                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
-                    return false;
-                }
-
-                PluginUtils.removeSpeedBlock(player, args);
+                PluginUtils.removeBlockType(player, args);
                 break;
 
             case "createtype":
@@ -240,7 +215,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                carz.getSettings().reload();
+                Carz.getInstance().getConfigManager().reloadConfigs();
                 TranslationUtils.sendTranslation("Carz.ConfigReloaded", player);
                 break;
 

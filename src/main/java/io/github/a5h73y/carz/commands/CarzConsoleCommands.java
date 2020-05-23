@@ -61,28 +61,16 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 TranslationUtils.sendTranslation("Car.Spawned", sender, player);
                 break;
 
-            case "addcb":
-            case "addclimb":
-            case "addclimbblock":
-                PluginUtils.addClimbBlock(sender, args);
+            case "add":
+                if (!PluginUtils.validateArgs(sender, args, 3, 4)) {
+                    return false;
+                }
+
+                PluginUtils.addBlockType(sender, args);
                 break;
 
-            case "removecb":
-            case "removeclimb":
-            case "removeclimbblock":
-                PluginUtils.removeClimbBlock(sender, args);
-                break;
-
-            case "addsb":
-            case "addspeed":
-            case "addspeedblock":
-                PluginUtils.addSpeedBlock(sender, args);
-                break;
-
-            case "removesb":
-            case "removespeed":
-            case "removespeedblock":
-                PluginUtils.removeSpeedBlock(sender, args);
+            case "remove":
+                PluginUtils.removeBlockType(sender, args);
                 break;
 
             case "destroyall":
@@ -91,7 +79,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 break;
 
             case "reload":
-                carz.getSettings().reload();
+                Carz.getInstance().getConfigManager().reloadConfigs();
                 TranslationUtils.sendTranslation("Carz.ConfigReloaded", sender);
                 break;
 

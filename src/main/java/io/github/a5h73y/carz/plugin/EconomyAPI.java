@@ -209,7 +209,7 @@ public class EconomyAPI extends PluginWrapper {
 	public double getRefuelCost(double remainingFuel) {
 		double cost = Carz.getInstance().getConfig().getDouble("Vault.Cost.Refuel");
 
-		if (Carz.getInstance().getSettings().isFuelScaleCost()) {
+		if (Carz.getDefaultConfig().isFuelScaleCost()) {
 			cost *= Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(remainingFuel);
 		}
 

@@ -1,6 +1,7 @@
 package io.github.a5h73y.carz.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import io.github.a5h73y.carz.Carz;
@@ -18,6 +19,8 @@ import org.bukkit.entity.Player;
  */
 public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabCompleter {
 
+    private final List<String> addRemoveList = Arrays.asList("climb", "speed", "launch", "placeable");
+
     public CarzAutoTabCompleter(final Carz carz) {
         super(carz);
     }
@@ -32,14 +35,28 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             return null;
         }
 
-        if (args.length > 1) {
-            return new ArrayList<>();
-        }
-
         final Player player = (Player) sender;
         List<String> allowedCommands = new ArrayList<>();
         List<String> filteredCommands = new ArrayList<>();
 
+        if (args.length == 1) {
+            allowedCommands = populateMainCommands(player);
+
+        } else if (args.length == 2) {
+            allowedCommands = populateChildCommands(player, args[0].toLowerCase());
+        }
+
+        for (String allowedCommand : allowedCommands) {
+            if (allowedCommand.startsWith(args[args.length - 1])) {
+                filteredCommands.add(allowedCommand);
+            }
+        }
+
+        return filteredCommands.isEmpty() ? allowedCommands : filteredCommands;
+    }
+
+    private List<String> populateMainCommands(Player player) {
+        List<String> allowedCommands = new ArrayList<>();
         allowedCommands.add("cmds");
         allowedCommands.add("claim");
         allowedCommands.add("details");
@@ -67,10 +84,8 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         }
 
         if (PermissionUtils.hasStrictPermission(player, Permissions.ADMIN, false)) {
-            allowedCommands.add("addclimb");
-            allowedCommands.add("addspeed");
-            allowedCommands.add("removeclimb");
-            allowedCommands.add("removespeed");
+            allowedCommands.add("add");
+            allowedCommands.add("remove");
             allowedCommands.add("createtype");
             allowedCommands.add("economy");
             allowedCommands.add("reload");
@@ -80,12 +95,19 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             }
         }
 
-        for (String allowedCommand : allowedCommands) {
-            if (allowedCommand.startsWith(args[args.length - 1])) {
-                filteredCommands.add(allowedCommand);
-            }
+        return allowedCommands;
+    }
+
+    private List<String> populateChildCommands(Player player, String command) {
+        List<String> allowedCommands = new ArrayList<>();
+
+        switch (command) {
+            case "add":
+            case "remove":
+                allowedCommands = addRemoveList;
+                break;
         }
 
-        return filteredCommands.isEmpty() ? allowedCommands : filteredCommands;
+        return allowedCommands;
     }
 }

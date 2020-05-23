@@ -41,7 +41,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
      */
     @EventHandler
     public void onSignCreate(SignChangeEvent event) {
-        if (!carz.getSettings().getStrippedSignHeader().equalsIgnoreCase(event.getLine(0))) {
+        if (!Carz.getDefaultConfig().getStrippedSignHeader().equalsIgnoreCase(event.getLine(0))) {
             return;
         }
 
@@ -85,7 +85,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         String title = StringUtils.standardizeText(event.getLine(1));
         player.sendMessage(TranslationUtils.getTranslation("Carz.SignCreated")
                 .replace("%TYPE%", title));
-        event.setLine(0, carz.getSettings().getSignHeader());
+        event.setLine(0, Carz.getDefaultConfig().getSignHeader());
     }
 
     /**
@@ -111,7 +111,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
 
         String[] lines = ((Sign) event.getClickedBlock().getState()).getLines();
 
-        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(carz.getSettings().getStrippedSignHeader())) {
+        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(Carz.getDefaultConfig().getStrippedSignHeader())) {
             return;
         }
 
@@ -145,7 +145,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         Sign sign = (Sign) event.getClickedBlock().getState();
         String[] lines = sign.getLines();
 
-        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(carz.getSettings().getStrippedSignHeader())) {
+        if (!ChatColor.stripColor(lines[0]).equalsIgnoreCase(Carz.getDefaultConfig().getStrippedSignHeader())) {
             return;
         }
 

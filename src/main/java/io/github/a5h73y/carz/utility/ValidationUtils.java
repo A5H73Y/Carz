@@ -1,9 +1,12 @@
 package io.github.a5h73y.carz.utility;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
+import io.github.a5h73y.carz.enums.ConfigType;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.model.Car;
+import io.github.a5h73y.carz.other.DelayTasks;
 import org.bukkit.Material;
 import org.bukkit.block.data.Rail;
 import org.bukkit.entity.Minecart;
@@ -153,7 +156,7 @@ public class ValidationUtils {
 
 		Car currentCar = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId());
 
-		if (currentCar.getMaxSpeed() >= Carz.getInstance().getSettings().getUpgradeMaxSpeed()) {
+		if (currentCar.getMaxSpeed() >= Carz.getDefaultConfig().getUpgradeMaxSpeed()) {
 			TranslationUtils.sendTranslation("Error.FullyUpgraded", player);
 			return false;
 		}
@@ -229,6 +232,41 @@ public class ValidationUtils {
 					.getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
 			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
 					.replace("%PLAYER%", owner));
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validate if the player is currently able to place a car.
+	 * There is no permission node to claim a car.
+	 *
+	 * @param player target player
+	 * @param placedMaterial material to place upon
+	 * @return player can claim car
+	 */
+	public static boolean canPlaceCar(Player player, Material placedMaterial) {
+		if (!PermissionUtils.hasPermission(player, Permissions.PLACE)) {
+			return false;
+		}
+
+		// prevent the player from creating mass amounts of Minecarts
+		if (!DelayTasks.getInstance().delayPlayer(player, 3)) {
+			return false;
+		}
+
+		BlocksConfig blocksConfig = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
+		if (!blocksConfig.getPlaceableBlocks().isEmpty()
+				&& !blocksConfig.getPlaceableBlocks().contains(placedMaterial)) {
+			TranslationUtils.sendTranslation("Error.InvalidPlaceableMaterial", player);
+			return false;
+		}
+
+		int maxOwnedCars = Carz.getDefaultConfig().getMaxPlayerOwnedCars();
+		if (maxOwnedCars > 0
+				&& CarUtils.numberOfOwnedCars(player) >= maxOwnedCars) {
+			TranslationUtils.sendTranslation("Error.OwnedCarsLimit", player);
 			return false;
 		}
 

@@ -22,7 +22,7 @@ public class UpgradePurchase extends Purchasable {
 	 * @param currentCar car
 	 */
 	public UpgradePurchase(Car currentCar) {
-		double upgradeAmount = Carz.getInstance().getSettings().getUpgradeIncrement();
+		double upgradeAmount = Carz.getDefaultConfig().getUpgradeIncrement();
 		previousTopSpeed = currentCar.getMaxSpeed();
 		newTopSpeed = currentCar.getMaxSpeed() + upgradeAmount;
 	}
