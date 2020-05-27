@@ -49,6 +49,6 @@ public class UpgradePurchase extends Purchasable {
 
 	@Override
 	protected double getDefaultCost() {
-		return Carz.getInstance().getConfig().getDouble("Vault.Cost.Upgrade");
+		return Carz.getDefaultConfig().getDouble("Vault.Cost.Upgrade");
 	}
 }

@@ -51,6 +51,6 @@ public class CarPurchase extends Purchasable {
 
 	@Override
 	protected double getDefaultCost() {
-		return Carz.getInstance().getConfig().getDouble("CarTypes." + carType + ".Cost");
+		return Carz.getDefaultConfig().getDouble("CarTypes." + carType + ".Cost");
 	}
 }

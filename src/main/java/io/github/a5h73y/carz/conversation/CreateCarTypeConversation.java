@@ -50,7 +50,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 
 		@Override
 		public Prompt acceptInput(ConversationContext context, String input) {
-			List<String> existingCarTypes = Carz.getInstance().getConfig().getStringList("CarTypes");
+			List<String> existingCarTypes = Carz.getDefaultConfig().getStringList("CarTypes");
 
 			if (!STRING_PATTERN.matcher(input).matches()) {
 				sendErrorMessage(context, TranslationUtils
@@ -106,7 +106,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 
 			} else {
 				String carTypeName = (String) context.getSessionData(SESSION_CAR_TYPE);
-				FileConfiguration config = Carz.getInstance().getConfig();
+				FileConfiguration config = Carz.getDefaultConfig();
 
 				answers.forEach((configKey, value) ->
 						config.set("CarTypes." + carTypeName + "." + configKey, calculateValue(value)));
@@ -142,8 +142,8 @@ public class CreateCarTypeConversation extends CarzConversation {
 		protected Prompt acceptValidatedInput(ConversationContext context, Number input) {
 			String carTypeName = (String) context.getSessionData(SESSION_CAR_TYPE);
 
-			Carz.getInstance().getConfig().set("CarTypes." + carTypeName + ".Cost", input.doubleValue());
-			Carz.getInstance().saveConfig();
+			Carz.getDefaultConfig().set("CarTypes." + carTypeName + ".Cost", input.doubleValue());
+			Carz.getDefaultConfig().save();
 
 			Carz.getInstance().getCarController().populateCarTypes();
 			context.getForWhom().sendRawMessage(TranslationUtils

@@ -26,7 +26,7 @@ public class PluginUtils {
      * @return command enabled
      */
     public static boolean commandEnabled(CommandSender sender, Commands command) {
-        boolean enabled = Carz.getInstance().getConfig().getBoolean(command.getConfigPath());
+        boolean enabled = Carz.getDefaultConfig().getBoolean(command.getConfigPath());
 
         if (!enabled) {
             TranslationUtils.sendTranslation("Error.CommandDisabled", sender);

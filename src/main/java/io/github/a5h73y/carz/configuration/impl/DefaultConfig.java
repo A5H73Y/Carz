@@ -25,11 +25,10 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Key.Glow", true);
 		this.addDefault("Key.GiveOnCarEnter", true);
 		this.addDefault("Key.RequireCarzKey", true);
-		this.addDefault("Key.ManualLocking.Enabled", true);
-		this.addDefault("Key.ManualLocking.ShiftAction", true);
+		this.addDefault("Key.ManualLocking.Enabled", true); //TODO
+		this.addDefault("Key.ManualLocking.ShiftAction", true); //TODO
 
 		this.addDefault("Speed.Upgrade.Increment", 25.0);
-		this.addDefault("Speed.Upgrade.Max", 200.0);
 
 		this.addDefault("CommandEnabled.Spawn", true);
 		this.addDefault("CommandEnabled.Purchase", true);
@@ -111,10 +110,6 @@ public class DefaultConfig extends CarzConfiguration {
 
 	public double getUpgradeIncrement() {
 		return this.getDouble("Speed.Upgrade.Increment");
-	}
-
-	public double getUpgradeMaxSpeed() {
-		return this.getDouble("Speed.Upgrade.Max");
 	}
 
 	public double getClimbBlockStrength() {

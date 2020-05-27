@@ -14,7 +14,7 @@
     <meta property="og:title" content="Part 4: Economy" />
     <meta name="theme-color" content="#FFFF00">
     <meta name="msapplication-TileColor" content="#FFFF00">
-    <title>Part 4: Economy</title>
+    <title>Carz Tutorials - Part 4: Economy</title>
 </head>
 
 <body>
@@ -28,11 +28,20 @@
 
                 <div id="contents-placeholder"></div>
 
-                <h2 id="description">Description</h2>
-                <p>Carz can link to any Economy plugin that uses <a href="https://dev.bukkit.org/projects/vault">Vault</a>. When linked, each Carz purchase type can have an associated cost. Any economy based purchases will be prevented until the player has earned enough money (for example buying a car).</p>
+                <h2>Description</h2>
+                <p class="no-margin">Carz can link to any Economy plugin that supports <a href="https://dev.bukkit.org/projects/vault">Vault</a>, created by Sleaker.</p>
+                <p>When linked, each Carz purchase type can have an associated cost. Any economy based purchase will be prevented until the player has earned enough money (for example buying a car).</p>
+                <p>The configuration option in the config.yml is "Vault.Enabled" and must be set to true. When Carz starts up, it will print a message whether it connected to Vault Economy successfully.</p>
 
                 <h2 id="confirmation">Purchase Confirmation</h2>
-                <p>The player can be asked to confirm purchases before the cost amount is deducted from their account. This acts as a good way to provide a summary of what the user is about to do, for example purchase a car.</p>
+                <p>If configured, the player can be asked to confirm purchases before the cost amount is deducted from their account. This acts as a good way to provide a summary of what the user is about to do, for example purchase a car.</p>
+
+                <h2 id="customAmounts">Custom Costs</h2>
+                <p class="no-margin">Each type of purchase will have a default cost defined in the config, with exception to car types which will each have an individual defined cost.</p>
+                <p>These costs can be overridden through Carz signs, by specifying the new cost on the bottom line.</p>
+
+                <h2 id="summary">Economy Summary</h2>
+                <p>Entering the command <strong>/carz economy</strong> will display a breakdown of each cost and various economy details.</p>
             </div>
         </div>
     </div>

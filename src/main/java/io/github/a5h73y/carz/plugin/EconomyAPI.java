@@ -114,7 +114,7 @@ public class EconomyAPI extends PluginWrapper {
 		}
 
 		// if the user has to confirm their purchases
-		if (isEnabled() && Carz.getInstance().getConfig().getBoolean("Vault.ConfirmPurchases")) {
+		if (isEnabled() && Carz.getDefaultConfig().getBoolean("Vault.ConfirmPurchases")) {
 			purchasable.sendConfirmationMessage(player);
 			purchasing.put(player.getName(), purchasable);
 
@@ -207,7 +207,7 @@ public class EconomyAPI extends PluginWrapper {
 	 * @return refuel cost
 	 */
 	public double getRefuelCost(double remainingFuel) {
-		double cost = Carz.getInstance().getConfig().getDouble("Vault.Cost.Refuel");
+		double cost = Carz.getDefaultConfig().getDouble("Vault.Cost.Refuel");
 
 		if (Carz.getDefaultConfig().isFuelScaleCost()) {
 			cost *= Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(remainingFuel);
@@ -235,7 +235,7 @@ public class EconomyAPI extends PluginWrapper {
 		player.sendMessage("Enabled: " + isEnabled());
 
 		if (isEnabled()) {
-			FileConfiguration config = Carz.getInstance().getConfig();
+			FileConfiguration config = Carz.getDefaultConfig();
 			player.sendMessage("Economy: " + economy.getName());
 			player.sendMessage("Purchase Confirmation: " + config.getBoolean("Vault.ConfirmPurchases"));
 			player.sendMessage("Upgrade Cost: " + config.getDouble("Vault.Cost.Upgrade"));

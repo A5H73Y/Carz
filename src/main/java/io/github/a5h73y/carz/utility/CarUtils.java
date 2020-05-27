@@ -150,7 +150,7 @@ public class CarUtils {
 		itemMeta.setDisplayName(keyName);
 		Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemMeta, player.getName());
 
-		if (Carz.getInstance().getConfig().getBoolean("Key.Glow")) {
+		if (Carz.getDefaultConfig().getBoolean("Key.Glow")) {
 			itemMeta.addEnchant(Enchantment.DURABILITY, 1, false);
 			itemMeta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 		}

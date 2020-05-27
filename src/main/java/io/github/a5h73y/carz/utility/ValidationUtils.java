@@ -113,8 +113,7 @@ public class ValidationUtils {
 		}
 
 		if (checkEconomy) {
-			double cost = Carz.getInstance().getConfig()
-					.getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
+			double cost = Carz.getDefaultConfig().getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
 			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 		} else {
 			return true;
@@ -156,13 +155,14 @@ public class ValidationUtils {
 
 		Car currentCar = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId());
 
-		if (currentCar.getMaxSpeed() >= Carz.getDefaultConfig().getUpgradeMaxSpeed()) {
+		if (currentCar.getMaxSpeed() + Carz.getDefaultConfig().getUpgradeIncrement()
+				>= currentCar.getCarDetails().getMaxUpgradeSpeed()) {
 			TranslationUtils.sendTranslation("Error.FullyUpgraded", player);
 			return false;
 		}
 
 		if (checkEconomy) {
-			double cost = Carz.getInstance().getConfig().getDouble("Vault.Cost.Upgrade");
+			double cost = Carz.getDefaultConfig().getDouble("Vault.Cost.Upgrade");
 			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
 		} else {
 			return true;

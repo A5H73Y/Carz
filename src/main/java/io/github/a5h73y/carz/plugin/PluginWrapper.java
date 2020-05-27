@@ -33,7 +33,7 @@ public abstract class PluginWrapper {
 	 */
 	protected void initialise() {
 		// if the config prevents integration, don't begin setup.
-		if (!Carz.getInstance().getConfig().getBoolean(getPluginName() + ".Enabled")) {
+		if (!Carz.getDefaultConfig().getBoolean(getPluginName() + ".Enabled")) {
 			return;
 		}
 
@@ -48,8 +48,8 @@ public abstract class PluginWrapper {
 
 		} else {
 			PluginUtils.log("[" + getPluginName() + "] Plugin is missing, disabling config option.", 1);
-			Carz.getInstance().getConfig().set(getPluginName() + ".Enabled", false);
-			Carz.getInstance().saveConfig();
+			Carz.getDefaultConfig().set(getPluginName() + ".Enabled", false);
+			Carz.getDefaultConfig().save();
 		}
 	}
 

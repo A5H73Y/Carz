@@ -18,7 +18,7 @@ public class PermissionUtils {
 	 * @return player has permission
 	 */
 	public static boolean hasPermission(Player player, Permissions permission) {
-		if (!Carz.getInstance().getConfig().getBoolean("Other.UsePermissions")) {
+		if (!Carz.getDefaultConfig().getBoolean("Other.UsePermissions")) {
 			return true;
 		}
 

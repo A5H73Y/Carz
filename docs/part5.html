@@ -14,7 +14,7 @@
     <meta property="og:title" content="Part 5: Plugin Configuration" />
     <meta name="theme-color" content="#FFFF00">
     <meta name="msapplication-TileColor" content="#FFFF00">
-    <title>Part 5: Plugin Configuration</title>
+    <title>Carz Tutorials - Part 5: Plugin Configuration</title>
 </head>
 
 <body>
@@ -29,20 +29,24 @@
                 <div id="contents-placeholder"></div>
 
                 <h2 id="config">config.yml</h2>
-                <p>To make changes, edit to the value you want, save the file, then enter /pa reload into game or the console.</p>
-                <p>Some properties require the server to restart to apply the changes, these include changes to scoreboard, adding 3rd party plugin support, etc.</p>
+                <p class="no-margin">This is the default configuration file that will allow you to customise the Carz plugin to match your server requirements.</p>
+                <p>To make changes, edit to the value you want, save the file, then enter <strong>/carz reload</strong> into game or <strong>/carzc reload</strong> into the console. Restarting the server can apply changes also but it's very consistent, so try to use the plugin's reload command where possible.</p>
+                <p class="italic">Some properties may require the server to restart to apply the changes.</p>
 
                 <img src="" alt="Command usage"/>
 
                 <p class="no-margin">View the raw annotated configuration file here: <a href="https://pastebin.com/eQGLqpVD">https://pastebin.com/eQGLqpVD</a></p>
-                <p class="italic">This is correct as of Carz v6.0.</p>
+                <p class="italic">This is correct as of Carz v7.0.</p>
 
                 <h2 id="strings">strings.yml</h2>
-                <p>You are able to modify the contents of this file, then enter <strong>/carz reload</strong> for the changes to immediately apply.</p>
-                <p>If you are having problems, it may be because the yml is considered invalid if it requires ' either side of the string, when using certain characters such as %.</p>
+                <p>Carz will allow you to modify most of it's messages to match the language of your server, which is done through the <strong>strings.yml</strong> file.</p>
+                <p>To make changes, edit to the value you want, save the file, then enter <strong>/carz reload</strong> into game or <strong>/carzc reload</strong> into the console. The message changes should immediately apply.</p>
+                <p>If you are having problems, it may be because the yml is considered invalid if it requires <code>'</code> either side of the string, when using certain characters such as %.</p>
+                <p>There are various placeholders within the translations, it is important you keep them exactly as they are i.e. <code>%PLAYER%</code> will be matched exactly within the plugin.</p>
 
                 <h2 id="blocks">blocks.yml</h2>
-                <p>Coming soon...</p>
+                <p>This file stores the various Block Types seperate from the other config files to keep things tidy. Manual editing of this file is not encouraged unless you know what you are doing.</p>
+                <p>Addition and removal of Materials should be done through <strong>/carz add (type)</strong> and <strong>/carz remove (type)</strong> accordingly.</p>
             </div>
         </div>
     </div>

@@ -21,7 +21,7 @@ public class EffectUtils {
 	 * @param repeat number of repetitions
 	 */
 	public static void createEffect(Location location, Effect effect, final int repeat) {
-		if (!Carz.getInstance().getConfig().getBoolean("Other.UseEffects")) {
+		if (!Carz.getDefaultConfig().getBoolean("Other.UseEffects")) {
 			return;
 		}
 

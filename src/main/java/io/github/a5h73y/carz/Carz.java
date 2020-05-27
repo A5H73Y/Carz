@@ -75,6 +75,11 @@ public class Carz extends JavaPlugin {
         instance = null;
     }
 
+    @Override
+    public DefaultConfig getConfig() {
+        return (DefaultConfig) this.configManager.get(ConfigType.DEFAULT);
+    }
+
     /**
      * The Carz message prefix.
      * @return carz prefix from the config.

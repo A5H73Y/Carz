@@ -18,7 +18,7 @@ public class CarzHelp {
      * @param player requesting player
      */
     public static void displayCommands(Player player) {
-        FileConfiguration config = Carz.getInstance().getConfig();
+        FileConfiguration config = Carz.getDefaultConfig();
         TranslationUtils.sendHeading("Carz Commands", player);
 
         displayCommandUsage(player, "claim", "Claim an unowned car");
@@ -51,7 +51,8 @@ public class CarzHelp {
                 displayCommandUsage(player, "spawn", "Receive an un-owned car");
             }
 
-            displayCommandUsage(player, "addclimb", "Add a ClimbBlock to the list");
+            displayCommandUsage(player, "add", "Add a block type to a list");
+            displayCommandUsage(player, "remove", "Remove a block type from a list");
             displayCommandUsage(player, "createtype", "Create a new Car Type");
             displayCommandUsage(player, "economy", "View Economy information");
             displayCommandUsage(player, "reload", "Reload the config");
