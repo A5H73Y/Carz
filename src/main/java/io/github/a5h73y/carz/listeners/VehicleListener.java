@@ -67,25 +67,22 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, event.getVehicle())) {
-            return;
-        }
-
         Player player = (Player) event.getEntered();
 
-        if (!Carz.getDefaultConfig().isAutomaticCarLock() && player.isSneaking()) {
+        if (!Carz.getDefaultConfig().isAutomaticLocking() && player.isSneaking()) {
             return;
         }
 
-        if (carz.getConfig().getBoolean("UsePermissions")
-                && !player.hasPermission("Carz.Start")) {
+        if (!PermissionUtils.hasPermission(player, Permissions.START)) {
             return;
         }
 
         Minecart minecart = (Minecart) event.getVehicle();
 
-        if (carz.getItemMetaUtils().has(VEHICLE_LOCKED, minecart)
-                && carz.getItemMetaUtils().has(VEHICLE_OWNER, minecart)) {
+        boolean carIsLocked = carz.getConfig().isAutomaticLocking()
+                || carz.getItemMetaUtils().has(VEHICLE_LOCKED, minecart);
+
+        if (carIsLocked && carz.getItemMetaUtils().has(VEHICLE_OWNER, minecart)) {
             String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, minecart);
             boolean isOwner = owner.equalsIgnoreCase(player.getName());
 
@@ -132,21 +129,15 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        Vehicle vehicle = (Vehicle) event.getPlayer().getVehicle();
+        Minecart vehicle = (Minecart) event.getPlayer().getVehicle();
+
         if (!ValidationUtils.isACarzVehicle(vehicle)) {
             return;
         }
 
-        if (carz.getConfig().getBoolean("UsePermission")
-                && !event.getPlayer().hasPermission("Carz.Start")) {
+        if (!PermissionUtils.hasPermission(event.getPlayer(), Permissions.START)) {
             return;
         }
-
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, vehicle)) {
-            return;
-        }
-
-        Car car = carz.getCarController().getCar(vehicle.getEntityId());
 
         if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive() && !carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
             return;
@@ -162,19 +153,18 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         Player player = event.getPlayer();
-        Minecart minecart = (Minecart) event.getPlayer().getVehicle();
+        Car car = carz.getCarController().getCar(vehicle.getEntityId());
 
         if (carz.getCarController().isDriving(player.getName())) {
             carz.getCarController().removeDriver(player.getName());
-            car.resetSpeed();
-            minecart.setMaxSpeed(0D);
+            vehicle.setMaxSpeed(0D);
             TranslationUtils.sendTranslation("Car.EngineStop", player);
-            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, minecart, car.getCurrentFuel().toString());
+            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, vehicle, car.getCurrentFuel().toString());
             Bukkit.getServer().getPluginManager().callEvent(new EngineStopEvent(player, car));
 
         } else {
-            carz.getCarController().startDriving(player.getName(), minecart);
-            minecart.setMaxSpeed(1000D);
+            carz.getCarController().startDriving(player.getName(), vehicle);
+            vehicle.setMaxSpeed(1000D);
             TranslationUtils.sendTranslation("Car.EngineStart", player);
             Bukkit.getServer().getPluginManager().callEvent(new EngineStartEvent(player, car));
         }
@@ -253,7 +243,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         Location twoBlocksAhead = playerLocation.add(playerLocation.getDirection().multiply(2));
         twoBlocksAhead.setY(Math.max(playerLocation.getY() + 1, twoBlocksAhead.getY()));
 
-        boolean isClimbable = twoBlocksAhead.getBlock().getType() != Material.AIR
+        // if the block is solid, and is part of the climb blocks (or there are no specified climb blocks)
+        boolean isClimbable = twoBlocksAhead.getBlock().getType().isSolid()
                 && ((blocksConfig.getClimbBlocks().isEmpty() || twoBlocksAhead.getBlock().getBlockData() instanceof Slab)
                 || blocksConfig.getClimbBlocks().contains(twoBlocksAhead.getBlock().getType()));
 
@@ -263,7 +254,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
             // if the block above it is AIR, allow to climb
             if (above.getBlock().getType() == Material.AIR) {
-                vehicleVelocity.setY(0.25);
+                vehicleVelocity.setY(carz.getConfig().getClimbBlockStrength());
 
                 vehicleVelocity.setX(playerLocationVelocity.getX() / 8.0);
                 vehicleVelocity.setZ(playerLocationVelocity.getZ() / 8.0);
@@ -301,7 +292,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, minecart);
 
             if (!event.getAttacker().getName().equals(owner)
-                    && !PermissionUtils.hasStrictPermission((Player) event.getAttacker(), Permissions.ADMIN, false)) {
+                    && !PermissionUtils.hasStrictPermission((Player) event.getAttacker(), Permissions.BYPASS_OWNER, false)) {
 
                 String ownedMessage = TranslationUtils.getTranslation("Error.Owned")
                         .replace("%PLAYER%", owner);
@@ -342,7 +333,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             TranslationUtils.sendTranslation("Car.EngineStop", player);
         }
 
-        if (Carz.getDefaultConfig().isAutomaticCarLock()
+        if (Carz.getDefaultConfig().isAutomaticLocking()
                 && carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)
                 && player.getName().equals(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle))) {
             carz.getItemMetaUtils().setValue(VEHICLE_LOCKED, vehicle, "true");
@@ -384,9 +375,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        double damage = carz.getConfig().getDouble("Other.DamageEntities.Damage");
-
         if (event.getEntity() instanceof LivingEntity) {
+            double damage = carz.getConfig().getDouble("Other.DamageEntities.Damage");
             ((LivingEntity) event.getEntity()).damage(damage, player);
         }
     }
@@ -399,7 +389,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
      */
     @EventHandler
     public void onCarLockToggle(PlayerInteractEntityEvent event) {
-        if (!((event.getRightClicked()) instanceof Vehicle)) {
+        if (!(event.getRightClicked() instanceof Vehicle)) {
             return;
         }
 
@@ -409,11 +399,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Minecart vehicle = (Minecart) event.getRightClicked();
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, vehicle)) {
-            return;
-        }
-
-        if (!event.getPlayer().isSneaking()) {
+        if (!event.getPlayer().isSneaking() || !carz.getConfig().isSneakLockAction()) {
             return;
         }
 
@@ -421,11 +407,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, vehicle)) {
-            return;
-        }
-
-        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
+        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)
+                && !PermissionUtils.hasStrictPermission(event.getPlayer(), Permissions.BYPASS_OWNER, false)) {
             String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle);
 
             if (!owner.equals(event.getPlayer().getName())) {

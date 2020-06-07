@@ -11,6 +11,7 @@ public enum Permissions {
     PURCHASE("Carz.Purchase"),
     UPGRADE("Carz.Upgrade"),
     PLACE("Carz.Place"),
+    START("Carz.Start"),
 
     CREATE_SIGN("Carz.CreateSign"),
     BYPASS_OWNER("Carz.BypassOwner");

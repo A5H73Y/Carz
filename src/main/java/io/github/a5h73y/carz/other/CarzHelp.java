@@ -36,6 +36,9 @@ public class CarzHelp {
             if (config.getBoolean(Commands.PURCHASE.getConfigPath())) {
                 displayCommandUsage(player, "purchase", "Request to purchase a car");
             }
+            if (config.getBoolean(Commands.STORE.getConfigPath())) {
+                displayCommandUsage(player, "store", "Open the Car Store GUI");
+            }
 
             displayCommandUsage(player, "stash", "Stash your car back into your inventory");
             displayCommandUsage(player, "cartypes", "Displays all the available car types");

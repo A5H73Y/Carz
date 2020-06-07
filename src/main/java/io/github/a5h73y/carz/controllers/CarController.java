@@ -199,7 +199,10 @@ public class CarController extends AbstractPluginReceiver {
 
         String owner = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_OWNER, vehicle);
 
-        if (!player.getName().equals(owner) && !PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+        if (!player.getName().equals(owner)
+                && !PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
+            player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
+                    .replace("%PLAYER%", owner));
             return;
         }
 
@@ -221,8 +224,8 @@ public class CarController extends AbstractPluginReceiver {
         upgradeCarSpeed((Minecart) player.getVehicle());
         Car car = getCar(player.getVehicle().getEntityId());
         EffectUtils.playEffect(player, Effect.ZOMBIE_CHEW_WOODEN_DOOR);
-        player.sendMessage(TranslationUtils.getTranslation("Car.UpgradeSpeed")
-                .replace("%SPEED%", String.valueOf(car.getMaxSpeed())));
+        TranslationUtils.sendValueTranslation("Car.UpgradeSpeed",
+                String.valueOf(car.getMaxSpeed()), true, player);
 
         EffectUtils.createUpgradeEffect((Vehicle) player.getVehicle());
     }
@@ -299,5 +302,19 @@ public class CarController extends AbstractPluginReceiver {
 
         carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle(), player.getName());
         TranslationUtils.sendTranslation("Car.Claimed", player);
+    }
+
+    /**
+     * Remove the Ownership data from the player's vehicle.
+     *
+     * @param player requesting player
+     */
+    public void removeOwnership(Player player) {
+        if (!player.isInsideVehicle()) {
+            return;
+        }
+
+        carz.getItemMetaUtils().remove(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+        TranslationUtils.sendTranslation("Car.OwnershipRemoved", player);
     }
 }

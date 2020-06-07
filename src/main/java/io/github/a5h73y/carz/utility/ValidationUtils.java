@@ -68,7 +68,11 @@ public class ValidationUtils {
 			return false;
 		}
 
-		return !(vehicle.getLocation().getBlock().getBlockData() instanceof Rail);
+		if (vehicle.getLocation().getBlock().getBlockData() instanceof Rail) {
+			return false;
+		}
+
+		return Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, vehicle);
 	}
 
 	/**
@@ -230,6 +234,38 @@ public class ValidationUtils {
 		if (Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
 			String owner = Carz.getInstance().getItemMetaUtils()
 					.getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
+					.replace("%PLAYER%", owner));
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Validate if the player is able to remove ownership of a car.
+	 * If they are the owner of the car, or have a permission override.
+	 *
+	 * @param player target player
+	 * @return player can remove ownership of car
+	 */
+	public static boolean canRemoveCarOwnership(Player player) {
+		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)
+				|| !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
+			TranslationUtils.sendTranslation("Error.NotInCar", player);
+			return false;
+		}
+
+		if (!Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
+			TranslationUtils.sendTranslation("Error.NoOwnership", player);
+			return false;
+		}
+
+		String owner = Carz.getInstance().getItemMetaUtils().getValue(
+				VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+
+		if (!PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)
+				&& !owner.equalsIgnoreCase(player.getName())) {
 			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
 					.replace("%PLAYER%", owner));
 			return false;

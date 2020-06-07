@@ -21,6 +21,8 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
 
     private final List<String> addRemoveList = Arrays.asList("climb", "speed", "launch", "placeable");
 
+    private final List<String> questionList = Arrays.asList("confirm", "cancel");
+
     public CarzAutoTabCompleter(final Carz carz) {
         super(carz);
     }
@@ -57,6 +59,12 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
 
     private List<String> populateMainCommands(Player player) {
         List<String> allowedCommands = new ArrayList<>();
+
+        // if they have an outstanding purchase, make those the only options
+        if (carz.getEconomyAPI().isPurchasing(player)) {
+            return questionList;
+        }
+
         allowedCommands.add("cmds");
         allowedCommands.add("claim");
         allowedCommands.add("details");
@@ -75,6 +83,9 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
 
             if (carz.getConfig().getBoolean(Commands.PURCHASE.getConfigPath())) {
                 allowedCommands.add("purchase");
+            }
+            if (carz.getConfig().getBoolean(Commands.STORE.getConfigPath())) {
+                allowedCommands.add("store");
             }
         }
 

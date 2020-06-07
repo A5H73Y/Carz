@@ -4,7 +4,8 @@ description: ${project.description}
 softdepend: [Vault, BountifulAPI, PlaceholderAPI]
 author: A5H73Y
 main: io.github.a5h73y.carz.Carz
-api-version: "1.14"
+api-version: "1.13"
+website: "https://a5h73y.github.io/Carz/"
 commands:
   carz:
     description: Carz commands

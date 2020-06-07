@@ -25,8 +25,8 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Key.Glow", true);
 		this.addDefault("Key.GiveOnCarEnter", true);
 		this.addDefault("Key.RequireCarzKey", true);
-		this.addDefault("Key.ManualLocking.Enabled", true); //TODO
-		this.addDefault("Key.ManualLocking.ShiftAction", true); //TODO
+		this.addDefault("Key.AutomaticLocking", true);
+		this.addDefault("Key.SneakLockAction", true);
 
 		this.addDefault("Speed.Upgrade.Increment", 25.0);
 
@@ -34,15 +34,14 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("CommandEnabled.Purchase", true);
 		this.addDefault("CommandEnabled.Refuel", true);
 		this.addDefault("CommandEnabled.Upgrade", true);
+		this.addDefault("CommandEnabled.Store", true);
 
 		this.addDefault("Fuel.Enabled", true);
 		this.addDefault("Fuel.ScaleCost", true);
 		this.addDefault("Fuel.MaxCapacity", 3000.0);
 		this.addDefault("Fuel.GaugeScale", 40);
 
-		this.addDefault("ClimbBlocks.AllBlocks", true);
-		this.addDefault("ClimbBlocks.Materials", new String[]{"GOLD_BLOCK"});
-		this.addDefault("ClimbBlocks.Strength", 0.05D);
+		this.addDefault("ClimbBlocks.Strength", 0.25);
 
 		this.addDefault("Vault.Enabled", true);
 		this.addDefault("Vault.ConfirmPurchases", true);
@@ -57,7 +56,6 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Other.DamageEntities.Enabled", true);
 		this.addDefault("Other.DamageEntities.Damage", 5.0);
 		this.addDefault("Other.DestroyInLiquid", true);
-		this.addDefault("Other.AutomaticCarLock", true);
 		this.addDefault("Other.OnlyOwnedCarsDrive", false);
 		this.addDefault("Other.MaxPlayerOwnedCars", 5);
 		this.addDefault("Other.SignProtection", true);
@@ -104,8 +102,12 @@ public class DefaultConfig extends CarzConfiguration {
 		return this.getBoolean("Fuel.ScaleCost");
 	}
 
-	public boolean isAutomaticCarLock() {
-		return this.getBoolean("Other.AutomaticCarLock");
+	public boolean isAutomaticLocking() {
+		return this.getBoolean("Key.AutomaticLocking");
+	}
+
+	public boolean isSneakLockAction() {
+		return this.getBoolean("Key.SneakLockAction");
 	}
 
 	public double getUpgradeIncrement() {

@@ -41,7 +41,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
 
         switch (args[0].toLowerCase()) {
             case "spawn":
-                if (!PluginUtils.commandEnabled(sender, Commands.SPAWN)) {
+                if (!PluginUtils.isCommandEnabled(sender, Commands.SPAWN)) {
                     return false;
                 }
 

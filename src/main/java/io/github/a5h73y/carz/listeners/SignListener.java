@@ -1,6 +1,7 @@
 package io.github.a5h73y.carz.listeners;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.enums.GuiMenu;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
@@ -13,7 +14,6 @@ import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Sign;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,10 +63,11 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 }
             case "refuel":
             case "upgrade":
+            case "store":
                 break;
             default:
                 TranslationUtils.sendTranslation("Error.UnknownSignCommand", player);
-                player.sendMessage(Carz.getPrefix() + "Valid signs: refuel, purchase, upgrade");
+                player.sendMessage(Carz.getPrefix() + "Valid signs: refuel, purchase, upgrade, store");
                 breakSignAndCancelEvent(event);
                 return;
         }
@@ -83,8 +84,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         }
 
         String title = StringUtils.standardizeText(event.getLine(1));
-        player.sendMessage(TranslationUtils.getTranslation("Carz.SignCreated")
-                .replace("%TYPE%", title));
+        TranslationUtils.sendValueTranslation("Carz.SignCreated", title, true, player);
         event.setLine(0, Carz.getDefaultConfig().getSignHeader());
     }
 
@@ -100,8 +100,8 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
             return;
         }
 
-        if (!(event.getClickedBlock().getBlockData() instanceof Sign)
-                && !(event.getClickedBlock().getBlockData() instanceof WallSign)) {
+        if (event.getClickedBlock() == null
+                || !(event.getClickedBlock().getState() instanceof Sign)) {
             return;
         }
 
@@ -137,8 +137,8 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
             return;
         }
 
-        if (!(event.getClickedBlock().getBlockData() instanceof Sign)
-                && !(event.getClickedBlock().getBlockData() instanceof WallSign)) {
+        if (event.getClickedBlock() == null
+                || !(event.getClickedBlock().getState() instanceof Sign)) {
             return;
         }
 
@@ -186,6 +186,14 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
 
                 Car refuelCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
                 carz.getEconomyAPI().requestPurchase(player, new RefuelPurchase(refuelCar));
+                break;
+
+            case "store":
+                if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
+                    return;
+                }
+
+                carz.getGuiManager().showMenu(player, GuiMenu.CAR_STORE);
                 break;
 
             default:

@@ -25,7 +25,8 @@ public class RefuelPurchase extends Purchasable {
 
 	@Override
 	public void sendConfirmationMessage(Player player) {
-		double fillPercent = Carz.getInstance().getFuelController().determineScaleOfCostMultiplier(currentCar.getCurrentFuel());
+		double fillPercent = Carz.getInstance().getFuelController()
+				.determineScaleOfCostMultiplier(currentCar.getCurrentFuel());
 
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Refuel")
 				.replace(PERCENT_PLACEHOLDER, fillPercent * 100 + "%")

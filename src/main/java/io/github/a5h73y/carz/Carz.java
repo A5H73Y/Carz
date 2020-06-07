@@ -9,13 +9,15 @@ import io.github.a5h73y.carz.configuration.impl.DefaultConfig;
 import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.controllers.FuelController;
 import io.github.a5h73y.carz.enums.ConfigType;
+import io.github.a5h73y.carz.gui.CarzGuiManager;
 import io.github.a5h73y.carz.listeners.PlayerListener;
 import io.github.a5h73y.carz.listeners.SignListener;
 import io.github.a5h73y.carz.listeners.VehicleListener;
 import io.github.a5h73y.carz.other.CarzUpdater;
+import io.github.a5h73y.carz.persistence.ItemMetaUtils;
 import io.github.a5h73y.carz.plugin.BountifulAPI;
 import io.github.a5h73y.carz.plugin.EconomyAPI;
-import io.github.a5h73y.carz.utility.ItemMetaUtils;
+import io.github.a5h73y.carz.plugin.PlaceholderAPI;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bstats.bukkit.MetricsLite;
@@ -29,10 +31,12 @@ public class Carz extends JavaPlugin {
 
     private BountifulAPI bountifulAPI;
     private EconomyAPI economyAPI;
+    private PlaceholderAPI placeholderAPI;
 
     private FuelController fuelController;
     private CarController carController;
     private ConfigManager configManager;
+    private CarzGuiManager guiManager;
     private ItemMetaUtils itemMetaUtils;
 
     /**
@@ -51,9 +55,17 @@ public class Carz extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        // validate the server version is supported
+        if (PluginUtils.getMinorServerVersion() < 14) {
+            PluginUtils.log("Unsupported server version, please update server to 1.14 or above.", 2);
+            this.getPluginLoader().disablePlugin(this);
+            return;
+        }
+
         configManager = new ConfigManager(this.getDataFolder());
         carController = new CarController(this);
         fuelController = new FuelController(this);
+        guiManager = new CarzGuiManager(this);
         itemMetaUtils = new ItemMetaUtils();
 
         registerCommands();
@@ -81,14 +93,6 @@ public class Carz extends JavaPlugin {
     }
 
     /**
-     * The Carz message prefix.
-     * @return carz prefix from the config.
-     */
-    public static String getPrefix() {
-        return TranslationUtils.getTranslation("Carz.Prefix", false);
-    }
-
-    /**
      * Get the matching {@link CarzConfiguration} for the given {@link ConfigType}.
      *
      * @param type {@link ConfigType}
@@ -96,6 +100,14 @@ public class Carz extends JavaPlugin {
      */
     public static CarzConfiguration getConfig(ConfigType type) {
         return instance.configManager.get(type);
+    }
+
+    /**
+     * The Carz message prefix.
+     * @return carz prefix from the config.
+     */
+    public static String getPrefix() {
+        return TranslationUtils.getTranslation("Carz.Prefix", false);
     }
 
     /**
@@ -119,6 +131,14 @@ public class Carz extends JavaPlugin {
         return carController;
     }
 
+    public CarzGuiManager getGuiManager() {
+        return guiManager;
+    }
+
+    public ItemMetaUtils getItemMetaUtils() {
+        return itemMetaUtils;
+    }
+
     public BountifulAPI getBountifulAPI() {
         return bountifulAPI;
     }
@@ -127,13 +147,14 @@ public class Carz extends JavaPlugin {
         return economyAPI;
     }
 
-    public ItemMetaUtils getItemMetaUtils() {
-        return itemMetaUtils;
+    public PlaceholderAPI getPlaceholderAPI() {
+        return placeholderAPI;
     }
 
     private void setupPlugins() {
         bountifulAPI = new BountifulAPI();
         economyAPI = new EconomyAPI();
+        placeholderAPI = new PlaceholderAPI();
     }
 
     private void registerCommands() {

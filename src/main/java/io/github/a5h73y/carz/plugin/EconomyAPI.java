@@ -84,9 +84,8 @@ public class EconomyAPI extends PluginWrapper {
 				String currencyName = economy.currencyNamePlural() == null
 						? "" : " " + economy.currencyNamePlural();
 
-				player.sendMessage(
-						TranslationUtils.getTranslation("Error.PurchaseFailed")
-								.replace("%COST%", cost + currencyName));
+				TranslationUtils.sendValueTranslation("Error.PurchaseFailed",
+						cost + currencyName, true, player);
 			}
 		}
 
@@ -165,15 +164,17 @@ public class EconomyAPI extends PluginWrapper {
 	 * @return matching currency name
 	 */
 	public String getCurrencyName(double amount) {
-		String value;
+		String value = null;
 
-		if (amount == 1.0) {
-			value = economy.currencyNameSingular();
-		} else {
-			value = economy.currencyNamePlural();
+		if (economy.isEnabled()) {
+			if (amount == 1.0) {
+				value = economy.currencyNameSingular();
+			} else {
+				value = economy.currencyNamePlural();
+			}
 		}
 
-		return value == null ? "" : " " + value;
+		return value == null || value.isEmpty() ? "" : " " + value;
 	}
 
 	/**

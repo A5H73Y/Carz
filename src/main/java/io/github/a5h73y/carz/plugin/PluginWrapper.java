@@ -44,7 +44,8 @@ public abstract class PluginWrapper {
 		// otherwise display error and disable plugin usage.
 		if (externalPlugin != null && externalPlugin.isEnabled()) {
 			enabled = true;
-			PluginUtils.log("[" + getPluginName() + "] Successfully linked. Version: " + externalPlugin.getDescription().getVersion(), 0);
+			PluginUtils.log("[" + getPluginName() + "] Successfully linked. " +
+					"Version: " + externalPlugin.getDescription().getVersion(), 0);
 
 		} else {
 			PluginUtils.log("[" + getPluginName() + "] Plugin is missing, disabling config option.", 1);

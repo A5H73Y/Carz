@@ -57,6 +57,9 @@ public class CarzPlaceholders extends PlaceholderExpansion {
             case "fuel":
                 return car.getCurrentFuel().toString();
 
+            case "maxfuel":
+                return String.valueOf(carz.getFuelController().getMaxCapacity());
+
             case "cartype":
                 return car.getCarType();
         }
@@ -64,10 +67,22 @@ public class CarzPlaceholders extends PlaceholderExpansion {
         return null;
     }
 
+    /**
+     * Validate if the player is inside and driving a vehicle.
+     *
+     * @param player requested player
+     * @return player is driving
+     */
     public boolean playerIsDriving(Player player) {
         return player.isInsideVehicle() && carz.getCarController().isDriving(player.getName());
     }
 
+    /**
+     * Get the requested player's Car.
+     *
+     * @param player requested player
+     * @return player's car
+     */
     public Car getPlayersCar(Player player) {
         if (playerIsDriving(player)) {
             return carz.getCarController().getCar(player.getVehicle().getEntityId());

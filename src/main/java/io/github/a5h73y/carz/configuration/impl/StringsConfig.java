@@ -24,8 +24,8 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Carz.ConfigReloaded", "The config has been reloaded.");
 		this.addDefault("Carz.SignRemoved", "Carz sign removed!");
 		this.addDefault("Carz.CarsDestroyed", "All cars destroyed!");
-		this.addDefault("Carz.SignCreated", "%TYPE% sign created.");
-		this.addDefault("Carz.Heading", "-- &9&l%TEXT% &r--");
+		this.addDefault("Carz.SignCreated", "%VALUE% sign created.");
+		this.addDefault("Carz.Heading", "-- &9&l%VALUE% &r--");
 
 		this.addDefault("Car.Spawned", "Car Spawned.");
 		this.addDefault("Car.EngineStart", "You switch the engine on.");
@@ -35,16 +35,17 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Car.PlayerCar", "&b%PLAYER%&f's car");
 		this.addDefault("Car.FuelEmpty", "Your car has run out of fuel!");
 		this.addDefault("Car.LiquidDamage", "Your car has been destroyed by liquid!");
-		this.addDefault("Car.UpgradeSpeed", "New top speed: &b%SPEED%");
+		this.addDefault("Car.UpgradeSpeed", "New top speed: &b%VALUE%");
 		this.addDefault("Car.Key.Display", "&b%PLAYER%&f's key");
 		this.addDefault("Car.Key.Received", "You receive a key.");
 		this.addDefault("Car.Claimed", "You are now the owner of this car.");
+		this.addDefault("Car.OwnershipRemoved", "You have removed ownership of this car.");
 
 		this.addDefault("Purchase.Confirm.Purchase", "&7Enter &a/carz confirm &7to confirm, or &c/carz cancel &7to cancel the purchase.");
 		this.addDefault("Purchase.Confirm.Car", "You are about to purchase a &b%TYPE% &7car, costing &b%COST%%CURRENCY%&7.");
 		this.addDefault("Purchase.Confirm.Upgrade", "You are about to upgrade your car from &b%FROM% &7to &b%TO%&7, costing &b%COST%%CURRENCY%&7.");
 		this.addDefault("Purchase.Confirm.Refuel", "You are about to refuel &b%PERCENT% &7of your car's fuel, costing &b%COST%%CURRENCY%&7.");
-		this.addDefault("Purchase.Success.Car", "&f%TYPE% &7car Purchased!");
+		this.addDefault("Purchase.Success.Car", "&f%VALUE% &7car Purchased!");
 		this.addDefault("Purchase.Success.Upgrade", "Car Upgraded!");
 		this.addDefault("Purchase.Success.Refuel", "Car Refuelled!");
 		this.addDefault("Purchase.Cancelled", "Purchase cancelled.");
@@ -65,7 +66,16 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("BlockTypes.Added.Amount", "&b%MATERIAL% &7added to &b%TYPE% &7blocks, with an amount of &b%AMOUNT%&7.");
 		this.addDefault("BlockTypes.Removed", "&b%MATERIAL% &7removed from &b%TYPE% &7blocks.");
 
-		this.addDefault("Error.NoPermission", "You do not have permission: &b%PERMISSION%");
+		this.addDefault("CarStore.Heading", "Carz - Car Store");
+		this.addDefault("CarStore.Setup.Line1", "         ");
+		this.addDefault("CarStore.Setup.Line2", " ggggggg ");
+		this.addDefault("CarStore.Setup.Line3", "  fp nl  ");
+		this.addDefault("CarStore.MaxSpeed", "&fMax Speed: &b%VALUE%");
+		this.addDefault("CarStore.Acceleration", "&fAcceleration: &b%VALUE%");
+		this.addDefault("CarStore.FuelUsage", "&fFuel Usage: &b%VALUE%");
+		this.addDefault("CarStore.Cost", "&fCost: &b%VALUE%");
+
+		this.addDefault("Error.NoPermission", "You do not have permission: &b%VALUE%");
 		this.addDefault("Error.SignProtected", "This sign is protected.");
 		this.addDefault("Error.UnknownCommand", "Unknown Command.");
 		this.addDefault("Error.UnknownSignCommand", "Unknown Sign Command.");
@@ -74,7 +84,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.NotInCar", "You are not in a car.");
 		this.addDefault("Error.HaveCar", "You already have a car.");
 		this.addDefault("Error.FuelDisabled", "Fuel is disabled.");
-		this.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: %COST%");
+		this.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: %VALUE%");
 		this.addDefault("Error.FullyUpgraded", "Your car is already fully upgraded.");
 		this.addDefault("Error.Owned", "This car is owned by %PLAYER%!");
 		this.addDefault("Error.UnknownCarType", "Unknown car type.");
@@ -83,7 +93,8 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.SpecifyPlayer", "Please specify a player.");
 		this.addDefault("Error.PurchaseOutstanding", "You have an outstanding purchase.");
 		this.addDefault("Error.NoPurchaseOutstanding", "You don't have an outstanding purchase.");
-		this.addDefault("Error.CarNotDriven", "This can hasn't been driven yet.");
+		this.addDefault("Error.CarNotDriven", "This car hasn't been driven yet.");
+		this.addDefault("Error.NoOwnership", "This car doesn't have an owner.");
 		this.addDefault("Error.TooManyArgs", "Too many arguments.");
 		this.addDefault("Error.NotEnoughArgs", "Not enough arguments.");
 		this.addDefault("Error.OwnedCarsLimit", "You have reached the amount of Owned cars you can place.");
@@ -92,7 +103,7 @@ public class StringsConfig extends CarzConfiguration {
 
 		this.addDefault("Error.BlockTypes.Invalid", "Invalid Block Type.");
 		this.addDefault("Error.BlockTypes.AlreadyExists", "%MATERIAL% is already a %TYPE% block.");
-		this.addDefault("Error.BlockTypes.SpecifyAmount", "Invalid Syntax: /carz add %TYPE% (amount)");
+		this.addDefault("Error.BlockTypes.SpecifyAmount", "Invalid Syntax: /carz add %VALUE% (amount)");
 
 		this.options().copyDefaults(true);
 	}

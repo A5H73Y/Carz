@@ -1,5 +1,7 @@
 package io.github.a5h73y.carz.utility;
 
+import java.util.regex.Pattern;
+
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.ConfigType;
 import org.bukkit.command.CommandSender;
@@ -10,6 +12,8 @@ import static io.github.a5h73y.carz.utility.StringUtils.colour;
  * Translations related utility methods.
  */
 public class TranslationUtils {
+
+	private static final Pattern valuePlaceholder = Pattern.compile("%(?i)value%");
 
 	/**
 	 * Get translation of string key.
@@ -41,6 +45,10 @@ public class TranslationUtils {
 		return getTranslation(translationKey, true);
 	}
 
+	public static String getValueTranslation(String translationKey, String value, boolean prefix) {
+		return valuePlaceholder.matcher(getTranslation(translationKey, prefix)).replaceAll(value);
+	}
+
 	/**
 	 * Send the translated message to the player(s).
 	 *
@@ -66,13 +74,27 @@ public class TranslationUtils {
 	}
 
 	/**
+	 * Send the translated message to the player(s), replacing a value placeholder.
+	 *
+	 * @param translationKey to translate
+	 * @param value to replace
+	 * @param prefix display prefix
+	 * @param players targets to receive the message
+	 */
+	public static void sendValueTranslation(String translationKey, String value, boolean prefix, CommandSender... players) {
+		String translation = getValueTranslation(translationKey, value, prefix);
+		for (CommandSender player : players) {
+			player.sendMessage(translation);
+		}
+	}
+
+	/**
 	 * Send the translated message to the player with a heading template.
 	 *
 	 * @param message to display
 	 * @param player to receive the message
 	 */
 	public static void sendHeading(String message, CommandSender player) {
-		String heading = getTranslation("Carz.Heading", false);
-		player.sendMessage(heading.replace("%TEXT%", message));
+		sendValueTranslation("Carz.Heading", message, false, player);
 	}
 }

@@ -9,6 +9,7 @@ import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
 import io.github.a5h73y.carz.enums.BlockType;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.enums.ConfigType;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
@@ -25,7 +26,7 @@ public class PluginUtils {
      * @param command requested command {@link Commands}
      * @return command enabled
      */
-    public static boolean commandEnabled(CommandSender sender, Commands command) {
+    public static boolean isCommandEnabled(CommandSender sender, Commands command) {
         boolean enabled = Carz.getDefaultConfig().getBoolean(command.getConfigPath());
 
         if (!enabled) {
@@ -107,10 +108,18 @@ public class PluginUtils {
         return validMaterials;
     }
 
+    /**
+     * Add a new Material to a Block Type list.
+     *
+     * @param player requesting player
+     * @param args command arguments
+     */
     public static void addBlockType(CommandSender player, String[] args) {
-        BlockType chosenType = extractBlockType(args[1].toLowerCase());
+        BlockType chosenType;
 
-        if (chosenType == null) {
+        try {
+            chosenType = BlockType.valueOf(args[1].toUpperCase());
+        } catch (IllegalArgumentException e) {
             TranslationUtils.sendTranslation("Error.BlockTypes.Invalid", player);
             return;
         }
@@ -133,14 +142,12 @@ public class PluginUtils {
 
         if (chosenType.isHasAmount()) {
             if (args.length != 4) {
-                player.sendMessage(TranslationUtils.getTranslation("Error.BlockTypes.SpecifyAmount")
-                        .replace("%TYPE%", chosenTypeName));
+                TranslationUtils.sendValueTranslation("Error.BlockTypes.SpecifyAmount", chosenTypeName, true, player);
                 return;
             }
 
             if (!ValidationUtils.isDouble(args[3])) {
-                player.sendMessage(TranslationUtils.getTranslation("Error.InvalidNumber")
-                        .replace("%VALUE%", args[3]));
+                TranslationUtils.sendValueTranslation("Error.InvalidNumber", args[3], true, player);
                 return;
             }
 
@@ -166,11 +173,19 @@ public class PluginUtils {
         }
     }
 
+    /**
+     * Remove a Material from a Block Type list.
+     *
+     * @param player requesting player
+     * @param args command arguments
+     */
     public static void removeBlockType(CommandSender player, String[] args) {
-        BlockType chosenType = extractBlockType(args[1].toLowerCase());
+        BlockType chosenType;
 
-        if (chosenType == null) {
-            player.sendMessage("Invalid.");
+        try {
+            chosenType = BlockType.valueOf(args[1].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            TranslationUtils.sendTranslation("Error.BlockTypes.Invalid", player);
             return;
         }
 
@@ -200,27 +215,14 @@ public class PluginUtils {
                 .replace("%TYPE%", chosenTypeName));
     }
 
-    private static BlockType extractBlockType(String command) {
-        BlockType chosenType = null;
-
-        switch (command) {
-            case "climb":
-                chosenType = BlockType.CLIMB;
-                break;
-
-            case "placeable":
-                chosenType = BlockType.PLACEABLE;
-                break;
-
-            case "launch":
-                chosenType = BlockType.LAUNCH;
-                break;
-
-            case "speed":
-                chosenType = BlockType.SPEED;
-                break;
-
-        }
-        return chosenType;
+    /**
+     * Get the Server's minor version.
+     * Will strip the Bukkit version to just the distinguishable version (14, 15, etc.)
+     *
+     * @return server version
+     */
+    public static int getMinorServerVersion() {
+        String version = Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1];
+        return Integer.parseInt(version);
     }
 }

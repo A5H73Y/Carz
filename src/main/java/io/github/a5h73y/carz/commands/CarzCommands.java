@@ -3,11 +3,11 @@ package io.github.a5h73y.carz.commands;
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.carz.enums.Commands;
+import io.github.a5h73y.carz.enums.GuiMenu;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.other.CarzHelp;
-import io.github.a5h73y.carz.other.DelayTasks;
 import io.github.a5h73y.carz.purchases.CarPurchase;
 import io.github.a5h73y.carz.purchases.Purchasable;
 import io.github.a5h73y.carz.purchases.RefuelPurchase;
@@ -65,8 +65,16 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 carz.getCarController().claimOwnership(player);
                 break;
 
+            case "removeowner":
+                if (!ValidationUtils.canRemoveCarOwnership(player)) {
+                    return false;
+                }
+
+                carz.getCarController().removeOwnership(player);
+                break;
+
             case "spawn":
-                if (!PluginUtils.commandEnabled(player, Commands.SPAWN)) {
+                if (!PluginUtils.isCommandEnabled(player, Commands.SPAWN)) {
                     return false;
                 }
 
@@ -79,7 +87,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "purchase":
-                if (!PluginUtils.commandEnabled(player, Commands.PURCHASE)) {
+                if (!PluginUtils.isCommandEnabled(player, Commands.PURCHASE)) {
                     return false;
                 }
 
@@ -91,7 +99,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "upgrade":
-                if (!PluginUtils.commandEnabled(player, Commands.UPGRADE)) {
+                if (!PluginUtils.isCommandEnabled(player, Commands.UPGRADE)) {
                     return false;
                 }
 
@@ -104,7 +112,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "refuel":
-                if (!PluginUtils.commandEnabled(player, Commands.REFUEL)) {
+                if (!PluginUtils.isCommandEnabled(player, Commands.REFUEL)) {
                     return false;
                 }
 
@@ -117,7 +125,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 break;
 
             case "stash":
-                if (!PluginUtils.commandEnabled(player, Commands.PURCHASE)) {
+                if (!PluginUtils.isCommandEnabled(player, Commands.PURCHASE)) {
                     return false;
                 }
 
@@ -208,6 +216,18 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 }
 
                 carz.getEconomyAPI().sendEconomyInformation(player);
+                break;
+
+            case "store":
+                if (!PluginUtils.isCommandEnabled(player, Commands.STORE)) {
+                    return false;
+                }
+
+                if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
+                    return false;
+                }
+
+                carz.getGuiManager().showMenu(player, GuiMenu.CAR_STORE);
                 break;
 
             case "reload":

@@ -1,4 +1,4 @@
-package io.github.a5h73y.carz.utility;
+package io.github.a5h73y.carz.persistence;
 
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import org.bukkit.entity.Player;

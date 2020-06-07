@@ -41,11 +41,8 @@ public class CarPurchase extends Purchasable {
 	@Override
 	public void performPurchase(Player player) {
 		CarUtils.givePlayerCar(player, carType, true);
-
-		String successMessage = TranslationUtils.getTranslation("Purchase.Success.Car")
-				.replace(CAR_TYPE_PLACEHOLDER, StringUtils.standardizeText(carType));
-
-		player.sendMessage(successMessage);
+		TranslationUtils.sendValueTranslation("Purchase.Success.Car",
+				StringUtils.standardizeText(carType), true, player);
 		Bukkit.getServer().getPluginManager().callEvent(new PurchaseCarEvent(player, this));
 	}
 
