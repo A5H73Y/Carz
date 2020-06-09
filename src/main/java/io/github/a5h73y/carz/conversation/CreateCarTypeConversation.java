@@ -41,7 +41,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 		return new ChooseCarType();
 	}
 
-	private class ChooseCarType extends StringPrompt {
+	private static class ChooseCarType extends StringPrompt {
 
 		@Override
 		public String getPromptText(ConversationContext context) {
@@ -68,7 +68,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 		}
 	}
 
-	private class ChooseCarDetails extends StringPrompt {
+	private static class ChooseCarDetails extends StringPrompt {
 
 		private int progress = 0;
 		private final Map<String, String> answers = new HashMap<>();
@@ -90,12 +90,12 @@ public class CreateCarTypeConversation extends CarzConversation {
 			}
 
 			if (question.getConfigEntry().equals("FillMaterial")) {
+				choice = choice.toUpperCase();
 				if (Material.getMaterial(choice) == null) {
 					sendErrorMessage(context, TranslationUtils
-							.getTranslation("Error.UnknownMaterial", false) + choice.toUpperCase());
+							.getTranslation("Error.UnknownMaterial", false) + choice);
 					return this;
 				}
-				choice = choice.toUpperCase();
 			}
 
 			answers.put(question.getConfigEntry(), choice);

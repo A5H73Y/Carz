@@ -9,6 +9,7 @@ import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -229,22 +230,22 @@ public class EconomyAPI extends PluginWrapper {
 	/**
 	 * Send the player a summary of the Economy information.
 	 *
-	 * @param player requesting player
+	 * @param sender requesting sender
 	 */
-	public void sendEconomyInformation(Player player) {
-		TranslationUtils.sendHeading("Economy Details", player);
-		player.sendMessage("Enabled: " + isEnabled());
+	public void sendEconomyInformation(CommandSender sender) {
+		TranslationUtils.sendHeading("Economy Details", sender);
+		sender.sendMessage("Enabled: " + isEnabled());
 
 		if (isEnabled()) {
 			FileConfiguration config = Carz.getDefaultConfig();
-			player.sendMessage("Economy: " + economy.getName());
-			player.sendMessage("Purchase Confirmation: " + config.getBoolean("Vault.ConfirmPurchases"));
-			player.sendMessage("Upgrade Cost: " + config.getDouble("Vault.Cost.Upgrade"));
-			player.sendMessage("Refuel Cost: " + config.getDouble("Vault.Cost.Refuel"));
+			sender.sendMessage("Economy: " + economy.getName());
+			sender.sendMessage("Purchase Confirmation: " + config.getBoolean("Vault.ConfirmPurchases"));
+			sender.sendMessage("Upgrade Cost: " + config.getDouble("Vault.Cost.Upgrade"));
+			sender.sendMessage("Refuel Cost: " + config.getDouble("Vault.Cost.Refuel"));
 
-			player.sendMessage("CarTypes:");
+			sender.sendMessage("CarTypes:");
 			for (String carType : Carz.getInstance().getCarController().getCarTypes().keySet()) {
-				player.sendMessage(carType + " cost: "
+				sender.sendMessage(carType + " cost: "
 						+ config.getDouble("CarTypes." + carType + ".Cost"));
 			}
 		}

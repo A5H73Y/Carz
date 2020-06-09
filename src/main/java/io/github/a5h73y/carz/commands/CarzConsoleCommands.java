@@ -73,6 +73,19 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 PluginUtils.removeBlockType(sender, args);
                 break;
 
+            case "createtype":
+                new CreateCarTypeConversation((ConsoleCommandSender) sender).begin();
+                break;
+
+            case "cartypes":
+                TranslationUtils.sendHeading("Car Types", sender);
+                carz.getCarController().getCarTypes().keySet().forEach(sender::sendMessage);
+                break;
+
+            case "economy":
+                carz.getEconomyAPI().sendEconomyInformation(sender);
+                break;
+
             case "destroyall":
                 CarUtils.destroyAllCars();
                 TranslationUtils.sendTranslation("Carz.CarsDestroyed", sender);
@@ -83,13 +96,13 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 TranslationUtils.sendTranslation("Carz.ConfigReloaded", sender);
                 break;
 
-            case "createtype":
-                new CreateCarTypeConversation((ConsoleCommandSender) sender).begin();
-                break;
-
             case "cmds":
                 sender.sendMessage("/carzc spawn (player)");
-                sender.sendMessage("/carzc addCB");
+                sender.sendMessage("/carzc add (type) (material) [amount]");
+                sender.sendMessage("/carzc remove (type) (material)");
+                sender.sendMessage("/carzc createtype");
+                sender.sendMessage("/carzc cartypes");
+                sender.sendMessage("/carzc economy");
                 sender.sendMessage("/carzc destroyall");
                 sender.sendMessage("/carzc reload");
                 break;

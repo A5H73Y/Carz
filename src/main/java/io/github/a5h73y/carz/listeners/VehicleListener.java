@@ -357,7 +357,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
      */
     @EventHandler
     public void onVehicleCollide(VehicleEntityCollisionEvent event) {
-        if (!(event.getVehicle().getPassenger() instanceof Player)) {
+        if (event.getVehicle().getPassengers().isEmpty()
+                || !(event.getVehicle().getPassengers().get(0) instanceof Player)) {
             return;
         }
 
@@ -365,7 +366,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        Player player = (Player) event.getVehicle().getPassenger();
+        Player player = (Player) event.getVehicle().getPassengers().get(0);
 
         if (!carz.getCarController().isDriving(player.getName())) {
             return;

@@ -225,8 +225,7 @@ public class ValidationUtils {
 	 * @return player can claim car
 	 */
 	public static boolean canClaimCar(Player player) {
-		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)
-				|| !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
+		if (!player.isInsideVehicle() || !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
 			TranslationUtils.sendTranslation("Error.NotInCar", player);
 			return false;
 		}
@@ -250,8 +249,7 @@ public class ValidationUtils {
 	 * @return player can remove ownership of car
 	 */
 	public static boolean canRemoveCarOwnership(Player player) {
-		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)
-				|| !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
+		if (!player.isInsideVehicle() || !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
 			TranslationUtils.sendTranslation("Error.NotInCar", player);
 			return false;
 		}

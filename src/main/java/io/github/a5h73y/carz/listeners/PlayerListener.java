@@ -2,6 +2,7 @@ package io.github.a5h73y.carz.listeners;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.controllers.CarController;
+import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.utility.PlayerUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
@@ -17,8 +18,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
@@ -99,5 +102,23 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
         }
 
         PlayerUtils.reduceItemStackInPlayersHand(player);
+    }
+
+    /**
+     * When the player disconnects from the server.
+     * If they are driving, persist the amount of fuel they had.
+     *
+     * @param event {@link PlayerQuitEvent}
+     */
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+
+        if (!player.isInsideVehicle() || !carz.getCarController().isDriving(player.getName())) {
+            return;
+        }
+
+        Car car = carz.getCarController().getCar((Minecart) player.getVehicle());
+        carz.getItemMetaUtils().setValue(VEHICLE_FUEL, player.getVehicle(), car.getCurrentFuel().toString());
     }
 }

@@ -15,6 +15,7 @@ import io.github.a5h73y.carz.utility.CarUtils;
 import io.github.a5h73y.carz.utility.EffectUtils;
 import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Minecart;
@@ -178,7 +179,7 @@ public class CarController extends AbstractPluginReceiver {
      * @param player requesting player
      */
     public void stashCar(Player player) {
-        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
+        if (!player.isInsideVehicle() || !ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
             TranslationUtils.sendTranslation("Error.NotInCar", player);
             return;
         }
@@ -193,7 +194,7 @@ public class CarController extends AbstractPluginReceiver {
      * @param vehicle minecart to stash
      */
     public void stashCar(Player player, Minecart vehicle) {
-        if (vehicle == null) {
+        if (vehicle == null || !ValidationUtils.isACarzVehicle(vehicle)) {
             return;
         }
 

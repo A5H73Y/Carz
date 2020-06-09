@@ -53,39 +53,6 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
         }
 
         switch (args[0].toLowerCase()) {
-            case "fuel":
-                carz.getFuelController().displayFuelLevel(player);
-                break;
-
-            case "claim":
-                if (!ValidationUtils.canClaimCar(player)) {
-                    return false;
-                }
-
-                carz.getCarController().claimOwnership(player);
-                break;
-
-            case "removeowner":
-                if (!ValidationUtils.canRemoveCarOwnership(player)) {
-                    return false;
-                }
-
-                carz.getCarController().removeOwnership(player);
-                break;
-
-            case "spawn":
-                if (!PluginUtils.isCommandEnabled(player, Commands.SPAWN)) {
-                    return false;
-                }
-
-                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
-                    return false;
-                }
-
-                CarUtils.givePlayerCar(player, args.length > 1 ? args[1] : DEFAULT_CAR);
-                TranslationUtils.sendTranslation("Car.Spawned", player);
-                break;
-
             case "purchase":
                 if (!PluginUtils.isCommandEnabled(player, Commands.PURCHASE)) {
                     return false;
@@ -124,12 +91,40 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 carz.getEconomyAPI().requestPurchase(player, new RefuelPurchase(refuelCar));
                 break;
 
-            case "stash":
-                if (!PluginUtils.isCommandEnabled(player, Commands.PURCHASE)) {
+            case "fuel":
+                carz.getFuelController().displayFuelLevel(player);
+                break;
+
+            case "spawn":
+                if (!PluginUtils.isCommandEnabled(player, Commands.SPAWN)) {
                     return false;
                 }
 
-                carz.getCarController().stashCar(player);
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+                }
+
+                CarUtils.givePlayerCar(player, args.length > 1 ? args[1] : DEFAULT_CAR);
+                TranslationUtils.sendTranslation("Car.Spawned", player);
+                break;
+
+            case "details":
+                if (player.isInsideVehicle()
+                        && carz.getCarController().getCar(player.getVehicle().getEntityId()) != null) {
+                    TranslationUtils.sendHeading("Car Details", player);
+                    player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
+                    carz.getItemMetaUtils().printDataDetails(player, player.getVehicle());
+
+                } else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART) {
+                    TranslationUtils.sendHeading("Car Details", player);
+                    carz.getItemMetaUtils().printDataDetails(player,
+                            player.getInventory().getItemInMainHand().getItemMeta());
+
+                } else {
+                    TranslationUtils.sendTranslation("Error.NotInCar", player);
+                    return false;
+                }
+
                 break;
 
             case "add":
@@ -151,6 +146,30 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 PluginUtils.removeBlockType(player, args);
                 break;
 
+            case "stash":
+                if (!PluginUtils.isCommandEnabled(player, Commands.PURCHASE)) {
+                    return false;
+                }
+
+                carz.getCarController().stashCar(player);
+                break;
+
+            case "claim":
+                if (!ValidationUtils.canClaimCar(player)) {
+                    return false;
+                }
+
+                carz.getCarController().claimOwnership(player);
+                break;
+
+            case "removeowner":
+                if (!ValidationUtils.canRemoveCarOwnership(player)) {
+                    return false;
+                }
+
+                carz.getCarController().removeOwnership(player);
+                break;
+
             case "createtype":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
@@ -166,25 +185,6 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
 
                 TranslationUtils.sendHeading("Car Types", player);
                 carz.getCarController().getCarTypes().keySet().forEach(player::sendMessage);
-                break;
-
-            case "details":
-                if (player.isInsideVehicle()
-                        && carz.getCarController().getCar(player.getVehicle().getEntityId()) != null) {
-                    TranslationUtils.sendHeading("Car Details", player);
-                    player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
-                    carz.getItemMetaUtils().printDataDetails(player, player.getVehicle());
-
-                } else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART) {
-                    TranslationUtils.sendHeading("Car Details", player);
-                    carz.getItemMetaUtils().printDataDetails(player,
-                            player.getInventory().getItemInMainHand().getItemMeta());
-
-                } else {
-                    TranslationUtils.sendTranslation("Error.NotInCar", player);
-                    return false;
-                }
-
                 break;
 
             case "confirm":

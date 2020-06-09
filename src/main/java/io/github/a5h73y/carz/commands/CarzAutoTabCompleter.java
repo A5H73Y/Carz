@@ -45,7 +45,7 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             allowedCommands = populateMainCommands(player);
 
         } else if (args.length == 2) {
-            allowedCommands = populateChildCommands(player, args[0].toLowerCase());
+            allowedCommands = populateChildCommands(args[0].toLowerCase());
         }
 
         for (String allowedCommand : allowedCommands) {
@@ -109,13 +109,17 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         return allowedCommands;
     }
 
-    private List<String> populateChildCommands(Player player, String command) {
+    private List<String> populateChildCommands(String command) {
         List<String> allowedCommands = new ArrayList<>();
 
         switch (command) {
             case "add":
             case "remove":
                 allowedCommands = addRemoveList;
+                break;
+            case "purchase":
+            case "spawn":
+                allowedCommands = new ArrayList<>(carz.getCarController().getCarTypes().keySet());
                 break;
         }
 
