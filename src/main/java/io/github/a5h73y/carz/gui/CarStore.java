@@ -54,19 +54,19 @@ public class CarStore extends AbstractMenu {
 							StringUtils.standardizeText(carType.getKey()),
 
 							// maximum speed
-							TranslationUtils.getValueTranslation("CarStore.MaxSpeed",
+							TranslationUtils.getValueTranslation("CarDetails.MaxSpeed",
 									String.valueOf(carType.getValue().getStartMaxSpeed()), false),
 
 							// acceleration
-							TranslationUtils.getValueTranslation("CarStore.Acceleration",
+							TranslationUtils.getValueTranslation("CarDetails.Acceleration",
 									String.valueOf(carType.getValue().getAcceleration()), false),
 
 							// fuel usage
-							TranslationUtils.getValueTranslation("CarStore.FuelUsage",
+							TranslationUtils.getValueTranslation("CarDetails.FuelUsage",
 									String.valueOf(carType.getValue().getAcceleration()), false),
 
 							// economy cost
-							TranslationUtils.getValueTranslation("CarStore.Cost", displayCost, false)
+							TranslationUtils.getValueTranslation("CarDetails.Cost", displayCost, false)
 					));
 		}
 		return group;

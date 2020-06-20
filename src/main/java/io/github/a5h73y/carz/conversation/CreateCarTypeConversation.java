@@ -117,7 +117,8 @@ public class CreateCarTypeConversation extends CarzConversation {
 
 				} else {
 					Carz.getInstance().getCarController().populateCarTypes();
-					context.getForWhom().sendRawMessage("All done, '" + carTypeName + "' created.");
+					context.getForWhom().sendRawMessage(TranslationUtils
+							.getValueTranslation("CarType.Create.Success", carTypeName, false));
 					return Prompt.END_OF_CONVERSATION;
 				}
 			}

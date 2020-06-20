@@ -1,7 +1,11 @@
 package io.github.a5h73y.carz.utility;
 
+import java.util.Arrays;
+import java.util.List;
+
 import io.github.a5h73y.carz.Carz;
-import io.github.a5h73y.carz.persistence.ItemMetaUtils;
+import io.github.a5h73y.carz.model.CarDetails;
+import io.github.a5h73y.carz.persistence.CarDataPersistence;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -12,7 +16,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_SPEED;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
@@ -40,10 +46,10 @@ public class CarUtils {
 	public static int numberOfOwnedCars(Player player) {
 		int number = 0;
 
-		ItemMetaUtils itemMetaUtils = Carz.getInstance().getItemMetaUtils();
+		CarDataPersistence carDataPersistence = Carz.getInstance().getItemMetaUtils();
 		for (Minecart vehicle : player.getWorld().getEntitiesByClass(Minecart.class)) {
-			if (itemMetaUtils.has(VEHICLE_OWNER, vehicle)
-					&& itemMetaUtils.getValue(VEHICLE_OWNER, vehicle).equals(player.getName())) {
+			if (carDataPersistence.has(VEHICLE_OWNER, vehicle)
+					&& carDataPersistence.getValue(VEHICLE_OWNER, vehicle).equals(player.getName())) {
 				number++;
 			}
 		}
@@ -83,6 +89,7 @@ public class CarUtils {
 			Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
 			setOwnerDisplayName(itemStack, player);
 		}
+		setCarSummaryInformation(itemStack);
 
 		player.getInventory().addItem(itemStack);
 		player.updateInventory();
@@ -96,16 +103,15 @@ public class CarUtils {
 	 * @param vehicle target minecart
 	 */
 	public static void transferMinecartToInventory(Player player, Minecart vehicle) {
-		ItemMetaUtils itemMetaUtils = Carz.getInstance().getItemMetaUtils();
+		CarDataPersistence carDataPersistence = Carz.getInstance().getItemMetaUtils();
 		ItemStack itemStack = new ItemStack(Material.MINECART);
 
-		ItemMeta itemMeta = itemStack.getItemMeta();
-		itemMetaUtils.transferNamespaceKeyValues(vehicle, itemMeta);
-		itemStack.setItemMeta(itemMeta);
+		carDataPersistence.transferNamespaceKeyValues(vehicle, itemStack);
 
-		if (itemMetaUtils.has(VEHICLE_OWNER, vehicle)) {
-			setOwnerDisplayName(itemStack, itemMetaUtils.getValue(VEHICLE_OWNER, vehicle));
+		if (carDataPersistence.has(VEHICLE_OWNER, itemStack)) {
+			setOwnerDisplayName(itemStack, carDataPersistence.getValue(VEHICLE_OWNER, itemStack));
 		}
+		setCarSummaryInformation(itemStack);
 
 		player.getInventory().addItem(itemStack);
 		player.updateInventory();
@@ -128,10 +134,40 @@ public class CarUtils {
 	 * @param playerName owner of the car
 	 */
 	public static void setOwnerDisplayName(ItemStack itemStack, String playerName) {
-		if (itemStack.hasItemMeta()) {
+		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
+				&& itemStack.hasItemMeta()) {
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			itemMeta.setDisplayName(TranslationUtils.getTranslation("Car.PlayerCar", false)
 					.replace("%PLAYER%", playerName));
+			itemStack.setItemMeta(itemMeta);
+		}
+	}
+
+	public static void setCarSummaryInformation(ItemStack itemStack) {
+		Carz carz = Carz.getInstance();
+
+		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
+				&& itemStack.hasItemMeta()
+				&& carz.getItemMetaUtils().has(VEHICLE_TYPE, itemStack)) {
+
+			String vehicleType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, itemStack);
+			CarDetails details = carz.getCarController().getCarTypes().get(vehicleType);
+			boolean hasUpgrade = carz.getItemMetaUtils().has(VEHICLE_SPEED, itemStack);
+			boolean hasFuel = carz.getItemMetaUtils().has(VEHICLE_FUEL, itemStack);
+
+			String maxSpeed = !hasUpgrade ? String.valueOf(details.getStartMaxSpeed()) :
+					carz.getItemMetaUtils().getValue(VEHICLE_SPEED, itemStack);
+
+			String fuel = !hasFuel ? String.valueOf(carz.getFuelController().getMaxCapacity()) :
+					carz.getItemMetaUtils().getValue(VEHICLE_FUEL, itemStack);
+
+			List<String> lore = Arrays.asList(
+					TranslationUtils.getValueTranslation("CarDetails.Type", vehicleType, false),
+					TranslationUtils.getValueTranslation("CarDetails.MaxSpeed", maxSpeed, false),
+					TranslationUtils.getValueTranslation("CarDetails.Fuel", fuel, false));
+
+			ItemMeta itemMeta = itemStack.getItemMeta();
+			itemMeta.setLore(lore);
 			itemStack.setItemMeta(itemMeta);
 		}
 	}
@@ -147,9 +183,9 @@ public class CarUtils {
 		String keyName = TranslationUtils.getTranslation("Car.Key.Display", false)
 				.replace("%PLAYER%", player.getName());
 
+		Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		itemMeta.setDisplayName(keyName);
-		Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemMeta, player.getName());
 
 		if (Carz.getDefaultConfig().getBoolean("Key.Glow")) {
 			itemMeta.addEnchant(Enchantment.DURABILITY, 1, false);

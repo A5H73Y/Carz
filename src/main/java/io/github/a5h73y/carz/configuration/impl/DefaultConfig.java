@@ -28,6 +28,9 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Key.AutomaticLocking", true);
 		this.addDefault("Key.SneakLockAction", true);
 
+		this.addDefault("CarItem.DisplayOwner", true);
+		this.addDefault("CarItem.DisplaySummaryInformation", true);
+
 		this.addDefault("Speed.Upgrade.Increment", 25.0);
 
 		this.addDefault("CommandEnabled.Spawn", true);

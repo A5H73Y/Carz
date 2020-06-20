@@ -91,7 +91,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
         Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
         Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
 
-        carz.getItemMetaUtils().transferNamespaceKeyValues(carInHand.getItemMeta(), spawnedCar);
+        carz.getItemMetaUtils().transferNamespaceKeyValues(carInHand, spawnedCar);
 
         String vehicleType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, spawnedCar);
         Material fillMaterial = carz.getCarController().getCarTypes().get(vehicleType).getFillMaterial();

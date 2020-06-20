@@ -70,10 +70,13 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("CarStore.Setup.Line1", "         ");
 		this.addDefault("CarStore.Setup.Line2", " ggggggg ");
 		this.addDefault("CarStore.Setup.Line3", "  fp nl  ");
-		this.addDefault("CarStore.MaxSpeed", "&fMax Speed: &b%VALUE%");
-		this.addDefault("CarStore.Acceleration", "&fAcceleration: &b%VALUE%");
-		this.addDefault("CarStore.FuelUsage", "&fFuel Usage: &b%VALUE%");
-		this.addDefault("CarStore.Cost", "&fCost: &b%VALUE%");
+
+		this.addDefault("CarDetails.Type", "&fCar Type: &b%VALUE%");
+		this.addDefault("CarDetails.MaxSpeed", "&fMax Speed: &b%VALUE%");
+		this.addDefault("CarDetails.Acceleration", "&fAcceleration: &b%VALUE%");
+		this.addDefault("CarDetails.FuelUsage", "&fFuel Usage: &b%VALUE%");
+		this.addDefault("CarDetails.Cost", "&fCost: &b%VALUE%");
+		this.addDefault("CarDetails.Fuel", "&fFuel: &b%VALUE%");
 
 		this.addDefault("Error.NoPermission", "You do not have permission: &b%VALUE%");
 		this.addDefault("Error.SignProtected", "This sign is protected.");

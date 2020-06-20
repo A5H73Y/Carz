@@ -117,8 +117,8 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
 
                 } else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART) {
                     TranslationUtils.sendHeading("Car Details", player);
-                    carz.getItemMetaUtils().printDataDetails(player,
-                            player.getInventory().getItemInMainHand().getItemMeta());
+//                    carz.getItemMetaUtils().printDataDetails(player,
+//                            player.getInventory().getItemInMainHand());
 
                 } else {
                     TranslationUtils.sendTranslation("Error.NotInCar", player);

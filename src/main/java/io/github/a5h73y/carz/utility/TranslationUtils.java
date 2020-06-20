@@ -46,7 +46,8 @@ public class TranslationUtils {
 	}
 
 	public static String getValueTranslation(String translationKey, String value, boolean prefix) {
-		return valuePlaceholder.matcher(getTranslation(translationKey, prefix)).replaceAll(value);
+		return valuePlaceholder.matcher(getTranslation(translationKey, prefix))
+				.replaceAll(value == null ? "" : value);
 	}
 
 	/**

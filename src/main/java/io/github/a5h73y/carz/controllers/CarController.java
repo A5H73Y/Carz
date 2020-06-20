@@ -297,7 +297,7 @@ public class CarController extends AbstractPluginReceiver {
      * @param player requesting player
      */
     public void claimOwnership(Player player) {
-        if (!player.isInsideVehicle()) {
+        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
             return;
         }
 
@@ -311,7 +311,7 @@ public class CarController extends AbstractPluginReceiver {
      * @param player requesting player
      */
     public void removeOwnership(Player player) {
-        if (!player.isInsideVehicle()) {
+        if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
             return;
         }
 

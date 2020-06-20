@@ -14,7 +14,9 @@ import io.github.a5h73y.carz.listeners.PlayerListener;
 import io.github.a5h73y.carz.listeners.SignListener;
 import io.github.a5h73y.carz.listeners.VehicleListener;
 import io.github.a5h73y.carz.other.CarzUpdater;
-import io.github.a5h73y.carz.persistence.ItemMetaUtils;
+import io.github.a5h73y.carz.persistence.CarDataHolder;
+import io.github.a5h73y.carz.persistence.CarDataMap;
+import io.github.a5h73y.carz.persistence.CarDataPersistence;
 import io.github.a5h73y.carz.plugin.BountifulAPI;
 import io.github.a5h73y.carz.plugin.EconomyAPI;
 import io.github.a5h73y.carz.plugin.PlaceholderAPI;
@@ -37,7 +39,7 @@ public class Carz extends JavaPlugin {
     private CarController carController;
     private ConfigManager configManager;
     private CarzGuiManager guiManager;
-    private ItemMetaUtils itemMetaUtils;
+    private CarDataPersistence carDataPersistence;
 
     /**
      * Get the plugin's instance.
@@ -55,18 +57,17 @@ public class Carz extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        // validate the server version is supported
-        if (PluginUtils.getMinorServerVersion() < 14) {
-            PluginUtils.log("Unsupported server version, please update server to 1.14 or above.", 2);
-            this.getPluginLoader().disablePlugin(this);
-            return;
-        }
-
         configManager = new ConfigManager(this.getDataFolder());
         carController = new CarController(this);
         fuelController = new FuelController(this);
         guiManager = new CarzGuiManager(this);
-        itemMetaUtils = new ItemMetaUtils();
+
+        if (PluginUtils.getMinorServerVersion() < 14) {
+            PluginUtils.log("Unsupported server version, expect unintended behaviour.", 2);
+            carDataPersistence = new CarDataMap();
+        } else {
+            carDataPersistence = new CarDataHolder();
+        }
 
         registerCommands();
         registerEvents();
@@ -135,8 +136,8 @@ public class Carz extends JavaPlugin {
         return guiManager;
     }
 
-    public ItemMetaUtils getItemMetaUtils() {
-        return itemMetaUtils;
+    public CarDataPersistence getItemMetaUtils() {
+        return carDataPersistence;
     }
 
     public BountifulAPI getBountifulAPI() {
