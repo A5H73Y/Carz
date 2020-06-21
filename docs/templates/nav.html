@@ -16,7 +16,9 @@
             let links = ["The Basics", "Sign Commands", "Block Types", "Economy", "Plugin Configuration", "Races", "Other Plugin Support", "Developer Tutorials"];
             for (let i = 0; i < links.length; i++) {
                 let link = links[i];
-                $(".navbar-nav").append(`<li class="nav-item"><a class="nav-link" href="part${i + 1}.html">Part ${i + 1}: ${link}</a></li>`);
+                let pathName = window.location.pathname;
+                let selectedClass = pathName.endsWith(`part${i + 1}.html`) ? 'active' : '';
+                $(".navbar-nav").append(`<li class="nav-item ${selectedClass}"><a class="nav-link" href="part${i + 1}.html">Part ${i + 1}: ${link}</a></li>`);
             }
         </script>
     </div>

@@ -7,7 +7,7 @@ import io.github.a5h73y.carz.CarzPlaceholders;
  * {@link me.clip.placeholderapi.PlaceholderAPI} integration.
  * Allow for usage of Carz placeholders.
  */
-public class PlaceholderAPI extends PluginWrapper {
+public class PlaceholderApi extends PluginWrapper {
 
 	@Override
 	public String getPluginName() {

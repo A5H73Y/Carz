@@ -31,7 +31,7 @@ public class CarPurchase extends Purchasable {
 		String purchaseMessage = TranslationUtils.getTranslation("Purchase.Confirm.Car")
 				.replace(CAR_TYPE_PLACEHOLDER, carType)
 				.replace(COST_PLACEHOLDER, String.valueOf(getCost()))
-				.replace(CURRENCY_PLACEHOLDER, Carz.getInstance().getEconomyAPI()
+				.replace(CURRENCY_PLACEHOLDER, Carz.getInstance().getEconomyApi()
 						.getCurrencyName(getCost()));
 
 		player.sendMessage(purchaseMessage);

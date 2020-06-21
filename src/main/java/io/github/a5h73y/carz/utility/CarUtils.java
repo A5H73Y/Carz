@@ -1,11 +1,15 @@
 package io.github.a5h73y.carz.utility;
 
-import java.util.Arrays;
-import java.util.List;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_SPEED;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.model.CarDetails;
 import io.github.a5h73y.carz.persistence.CarDataPersistence;
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -15,11 +19,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_SPEED;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
  * Car related utility methods.
@@ -46,7 +45,7 @@ public class CarUtils {
 	public static int numberOfOwnedCars(Player player) {
 		int number = 0;
 
-		CarDataPersistence carDataPersistence = Carz.getInstance().getItemMetaUtils();
+		CarDataPersistence carDataPersistence = Carz.getInstance().getCarDataPersistence();
 		for (Minecart vehicle : player.getWorld().getEntitiesByClass(Minecart.class)) {
 			if (carDataPersistence.has(VEHICLE_OWNER, vehicle)
 					&& carDataPersistence.getValue(VEHICLE_OWNER, vehicle).equals(player.getName())) {
@@ -83,10 +82,10 @@ public class CarUtils {
 		}
 
 		ItemStack itemStack = new ItemStack(Material.MINECART);
-		Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_TYPE, itemStack, carType);
+		Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_TYPE, itemStack, carType);
 
 		if (owner) {
-			Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
+			Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_OWNER, itemStack, player.getName());
 			setOwnerDisplayName(itemStack, player);
 		}
 		setCarSummaryInformation(itemStack);
@@ -103,7 +102,7 @@ public class CarUtils {
 	 * @param vehicle target minecart
 	 */
 	public static void transferMinecartToInventory(Player player, Minecart vehicle) {
-		CarDataPersistence carDataPersistence = Carz.getInstance().getItemMetaUtils();
+		CarDataPersistence carDataPersistence = Carz.getInstance().getCarDataPersistence();
 		ItemStack itemStack = new ItemStack(Material.MINECART);
 
 		carDataPersistence.transferNamespaceKeyValues(vehicle, itemStack);
@@ -143,23 +142,29 @@ public class CarUtils {
 		}
 	}
 
+	/**
+	 * Add Car's summary information to the ItemStack.
+	 * All details will be derived from the item meta utils.
+	 *
+	 * @param itemStack item stack
+	 */
 	public static void setCarSummaryInformation(ItemStack itemStack) {
 		Carz carz = Carz.getInstance();
 
 		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
 				&& itemStack.hasItemMeta()
-				&& carz.getItemMetaUtils().has(VEHICLE_TYPE, itemStack)) {
+				&& carz.getCarDataPersistence().has(VEHICLE_TYPE, itemStack)) {
 
-			String vehicleType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, itemStack);
+			String vehicleType = carz.getCarDataPersistence().getValue(VEHICLE_TYPE, itemStack);
 			CarDetails details = carz.getCarController().getCarTypes().get(vehicleType);
-			boolean hasUpgrade = carz.getItemMetaUtils().has(VEHICLE_SPEED, itemStack);
-			boolean hasFuel = carz.getItemMetaUtils().has(VEHICLE_FUEL, itemStack);
+			boolean hasUpgrade = carz.getCarDataPersistence().has(VEHICLE_SPEED, itemStack);
+			boolean hasFuel = carz.getCarDataPersistence().has(VEHICLE_FUEL, itemStack);
 
 			String maxSpeed = !hasUpgrade ? String.valueOf(details.getStartMaxSpeed()) :
-					carz.getItemMetaUtils().getValue(VEHICLE_SPEED, itemStack);
+					carz.getCarDataPersistence().getValue(VEHICLE_SPEED, itemStack);
 
 			String fuel = !hasFuel ? String.valueOf(carz.getFuelController().getMaxCapacity()) :
-					carz.getItemMetaUtils().getValue(VEHICLE_FUEL, itemStack);
+					carz.getCarDataPersistence().getValue(VEHICLE_FUEL, itemStack);
 
 			List<String> lore = Arrays.asList(
 					TranslationUtils.getValueTranslation("CarDetails.Type", vehicleType, false),
@@ -183,7 +188,7 @@ public class CarUtils {
 		String keyName = TranslationUtils.getTranslation("Car.Key.Display", false)
 				.replace("%PLAYER%", player.getName());
 
-		Carz.getInstance().getItemMetaUtils().setValue(VEHICLE_OWNER, itemStack, player.getName());
+		Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_OWNER, itemStack, player.getName());
 		ItemMeta itemMeta = itemStack.getItemMeta();
 		itemMeta.setDisplayName(keyName);
 

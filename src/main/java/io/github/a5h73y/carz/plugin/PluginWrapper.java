@@ -1,10 +1,10 @@
 package io.github.a5h73y.carz.plugin;
 
+import static org.bukkit.Bukkit.getServer;
+
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import org.bukkit.plugin.Plugin;
-
-import static org.bukkit.Bukkit.getServer;
 
 /**
  * 3rd party Plugin Wrapper.
@@ -44,8 +44,8 @@ public abstract class PluginWrapper {
 		// otherwise display error and disable plugin usage.
 		if (externalPlugin != null && externalPlugin.isEnabled()) {
 			enabled = true;
-			PluginUtils.log("[" + getPluginName() + "] Successfully linked. " +
-					"Version: " + externalPlugin.getDescription().getVersion(), 0);
+			PluginUtils.log("[" + getPluginName() + "] Successfully linked. "
+					+ "Version: " + externalPlugin.getDescription().getVersion(), 0);
 
 		} else {
 			PluginUtils.log("[" + getPluginName() + "] Plugin is missing, disabling config option.", 1);

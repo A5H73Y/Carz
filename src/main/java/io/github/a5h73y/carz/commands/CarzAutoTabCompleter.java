@@ -1,14 +1,13 @@
 package io.github.a5h73y.carz.commands;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.utility.PermissionUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -61,7 +60,7 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         List<String> allowedCommands = new ArrayList<>();
 
         // if they have an outstanding purchase, make those the only options
-        if (carz.getEconomyAPI().isPurchasing(player)) {
+        if (carz.getEconomyApi().isPurchasing(player)) {
             return questionList;
         }
 
@@ -98,6 +97,7 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             allowedCommands.add("add");
             allowedCommands.add("remove");
             allowedCommands.add("createtype");
+            allowedCommands.add("removetype");
             allowedCommands.add("economy");
             allowedCommands.add("reload");
 
@@ -120,6 +120,8 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
             case "purchase":
             case "spawn":
                 allowedCommands = new ArrayList<>(carz.getCarController().getCarTypes().keySet());
+                break;
+            default:
                 break;
         }
 

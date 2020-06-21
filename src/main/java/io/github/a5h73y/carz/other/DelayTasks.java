@@ -1,9 +1,8 @@
 package io.github.a5h73y.carz.other;
 
+import io.github.a5h73y.carz.Carz;
 import java.util.HashMap;
 import java.util.Map;
-
-import io.github.a5h73y.carz.Carz;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 

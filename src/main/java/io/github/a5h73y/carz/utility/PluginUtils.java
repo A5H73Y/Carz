@@ -1,14 +1,14 @@
 package io.github.a5h73y.carz.utility;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
+import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.enums.BlockType;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.enums.ConfigType;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -47,11 +47,13 @@ public class PluginUtils {
      */
     public static boolean validateArgs(CommandSender sender, String[] args, int minimum, int maximum) {
         if (args.length < minimum) {
-            sender.sendMessage(TranslationUtils.getTranslation("Error.NotEnoughArgs") + " (between " + minimum + " and " + maximum + ")");
+            sender.sendMessage(TranslationUtils.getTranslation("Error.NotEnoughArgs")
+                    + " (between " + minimum + " and " + maximum + ")");
             return false;
 
         } else if (args.length > maximum) {
-            sender.sendMessage(TranslationUtils.getTranslation("Error.TooManyArgs") + " (between " + minimum + " and " + maximum + ")");
+            sender.sendMessage(TranslationUtils.getTranslation("Error.TooManyArgs")
+                    + " (between " + minimum + " and " + maximum + ")");
             return false;
         }
         return true;
@@ -155,7 +157,8 @@ public class PluginUtils {
 
             if (amount < 0 || amount > 100) {
                 player.sendMessage(Carz.getPrefix() + "Invalid Amount.");
-                player.sendMessage(Carz.getPrefix() + "If you are sure this is what you want, edit the blocks.yml file manually.");
+                player.sendMessage(Carz.getPrefix() + "If you are sure this is what you want, "
+                        + "edit the blocks.yml file manually.");
                 return;
             }
 
@@ -213,6 +216,27 @@ public class PluginUtils {
         player.sendMessage(TranslationUtils.getTranslation("BlockTypes.Removed")
                 .replace("%MATERIAL%", material.name())
                 .replace("%TYPE%", chosenTypeName));
+    }
+
+    /**
+     * Remove a Car Type from available car types.
+     * Utility method to avoid manual config changes.
+     *
+     * @param player requesting person
+     * @param carTypeName requested car type to delete
+     */
+    public static void removeCarType(CommandSender player, String carTypeName) {
+        if (!Carz.getInstance().getCarController().doesCarTypeExist(carTypeName)
+                || CarController.DEFAULT_CAR.equals(carTypeName.toLowerCase())) {
+            TranslationUtils.sendTranslation("Error.UnknownCarType", player);
+            return;
+        }
+
+        Carz.getDefaultConfig().set("CarTypes." + carTypeName.toLowerCase(), null);
+        Carz.getDefaultConfig().save();
+
+        Carz.getInstance().getCarController().populateCarTypes();
+        TranslationUtils.sendValueTranslation("CarType.Removed", carTypeName, true, player);
     }
 
     /**

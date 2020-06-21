@@ -44,7 +44,7 @@ h5 {
     margin: 10px 0 10px;
 }
 
-small, .small {
+small {
     font-size: 70%;
 }
 
@@ -80,16 +80,6 @@ img {
 
 .img-thumbnail {
     max-width: 70%;
-}
-
-.img-heading {
-    position: relative;
-    display: inline;
-    margin: 0;
-    padding: 0;
-    vertical-align: text-bottom;
-    text-align: center;
-    width: 55px;
 }
 
 .card-body {

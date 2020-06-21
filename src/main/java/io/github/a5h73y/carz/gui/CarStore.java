@@ -1,7 +1,5 @@
 package io.github.a5h73y.carz.gui;
 
-import java.util.Map;
-
 import de.themoep.inventorygui.GuiElementGroup;
 import de.themoep.inventorygui.InventoryGui;
 import de.themoep.inventorygui.StaticGuiElement;
@@ -10,6 +8,7 @@ import io.github.a5h73y.carz.model.CarDetails;
 import io.github.a5h73y.carz.purchases.CarPurchase;
 import io.github.a5h73y.carz.utility.StringUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import java.util.Map;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -36,16 +35,18 @@ public class CarStore extends AbstractMenu {
 	@Override
 	public GuiElementGroup getGroupContent(InventoryGui parent, Player player) {
 		GuiElementGroup group = new GuiElementGroup('g');
+		Map<String, CarDetails> results = Carz.getInstance().getCarController().getCarTypes();
 
-		for (Map.Entry<String, CarDetails> carType : Carz.getInstance().getCarController().getCarTypes().entrySet()) {
+		for (Map.Entry<String, CarDetails> carType : results.entrySet()) {
 			double cost = Carz.getDefaultConfig().getDouble("CarTypes." + carType.getKey() + ".Cost");
-			String displayCost = Carz.getInstance().getEconomyAPI().getCurrencyName(cost) + cost;
+			String displayCost = Carz.getInstance().getEconomyApi().getCurrencyName(cost) + cost;
+			CarDetails details = carType.getValue();
 			group.addElement(
 					new StaticGuiElement('e',
 							new ItemStack(Material.MINECART),
 							click -> {
-								Carz.getInstance().getEconomyAPI()
-										.requestPurchase(player, new CarPurchase(carType.getKey()));
+								Carz.getInstance().getEconomyApi().requestPurchase(
+										player, new CarPurchase(carType.getKey()));
 								parent.close();
 								return true;
 							},
@@ -55,18 +56,19 @@ public class CarStore extends AbstractMenu {
 
 							// maximum speed
 							TranslationUtils.getValueTranslation("CarDetails.MaxSpeed",
-									String.valueOf(carType.getValue().getStartMaxSpeed()), false),
+									String.valueOf(details.getStartMaxSpeed()), false),
 
 							// acceleration
 							TranslationUtils.getValueTranslation("CarDetails.Acceleration",
-									String.valueOf(carType.getValue().getAcceleration()), false),
+									String.valueOf(details.getAcceleration()), false),
 
 							// fuel usage
 							TranslationUtils.getValueTranslation("CarDetails.FuelUsage",
-									String.valueOf(carType.getValue().getAcceleration()), false),
+									String.valueOf(details.getAcceleration()), false),
 
 							// economy cost
-							TranslationUtils.getValueTranslation("CarDetails.Cost", displayCost, false)
+							TranslationUtils.getValueTranslation("CarDetails.Cost",
+									displayCost, false)
 					));
 		}
 		return group;

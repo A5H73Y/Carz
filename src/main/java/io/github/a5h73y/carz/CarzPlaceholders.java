@@ -62,6 +62,9 @@ public class CarzPlaceholders extends PlaceholderExpansion {
 
             case "cartype":
                 return car.getCarType();
+
+            default:
+                break;
         }
 
         return null;

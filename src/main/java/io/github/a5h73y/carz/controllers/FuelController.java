@@ -65,7 +65,7 @@ public class FuelController extends AbstractPluginReceiver {
 
         Car car = carz.getCarController().getCar(player.getVehicle().getEntityId());
         if (car != null) {
-            carz.getBountifulAPI().sendActionBar(player, formattedFuelLevel(car));
+            carz.getBountifulApi().sendActionBar(player, formattedFuelLevel(car));
         }
     }
 

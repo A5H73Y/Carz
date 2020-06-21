@@ -1,12 +1,11 @@
 package io.github.a5h73y.carz.utility;
 
-import java.util.regex.Pattern;
+import static io.github.a5h73y.carz.utility.StringUtils.colour;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.ConfigType;
+import java.util.regex.Pattern;
 import org.bukkit.command.CommandSender;
-
-import static io.github.a5h73y.carz.utility.StringUtils.colour;
 
 /**
  * Translations related utility methods.
@@ -82,7 +81,8 @@ public class TranslationUtils {
 	 * @param prefix display prefix
 	 * @param players targets to receive the message
 	 */
-	public static void sendValueTranslation(String translationKey, String value, boolean prefix, CommandSender... players) {
+	public static void sendValueTranslation(String translationKey, String value, boolean prefix,
+	                                        CommandSender... players) {
 		String translation = getValueTranslation(translationKey, value, prefix);
 		for (CommandSender player : players) {
 			player.sendMessage(translation);

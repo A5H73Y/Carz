@@ -1,5 +1,10 @@
 package io.github.a5h73y.carz.listeners;
 
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
+
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.model.Car;
@@ -20,11 +25,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
-
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
  * Player related Events.
@@ -66,17 +66,17 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
         ItemStack carInHand = player.getInventory().getItemInMainHand();
 
         // if only owned cars can drive and it doesn't have a vehicle type, ignore it.
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, carInHand)) {
+        if (!carz.getCarDataPersistence().has(VEHICLE_TYPE, carInHand)) {
             if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive()) {
                 return;
             }
 
-            carz.getItemMetaUtils().setValue(VEHICLE_TYPE, carInHand, CarController.DEFAULT_CAR);
+            carz.getCarDataPersistence().setValue(VEHICLE_TYPE, carInHand, CarController.DEFAULT_CAR);
         }
 
         // if the Minecart has an owner
-        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, carInHand)) {
-            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, carInHand);
+        if (carz.getCarDataPersistence().has(VEHICLE_OWNER, carInHand)) {
+            String owner = carz.getCarDataPersistence().getValue(VEHICLE_OWNER, carInHand);
 
             // check that the owner data matches the current player
             if (!owner.equalsIgnoreCase(player.getName())) {
@@ -85,15 +85,15 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
                 return;
             }
             // lock the car by default when placed
-            carz.getItemMetaUtils().setValue(VEHICLE_LOCKED, carInHand, "true");
+            carz.getCarDataPersistence().setValue(VEHICLE_LOCKED, carInHand, "true");
         }
 
         Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
         Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
 
-        carz.getItemMetaUtils().transferNamespaceKeyValues(carInHand, spawnedCar);
+        carz.getCarDataPersistence().transferNamespaceKeyValues(carInHand, spawnedCar);
 
-        String vehicleType = carz.getItemMetaUtils().getValue(VEHICLE_TYPE, spawnedCar);
+        String vehicleType = carz.getCarDataPersistence().getValue(VEHICLE_TYPE, spawnedCar);
         Material fillMaterial = carz.getCarController().getCarTypes().get(vehicleType).getFillMaterial();
 
         if (fillMaterial != null && fillMaterial != Material.AIR) {
@@ -119,6 +119,6 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
         }
 
         Car car = carz.getCarController().getCar((Minecart) player.getVehicle());
-        carz.getItemMetaUtils().setValue(VEHICLE_FUEL, player.getVehicle(), car.getCurrentFuel().toString());
+        carz.getCarDataPersistence().setValue(VEHICLE_FUEL, player.getVehicle(), car.getCurrentFuel().toString());
     }
 }

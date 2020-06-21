@@ -72,7 +72,7 @@ public class ValidationUtils {
 			return false;
 		}
 
-		return Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, vehicle);
+		return Carz.getInstance().getCarDataPersistence().has(VehicleDetailKey.VEHICLE_TYPE, vehicle);
 	}
 
 	/**
@@ -118,7 +118,7 @@ public class ValidationUtils {
 
 		if (checkEconomy) {
 			double cost = Carz.getDefaultConfig().getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
-			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
+			return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
 		} else {
 			return true;
 		}
@@ -167,7 +167,7 @@ public class ValidationUtils {
 
 		if (checkEconomy) {
 			double cost = Carz.getDefaultConfig().getDouble("Vault.Cost.Upgrade");
-			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
+			return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
 		} else {
 			return true;
 		}
@@ -202,16 +202,16 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (!Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, player.getVehicle())) {
+		if (!Carz.getInstance().getCarDataPersistence().has(VehicleDetailKey.VEHICLE_FUEL, player.getVehicle())) {
 			TranslationUtils.sendTranslation("Error.CarNotDriven", player);
 			return false;
 		}
 
 		if (checkEconomy) {
-			double remainingFuel = Double.parseDouble(Carz.getInstance().getItemMetaUtils().getValue(
+			double remainingFuel = Double.parseDouble(Carz.getInstance().getCarDataPersistence().getValue(
 					VehicleDetailKey.VEHICLE_FUEL, player.getVehicle()));
-			double cost = Carz.getInstance().getEconomyAPI().getRefuelCost(remainingFuel);
-			return Carz.getInstance().getEconomyAPI().canPurchase(player, cost);
+			double cost = Carz.getInstance().getEconomyApi().getRefuelCost(remainingFuel);
+			return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
 		} else {
 			return true;
 		}
@@ -230,8 +230,8 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
-			String owner = Carz.getInstance().getItemMetaUtils()
+		if (Carz.getInstance().getCarDataPersistence().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
+			String owner = Carz.getInstance().getCarDataPersistence()
 					.getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
 			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
 					.replace("%PLAYER%", owner));
@@ -254,12 +254,12 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (!Carz.getInstance().getItemMetaUtils().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
+		if (!Carz.getInstance().getCarDataPersistence().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
 			TranslationUtils.sendTranslation("Error.NoOwnership", player);
 			return false;
 		}
 
-		String owner = Carz.getInstance().getItemMetaUtils().getValue(
+		String owner = Carz.getInstance().getCarDataPersistence().getValue(
 				VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
 
 		if (!PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)

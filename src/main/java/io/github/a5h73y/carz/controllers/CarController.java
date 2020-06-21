@@ -1,9 +1,5 @@
 package io.github.a5h73y.carz.controllers;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
@@ -16,6 +12,9 @@ import io.github.a5h73y.carz.utility.EffectUtils;
 import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.entity.Minecart;
@@ -62,9 +61,9 @@ public class CarController extends AbstractPluginReceiver {
      */
     public Car getCar(Minecart vehicle) {
         Car car = getCar(vehicle.getEntityId());
-        if (car == null && carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_TYPE, vehicle)) {
+        if (car == null && carz.getCarDataPersistence().has(VehicleDetailKey.VEHICLE_TYPE, vehicle)) {
             car = getOrCreateCar(vehicle.getEntityId(),
-                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle));
+                    carz.getCarDataPersistence().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle));
         }
         return car;
     }
@@ -98,19 +97,19 @@ public class CarController extends AbstractPluginReceiver {
      * @param vehicle vehicle the player is driving
      */
     public void startDriving(String playerName, Vehicle vehicle) {
-        String carType = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle);
+        String carType = carz.getCarDataPersistence().getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle);
         boolean existed = entityIdToCar.containsKey(vehicle.getEntityId());
 
         Car car = getOrCreateCar(vehicle.getEntityId(), carType);
 
-        if (carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_SPEED, vehicle)) {
+        if (carz.getCarDataPersistence().has(VehicleDetailKey.VEHICLE_SPEED, vehicle)) {
             car.setMaxSpeed(Double.parseDouble(
-                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
+                    carz.getCarDataPersistence().getValue(VehicleDetailKey.VEHICLE_SPEED, vehicle)));
         }
         // if the car wasn't known and it has fuel data - set it.
-        if (!existed && carz.getItemMetaUtils().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
+        if (!existed && carz.getCarDataPersistence().has(VehicleDetailKey.VEHICLE_FUEL, vehicle)) {
             car.setCurrentFuel(Double.parseDouble(
-                    carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
+                    carz.getCarDataPersistence().getValue(VehicleDetailKey.VEHICLE_FUEL, vehicle)));
         }
 
         playersDriving.put(playerName, car.getEntityId());
@@ -198,7 +197,7 @@ public class CarController extends AbstractPluginReceiver {
             return;
         }
 
-        String owner = carz.getItemMetaUtils().getValue(VehicleDetailKey.VEHICLE_OWNER, vehicle);
+        String owner = carz.getCarDataPersistence().getValue(VehicleDetailKey.VEHICLE_OWNER, vehicle);
 
         if (!player.getName().equals(owner)
                 && !PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
@@ -249,7 +248,7 @@ public class CarController extends AbstractPluginReceiver {
         }
 
         car.setMaxSpeed(currentMax + upgradeAmount);
-        carz.getItemMetaUtils().setValue(
+        carz.getCarDataPersistence().setValue(
                 VehicleDetailKey.VEHICLE_SPEED, vehicle, String.valueOf(car.getMaxSpeed()));
     }
 
@@ -301,7 +300,7 @@ public class CarController extends AbstractPluginReceiver {
             return;
         }
 
-        carz.getItemMetaUtils().setValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle(), player.getName());
+        carz.getCarDataPersistence().setValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle(), player.getName());
         TranslationUtils.sendTranslation("Car.Claimed", player);
     }
 
@@ -315,7 +314,7 @@ public class CarController extends AbstractPluginReceiver {
             return;
         }
 
-        carz.getItemMetaUtils().remove(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
+        carz.getCarDataPersistence().remove(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
         TranslationUtils.sendTranslation("Car.OwnershipRemoved", player);
     }
 }

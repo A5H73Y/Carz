@@ -1,7 +1,5 @@
 package io.github.a5h73y.carz.configuration.impl;
 
-import java.io.IOException;
-
 import io.github.a5h73y.carz.configuration.CarzConfiguration;
 
 public class StringsConfig extends CarzConfiguration {
@@ -16,7 +14,7 @@ public class StringsConfig extends CarzConfiguration {
 	 * Values will be defaulted if not set.
 	 */
 	@Override
-	protected void initializeConfig() throws IOException {
+	protected void initializeConfig() {
 		this.addDefault("Carz.Prefix", "&0[&bCarz&0]&7 ");
 		this.addDefault("Carz.SignHeader", "&0[&bCarz&0]");
 		this.addDefault("Carz.Commands", "To display all commands enter &f/carz cmds");
@@ -58,6 +56,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("CarType.Create.FillMaterial", "&d What should the Fill Material be?\n&a (default = AIR)");
 		this.addDefault("CarType.Create.Cost", "&d How much should the car cost?\n&a (default = 10.0)");
 		this.addDefault("CarType.Create.Success", "&d All done, &a%VALUE% &dcreated.");
+		this.addDefault("CarType.Removed", "&b%VALUE% &7removed.");
 		this.addDefault("CarType.Error.InvalidName", "Invalid Car Type name.");
 		this.addDefault("CarType.Error.InvalidValue", "Invalid Value.");
 		this.addDefault("CarType.Error.AlreadyExists", "This Car Type already exists.");

@@ -17,15 +17,15 @@ public class CarDataHolder implements CarDataPersistence {
 	/**
 	 * Retrieve the specified item meta value stored.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param itemStack the {@link ItemStack}
 	 * @return stored value
 	 */
 	@Override
-	public String getValue(VehicleDetailKey keyName, ItemStack itemStack) {
+	public String getValue(VehicleDetailKey detailKey, ItemStack itemStack) {
 		String value = null;
 		if (itemStack.hasItemMeta()) {
-			value = getContainerValue(keyName, itemStack.getItemMeta());
+			value = getContainerValue(detailKey, itemStack.getItemMeta());
 		}
 		return value;
 	}
@@ -34,81 +34,80 @@ public class CarDataHolder implements CarDataPersistence {
 	 * Retrieve the specified value stored in the data holder.
 	 * It must be checked that a value exists before it is retrieved.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link PersistentDataHolder}
 	 * @return stored value
 	 */
 	@Override
-	public String getValue(VehicleDetailKey keyName, Entity vehicle) {
-		return getContainerValue(keyName, vehicle);
+	public String getValue(VehicleDetailKey detailKey, Entity vehicle) {
+		return getContainerValue(detailKey, vehicle);
 	}
 
-	private String getContainerValue(VehicleDetailKey keyName, PersistentDataHolder holder) {
-		return holder.getPersistentDataContainer().get(keyName.getNamespacedKey(), PersistentDataType.STRING);
+	private String getContainerValue(VehicleDetailKey detailKey, PersistentDataHolder holder) {
+		return holder.getPersistentDataContainer().get(detailKey.getNamespacedKey(), PersistentDataType.STRING);
 	}
 
 	/**
 	 * Store the specified value in the item stack.
 	 *
-	 * @param keyName keyName the {@link VehicleDetailKey}
+	 * @param detailKey detailKey the {@link VehicleDetailKey}
 	 * @param itemStack persistentDataHolder the {@link PersistentDataHolder}
 	 * @param value value to store
 	 */
 	@Override
-	public ItemStack setValue(VehicleDetailKey keyName, ItemStack itemStack, String value) {
+	public void setValue(VehicleDetailKey detailKey, ItemStack itemStack, String value) {
 		ItemMeta itemMeta = itemStack.getItemMeta();
-		setContainerValue(keyName, itemMeta, value);
+		setContainerValue(detailKey, itemMeta, value);
 		itemStack.setItemMeta(itemMeta);
-		return itemStack;
 	}
 
 	/**
 	 * Store the specified value in the data holder.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link PersistentDataHolder}
 	 * @param value value to store
 	 */
 	@Override
-	public void setValue(VehicleDetailKey keyName, Entity vehicle, String value) {
-		setContainerValue(keyName, vehicle, value);
+	public void setValue(VehicleDetailKey detailKey, Entity vehicle, String value) {
+		setContainerValue(detailKey, vehicle, value);
 	}
 
-	private void setContainerValue(VehicleDetailKey keyName, PersistentDataHolder holder, String value) {
-		holder.getPersistentDataContainer().set(keyName.getNamespacedKey(), PersistentDataType.STRING, value);
+	private void setContainerValue(VehicleDetailKey detailKey, PersistentDataHolder holder, String value) {
+		holder.getPersistentDataContainer().set(detailKey.getNamespacedKey(), PersistentDataType.STRING, value);
 	}
 
 	/**
 	 * Check if the item stacks storage contains the key.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param itemStack the {@link ItemStack}
 	 * @return key exists
 	 */
 	@Override
-	public boolean has(VehicleDetailKey keyName, ItemStack itemStack) {
-		return itemStack.hasItemMeta() && hasContainerValue(keyName, itemStack.getItemMeta());
+	public boolean has(VehicleDetailKey detailKey, ItemStack itemStack) {
+		return itemStack.hasItemMeta() && hasContainerValue(detailKey, itemStack.getItemMeta());
 	}
 
 	/**
 	 * Check if the data holder contains the key.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link PersistentDataHolder}
 	 * @return key exists
 	 */
 	@Override
-	public boolean has(VehicleDetailKey keyName, Entity vehicle) {
-		return hasContainerValue(keyName, vehicle);
+	public boolean has(VehicleDetailKey detailKey, Entity vehicle) {
+		return hasContainerValue(detailKey, vehicle);
 	}
 
-	private boolean hasContainerValue(VehicleDetailKey keyName, PersistentDataHolder holder) {
-		return holder.getPersistentDataContainer().has(keyName.getNamespacedKey(), PersistentDataType.STRING);
+	private boolean hasContainerValue(VehicleDetailKey detailKey, PersistentDataHolder holder) {
+		return holder.getPersistentDataContainer().has(detailKey.getNamespacedKey(), PersistentDataType.STRING);
 	}
 
 	@Override
-	public void remove(VehicleDetailKey keyName, Entity vehicle) {
-		vehicle.getPersistentDataContainer().remove(keyName.getNamespacedKey());
+	public void remove(VehicleDetailKey detailKey, Entity vehicle) {
+		vehicle.getPersistentDataContainer().remove(detailKey.getNamespacedKey());
 	}
 
 	@Override
@@ -131,6 +130,18 @@ public class CarDataHolder implements CarDataPersistence {
 						.replace("-key", "")
 						.replace("-", " ");
 				player.sendMessage(nameSpace + " = " + getValue(value, dataHolder));
+			}
+		}
+	}
+
+	@Override
+	public void printDataDetails(Player player, ItemStack itemStack) {
+		for (VehicleDetailKey value : VehicleDetailKey.values()) {
+			if (has(value, itemStack)) {
+				String nameSpace = value.getNamespacedKey().getKey()
+						.replace("-key", "")
+						.replace("-", " ");
+				player.sendMessage(nameSpace + " = " + getValue(value, itemStack));
 			}
 		}
 	}

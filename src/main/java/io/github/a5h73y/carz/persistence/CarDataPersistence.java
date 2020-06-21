@@ -6,70 +6,74 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemStack;
 
+/**
+ * Due to supporting < 1.14 the PersistentDataHolder had to be
+ * separated from ItemStack and Vehicle (Entity).
+ */
 public interface CarDataPersistence {
 
 	/**
 	 * Retrieve the specified item meta value stored.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param itemStack the {@link ItemStack}
 	 * @return stored value
 	 */
-	String getValue(VehicleDetailKey keyName, ItemStack itemStack);
+	String getValue(VehicleDetailKey detailKey, ItemStack itemStack);
 
 	/**
 	 * Retrieve the specified value stored in the data holder.
 	 * It must be checked that a value exists before it is retrieved.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link Vehicle}
 	 * @return stored value
 	 */
-	String getValue(VehicleDetailKey keyName, Entity vehicle);
+	String getValue(VehicleDetailKey detailKey, Entity vehicle);
 
 	/**
 	 * Store the specified value in the item stack.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param itemStack the {@link ItemStack}
 	 * @param value value to store
 	 */
-	ItemStack setValue(VehicleDetailKey keyName, ItemStack itemStack, String value);
+	void setValue(VehicleDetailKey detailKey, ItemStack itemStack, String value);
 
 	/**
 	 * Store the specified value in the data holder.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link Vehicle}
 	 * @param value value to store
 	 */
-	void setValue(VehicleDetailKey keyName, Entity vehicle, String value);
+	void setValue(VehicleDetailKey detailKey, Entity vehicle, String value);
 
 	/**
 	 * Check if the item stacks storage contains the key.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param itemStack the {@link ItemStack}
 	 * @return key exists
 	 */
-	boolean has(VehicleDetailKey keyName, ItemStack itemStack);
+	boolean has(VehicleDetailKey detailKey, ItemStack itemStack);
 
 	/**
 	 * Check if the data holder contains the key.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link Vehicle}
 	 * @return key exists
 	 */
-	boolean has(VehicleDetailKey keyName, Entity vehicle);
+	boolean has(VehicleDetailKey detailKey, Entity vehicle);
 
 	/**
 	 * Remove the key data from the data holder.
 	 *
-	 * @param keyName the {@link VehicleDetailKey}
+	 * @param detailKey the {@link VehicleDetailKey}
 	 * @param vehicle the {@link Vehicle}
 	 */
-	void remove(VehicleDetailKey keyName, Entity vehicle);
+	void remove(VehicleDetailKey detailKey, Entity vehicle);
 
 	/**
 	 * Transfer the values from one data holder to another.
@@ -93,8 +97,16 @@ public interface CarDataPersistence {
 	 * Print each summary detail to the requesting player.
 	 *
 	 * @param player requesting player
-	 * @param dataHolder {@link Vehicle}
+	 * @param vehicle {@link Vehicle}
 	 */
-	void printDataDetails(Player player, Entity dataHolder);
+	void printDataDetails(Player player, Entity vehicle);
+
+	/**
+	 * Print each summary detail to the requesting player.
+	 *
+	 * @param player requesting player
+	 * @param itemStack {@link ItemStack}
+	 */
+	void printDataDetails(Player player, ItemStack itemStack);
 
 }

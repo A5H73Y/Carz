@@ -1,12 +1,13 @@
 package io.github.a5h73y.carz.plugin;
 
-import java.util.HashMap;
-import java.util.Map;
+import static org.bukkit.Bukkit.getServer;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.purchases.Purchasable;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import java.util.HashMap;
+import java.util.Map;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.command.CommandSender;
@@ -14,15 +15,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
-import static org.bukkit.Bukkit.getServer;
-
 /**
  * {@link Economy} integration.
  * When the EconomyAPI class is initialised, an attempt is made to connect to Vault / Economy.
  * If the outcome succeeds and a provider is found, economy will be enabled.
  * If Carz does not link to a Economy plugin, all attempted purchases will be successful.
  */
-public class EconomyAPI extends PluginWrapper {
+public class EconomyApi extends PluginWrapper {
 
 	private Economy economy;
 	// player name to purchasable

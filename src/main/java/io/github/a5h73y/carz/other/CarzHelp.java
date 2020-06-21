@@ -57,6 +57,7 @@ public class CarzHelp {
             displayCommandUsage(player, "add", "Add a block type to a list");
             displayCommandUsage(player, "remove", "Remove a block type from a list");
             displayCommandUsage(player, "createtype", "Create a new Car Type");
+            displayCommandUsage(player, "removetype", "Remove an existing Car Type");
             displayCommandUsage(player, "economy", "View Economy information");
             displayCommandUsage(player, "reload", "Reload the config");
         }

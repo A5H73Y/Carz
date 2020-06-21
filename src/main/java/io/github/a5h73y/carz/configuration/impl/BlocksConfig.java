@@ -1,14 +1,12 @@
 package io.github.a5h73y.carz.configuration.impl;
 
-import java.io.IOException;
+import io.github.a5h73y.carz.configuration.CarzConfiguration;
+import io.github.a5h73y.carz.enums.BlockType;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import io.github.a5h73y.carz.configuration.CarzConfiguration;
-import io.github.a5h73y.carz.enums.BlockType;
-import io.github.a5h73y.carz.utility.PluginUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -25,7 +23,7 @@ public class BlocksConfig extends CarzConfiguration {
 	}
 
 	@Override
-	protected void initializeConfig() throws IOException {
+	protected void initializeConfig() {
 
 	}
 

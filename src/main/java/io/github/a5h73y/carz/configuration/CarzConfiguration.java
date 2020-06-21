@@ -1,9 +1,8 @@
 package io.github.a5h73y.carz.configuration;
 
+import io.github.a5h73y.carz.utility.PluginUtils;
 import java.io.File;
 import java.io.IOException;
-
-import io.github.a5h73y.carz.utility.PluginUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -23,10 +22,8 @@ public abstract class CarzConfiguration extends YamlConfiguration {
 
 	/**
 	 * Initialise the configuration file.
-	 *
-	 * @throws IOException io exception
 	 */
-	protected abstract void initializeConfig() throws IOException;
+	protected abstract void initializeConfig();
 
 	/**
 	 * Setup the file.
@@ -34,15 +31,12 @@ public abstract class CarzConfiguration extends YamlConfiguration {
 	void setupFile(File dataFolder) {
 		file = new File(dataFolder, getFileName());
 		createIfNotExists();
+		// load it if it already exists
 		reload();
-
-		try {
-			initializeConfig();
-			save();
-		} catch (IOException e) {
-			PluginUtils.log("Failed to load " + getFileName(), 2);
-			e.printStackTrace();
-		}
+		// default any missing values
+		initializeConfig();
+		// persist any changes
+		save();
 	}
 
 	/**

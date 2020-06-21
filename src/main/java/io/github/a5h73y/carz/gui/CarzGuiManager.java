@@ -42,10 +42,14 @@ public class CarzGuiManager extends AbstractPluginReceiver {
 
 		gui.addElement(menu.getGroupContent(gui, player));
 
-		gui.addElement(new GuiPageElement('f', new ItemStack(Material.BOOK), GuiPageElement.PageAction.FIRST, "Go to first page (current: %page%)"));
-		gui.addElement(new GuiPageElement('p', new ItemStack(Material.ARROW), GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
-		gui.addElement(new GuiPageElement('n', new ItemStack(Material.ARROW), GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
-		gui.addElement(new GuiPageElement('l', new ItemStack(Material.BOOK), GuiPageElement.PageAction.LAST, "Go to last page (%pages%)"));
+		gui.addElement(new GuiPageElement('f', new ItemStack(Material.BOOK),
+				GuiPageElement.PageAction.FIRST, "Go to first page (current: %page%)"));
+		gui.addElement(new GuiPageElement('p', new ItemStack(Material.ARROW),
+				GuiPageElement.PageAction.PREVIOUS, "Go to previous page (%prevpage%)"));
+		gui.addElement(new GuiPageElement('n', new ItemStack(Material.ARROW),
+				GuiPageElement.PageAction.NEXT, "Go to next page (%nextpage%)"));
+		gui.addElement(new GuiPageElement('l', new ItemStack(Material.BOOK),
+				GuiPageElement.PageAction.LAST, "Go to last page (%pages%)"));
 
 		gui.show(player);
 	}

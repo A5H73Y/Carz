@@ -1,12 +1,11 @@
 package io.github.a5h73y.carz.configuration;
 
-import java.io.File;
-import java.util.EnumMap;
-
 import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
 import io.github.a5h73y.carz.configuration.impl.DefaultConfig;
 import io.github.a5h73y.carz.configuration.impl.StringsConfig;
 import io.github.a5h73y.carz.enums.ConfigType;
+import java.io.File;
+import java.util.EnumMap;
 
 /**
  * Carz Configuration Manager.

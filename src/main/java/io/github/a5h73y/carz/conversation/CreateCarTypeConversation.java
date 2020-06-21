@@ -1,14 +1,13 @@
 package io.github.a5h73y.carz.conversation;
 
+import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.utility.TranslationUtils;
+import io.github.a5h73y.carz.utility.ValidationUtils;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-
-import io.github.a5h73y.carz.Carz;
-import io.github.a5h73y.carz.utility.TranslationUtils;
-import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
@@ -112,7 +111,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 						config.set("CarTypes." + carTypeName + "." + configKey, calculateValue(value)));
 				Carz.getInstance().saveConfig();
 
-				if (Carz.getInstance().getEconomyAPI().isEnabled()) {
+				if (Carz.getInstance().getEconomyApi().isEnabled()) {
 					return new ChooseCarCost();
 
 				} else {

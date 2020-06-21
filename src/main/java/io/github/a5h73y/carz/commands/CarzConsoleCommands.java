@@ -1,5 +1,7 @@
 package io.github.a5h73y.carz.commands;
 
+import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
+
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.conversation.CreateCarTypeConversation;
 import io.github.a5h73y.carz.enums.Commands;
@@ -14,8 +16,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-
-import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
 
 /**
  * Console related Carz commands handling.
@@ -77,13 +77,21 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 new CreateCarTypeConversation((ConsoleCommandSender) sender).begin();
                 break;
 
+            case "removetype":
+                if (!PluginUtils.validateArgs(sender, args, 2, 2)) {
+                    return false;
+                }
+
+                PluginUtils.removeCarType(sender, args[1]);
+                break;
+
             case "cartypes":
                 TranslationUtils.sendHeading("Car Types", sender);
                 carz.getCarController().getCarTypes().keySet().forEach(sender::sendMessage);
                 break;
 
             case "economy":
-                carz.getEconomyAPI().sendEconomyInformation(sender);
+                carz.getEconomyApi().sendEconomyInformation(sender);
                 break;
 
             case "destroyall":
@@ -101,6 +109,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 sender.sendMessage("/carzc add (type) (material) [amount]");
                 sender.sendMessage("/carzc remove (type) (material)");
                 sender.sendMessage("/carzc createtype");
+                sender.sendMessage("/carzc removetype");
                 sender.sendMessage("/carzc cartypes");
                 sender.sendMessage("/carzc economy");
                 sender.sendMessage("/carzc destroyall");

@@ -17,9 +17,9 @@ import io.github.a5h73y.carz.other.CarzUpdater;
 import io.github.a5h73y.carz.persistence.CarDataHolder;
 import io.github.a5h73y.carz.persistence.CarDataMap;
 import io.github.a5h73y.carz.persistence.CarDataPersistence;
-import io.github.a5h73y.carz.plugin.BountifulAPI;
-import io.github.a5h73y.carz.plugin.EconomyAPI;
-import io.github.a5h73y.carz.plugin.PlaceholderAPI;
+import io.github.a5h73y.carz.plugin.BountifulApi;
+import io.github.a5h73y.carz.plugin.EconomyApi;
+import io.github.a5h73y.carz.plugin.PlaceholderApi;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bstats.bukkit.MetricsLite;
@@ -31,9 +31,9 @@ public class Carz extends JavaPlugin {
     private static final int SPIGOT_PLUGIN_ID = 56255;
     private static Carz instance;
 
-    private BountifulAPI bountifulAPI;
-    private EconomyAPI economyAPI;
-    private PlaceholderAPI placeholderAPI;
+    private BountifulApi bountifulApi;
+    private EconomyApi economyApi;
+    private PlaceholderApi placeholderApi;
 
     private FuelController fuelController;
     private CarController carController;
@@ -136,26 +136,26 @@ public class Carz extends JavaPlugin {
         return guiManager;
     }
 
-    public CarDataPersistence getItemMetaUtils() {
+    public CarDataPersistence getCarDataPersistence() {
         return carDataPersistence;
     }
 
-    public BountifulAPI getBountifulAPI() {
-        return bountifulAPI;
+    public BountifulApi getBountifulApi() {
+        return bountifulApi;
     }
 
-    public EconomyAPI getEconomyAPI() {
-        return economyAPI;
+    public EconomyApi getEconomyApi() {
+        return economyApi;
     }
 
-    public PlaceholderAPI getPlaceholderAPI() {
-        return placeholderAPI;
+    public PlaceholderApi getPlaceholderApi() {
+        return placeholderApi;
     }
 
     private void setupPlugins() {
-        bountifulAPI = new BountifulAPI();
-        economyAPI = new EconomyAPI();
-        placeholderAPI = new PlaceholderAPI();
+        bountifulApi = new BountifulApi();
+        economyApi = new EconomyApi();
+        placeholderApi = new PlaceholderApi();
     }
 
     private void registerCommands() {

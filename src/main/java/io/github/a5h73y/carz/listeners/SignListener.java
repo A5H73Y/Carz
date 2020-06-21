@@ -1,5 +1,7 @@
 package io.github.a5h73y.carz.listeners;
 
+import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
+
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.GuiMenu;
 import io.github.a5h73y.carz.enums.Permissions;
@@ -20,8 +22,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
-import static io.github.a5h73y.carz.controllers.CarController.DEFAULT_CAR;
 
 /**
  * Sign Related Events.
@@ -61,6 +61,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                     breakSignAndCancelEvent(event);
                     return;
                 }
+                break;
             case "refuel":
             case "upgrade":
             case "store":
@@ -151,7 +152,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
 
         Player player = event.getPlayer();
 
-        if (carz.getEconomyAPI().isPurchasing(event.getPlayer())) {
+        if (carz.getEconomyApi().isPurchasing(event.getPlayer())) {
             TranslationUtils.sendTranslation("Error.PurchaseOutstanding", player);
             TranslationUtils.sendTranslation("Purchase.Confirm.Purchase", player);
             return;
@@ -167,7 +168,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                     return;
                 }
 
-                carz.getEconomyAPI().requestPurchase(player, new CarPurchase(carType));
+                carz.getEconomyApi().requestPurchase(player, new CarPurchase(carType));
                 break;
 
             case "upgrade":
@@ -176,7 +177,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 }
 
                 Car upgradeCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
-                carz.getEconomyAPI().requestPurchase(player, new UpgradePurchase(upgradeCar));
+                carz.getEconomyApi().requestPurchase(player, new UpgradePurchase(upgradeCar));
                 break;
 
             case "refuel":
@@ -185,7 +186,7 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 }
 
                 Car refuelCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
-                carz.getEconomyAPI().requestPurchase(player, new RefuelPurchase(refuelCar));
+                carz.getEconomyApi().requestPurchase(player, new RefuelPurchase(refuelCar));
                 break;
 
             case "store":
@@ -201,8 +202,8 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 return;
         }
 
-        if (hasOverriddenPrice && carz.getEconomyAPI().isPurchasing(player)) {
-            carz.getEconomyAPI().getPurchasing(player).setCostOverride(Double.parseDouble(lines[3]));
+        if (hasOverriddenPrice && carz.getEconomyApi().isPurchasing(player)) {
+            carz.getEconomyApi().getPurchasing(player).setCostOverride(Double.parseDouble(lines[3]));
         }
     }
 

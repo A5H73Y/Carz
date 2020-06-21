@@ -1,5 +1,11 @@
 package io.github.a5h73y.carz.listeners;
 
+import static io.github.a5h73y.carz.enums.ConfigType.BLOCKS;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
+import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
+
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
 import io.github.a5h73y.carz.enums.Permissions;
@@ -33,12 +39,6 @@ import org.bukkit.event.vehicle.VehicleEntityCollisionEvent;
 import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.event.vehicle.VehicleUpdateEvent;
 import org.bukkit.util.Vector;
-
-import static io.github.a5h73y.carz.enums.ConfigType.BLOCKS;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
-import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 /**
  * Vehicle related events.
@@ -80,10 +80,10 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         Minecart minecart = (Minecart) event.getVehicle();
 
         boolean carIsLocked = carz.getConfig().isAutomaticLocking()
-                || carz.getItemMetaUtils().has(VEHICLE_LOCKED, minecart);
+                || carz.getCarDataPersistence().has(VEHICLE_LOCKED, minecart);
 
-        if (carIsLocked && carz.getItemMetaUtils().has(VEHICLE_OWNER, minecart)) {
-            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, minecart);
+        if (carIsLocked && carz.getCarDataPersistence().has(VEHICLE_OWNER, minecart)) {
+            String owner = carz.getCarDataPersistence().getValue(VEHICLE_OWNER, minecart);
             boolean isOwner = owner.equalsIgnoreCase(player.getName());
 
             if (!isOwner && !PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
@@ -93,7 +93,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
                 return;
 
             } else {
-                carz.getItemMetaUtils().remove(VEHICLE_LOCKED, minecart);
+                carz.getCarDataPersistence().remove(VEHICLE_LOCKED, minecart);
                 TranslationUtils.sendTranslation("Car.CarUnlocked", player);
             }
         } else if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive()) {
@@ -139,7 +139,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive() && !carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)) {
+        if (Carz.getDefaultConfig().isOnlyOwnedCarsDrive() && !carz.getCarDataPersistence().has(VEHICLE_OWNER, vehicle)) {
             return;
         }
 
@@ -159,7 +159,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             carz.getCarController().removeDriver(player.getName());
             vehicle.setMaxSpeed(0D);
             TranslationUtils.sendTranslation("Car.EngineStop", player);
-            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, vehicle, car.getCurrentFuel().toString());
+            carz.getCarDataPersistence().setValue(VEHICLE_FUEL, vehicle, car.getCurrentFuel().toString());
             Bukkit.getServer().getPluginManager().callEvent(new EngineStopEvent(player, car));
 
         } else {
@@ -210,7 +210,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         if (drivingCar.isFuelConsumed()) {
             carz.getCarController().removeDriver(player.getName());
-            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, event.getVehicle(), "0");
+            carz.getCarDataPersistence().setValue(VEHICLE_FUEL, event.getVehicle(), "0");
             TranslationUtils.sendTranslation("Car.FuelEmpty", player);
             return;
         }
@@ -277,11 +277,11 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Minecart minecart = (Minecart) event.getVehicle();
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, minecart)) {
+        if (!carz.getCarDataPersistence().has(VEHICLE_TYPE, minecart)) {
             return;
         }
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_OWNER, minecart)) {
+        if (!carz.getCarDataPersistence().has(VEHICLE_OWNER, minecart)) {
             carz.getCarController().destroyCar(minecart);
             return;
         }
@@ -289,7 +289,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         event.setCancelled(true);
 
         if (event.getAttacker() instanceof Player) {
-            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, minecart);
+            String owner = carz.getCarDataPersistence().getValue(VEHICLE_OWNER, minecart);
 
             if (!event.getAttacker().getName().equals(owner)
                     && !PermissionUtils.hasStrictPermission((Player) event.getAttacker(), Permissions.BYPASS_OWNER, false)) {
@@ -322,7 +322,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Player player = (Player) event.getExited();
 
-        if (!carz.getItemMetaUtils().has(VEHICLE_TYPE, event.getVehicle())) {
+        if (!carz.getCarDataPersistence().has(VEHICLE_TYPE, event.getVehicle())) {
             return;
         }
 
@@ -334,9 +334,9 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         if (Carz.getDefaultConfig().isAutomaticLocking()
-                && carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)
-                && player.getName().equals(carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle))) {
-            carz.getItemMetaUtils().setValue(VEHICLE_LOCKED, vehicle, "true");
+                && carz.getCarDataPersistence().has(VEHICLE_OWNER, vehicle)
+                && player.getName().equals(carz.getCarDataPersistence().getValue(VEHICLE_OWNER, vehicle))) {
+            carz.getCarDataPersistence().setValue(VEHICLE_LOCKED, vehicle, "true");
             TranslationUtils.sendTranslation("Car.CarLocked", player);
         }
 
@@ -345,7 +345,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         // car could be destroyed at this point (i.e. Water damage)
         if (car != null) {
             car.resetSpeed();
-            carz.getItemMetaUtils().setValue(VEHICLE_FUEL, vehicle, car.getCurrentFuel().toString());
+            carz.getCarDataPersistence().setValue(VEHICLE_FUEL, vehicle, car.getCurrentFuel().toString());
         }
     }
 
@@ -408,9 +408,9 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (carz.getItemMetaUtils().has(VEHICLE_OWNER, vehicle)
+        if (carz.getCarDataPersistence().has(VEHICLE_OWNER, vehicle)
                 && !PermissionUtils.hasStrictPermission(event.getPlayer(), Permissions.BYPASS_OWNER, false)) {
-            String owner = carz.getItemMetaUtils().getValue(VEHICLE_OWNER, vehicle);
+            String owner = carz.getCarDataPersistence().getValue(VEHICLE_OWNER, vehicle);
 
             if (!owner.equals(event.getPlayer().getName())) {
                 event.getPlayer().sendMessage(TranslationUtils.getTranslation("Error.Owned")
@@ -423,12 +423,12 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (carz.getItemMetaUtils().has(VEHICLE_LOCKED, vehicle)) {
-            carz.getItemMetaUtils().remove(VEHICLE_LOCKED, vehicle);
+        if (carz.getCarDataPersistence().has(VEHICLE_LOCKED, vehicle)) {
+            carz.getCarDataPersistence().remove(VEHICLE_LOCKED, vehicle);
             TranslationUtils.sendTranslation("Car.CarUnlocked", event.getPlayer());
 
         } else {
-            carz.getItemMetaUtils().setValue(VEHICLE_LOCKED, vehicle, "true");
+            carz.getCarDataPersistence().setValue(VEHICLE_LOCKED, vehicle, "true");
             TranslationUtils.sendTranslation("Car.CarLocked", event.getPlayer());
         }
     }

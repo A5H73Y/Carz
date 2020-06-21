@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * {@link com.connorlinfoot.bountifulapi.BountifulAPI} integration.
  * Allow for Titles and ActionBar messages.
  */
-public class BountifulAPI extends PluginWrapper {
+public class BountifulApi extends PluginWrapper {
 
 	@Override
 	public String getPluginName() {

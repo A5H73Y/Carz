@@ -1,10 +1,9 @@
 package io.github.a5h73y.carz.persistence;
 
+import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -12,6 +11,9 @@ import org.bukkit.inventory.ItemStack;
 public class CarDataMap implements CarDataPersistence {
 
 	private final Map<String, String> vehicleDetail = new HashMap<>();
+
+	private static final String VEHICLE_PREFIX = "V";
+	private static final String ITEM_STACK_PREFIX = "I";
 
 	@Override
 	public String getValue(VehicleDetailKey detailKey, ItemStack itemStack) {
@@ -24,9 +26,8 @@ public class CarDataMap implements CarDataPersistence {
 	}
 
 	@Override
-	public ItemStack setValue(VehicleDetailKey detailKey, ItemStack itemStack, String value) {
+	public void setValue(VehicleDetailKey detailKey, ItemStack itemStack, String value) {
 		vehicleDetail.put(generateKey(detailKey, itemStack), value);
-		return itemStack;
 	}
 
 	@Override
@@ -51,34 +52,41 @@ public class CarDataMap implements CarDataPersistence {
 
 	@Override
 	public void transferNamespaceKeyValues(Entity from, ItemStack to) {
-		Map<String, String> vehicleDetailsCopy = vehicleDetail.keySet().stream()
-				.filter(s -> s.startsWith(from.getEntityId() + "."))
-				.collect(Collectors.toMap(s -> s, vehicleDetail::get));
-
-		vehicleDetailsCopy.forEach((s, s2) -> {
-			String nameSpace = s.split("\\.")[1];
-			vehicleDetail.put(to.hashCode() + "." + nameSpace, s2);
-			vehicleDetail.remove(s);
-		});
+		transferNamespaceKeyValues(VEHICLE_PREFIX + from.getEntityId() + ".",
+				to.hashCode());
 	}
 
 	@Override
 	public void transferNamespaceKeyValues(ItemStack from, Entity to) {
+		transferNamespaceKeyValues(ITEM_STACK_PREFIX + from.hashCode() + ".",
+				to.getEntityId());
+	}
+
+	private void transferNamespaceKeyValues(String keyPrefix, int to) {
 		Map<String, String> vehicleDetailsCopy = vehicleDetail.keySet().stream()
-				.filter(s -> s.startsWith(from.hashCode() + "."))
+				.filter(s -> s.startsWith(keyPrefix))
 				.collect(Collectors.toMap(s -> s, vehicleDetail::get));
 
 		vehicleDetailsCopy.forEach((s, s2) -> {
 			String nameSpace = s.split("\\.")[1];
-			vehicleDetail.put(to.getEntityId() + "." + nameSpace, s2);
+			vehicleDetail.put(to + "." + nameSpace, s2);
 			vehicleDetail.remove(s);
 		});
 	}
 
 	@Override
 	public void printDataDetails(Player player, Entity vehicle) {
+		printDataDetails(player, VEHICLE_PREFIX + vehicle.getEntityId() + ".");
+	}
+
+	@Override
+	public void printDataDetails(Player player, ItemStack itemStack) {
+		printDataDetails(player, ITEM_STACK_PREFIX + itemStack.hashCode() + ".");
+	}
+
+	private void printDataDetails(Player player, String keyPrefix) {
 		vehicleDetail.keySet().stream()
-				.filter(s -> s.startsWith(vehicle.getEntityId() + "."))
+				.filter(s -> s.startsWith(keyPrefix))
 				.forEach(s -> {
 					String nameSpace = s.split("\\.")[1].replace("-key", "")
 							.replace("-", " ");
@@ -88,10 +96,10 @@ public class CarDataMap implements CarDataPersistence {
 	}
 
 	private String generateKey(VehicleDetailKey detailKey, Entity vehicle) {
-		return vehicle.getEntityId() + "." + detailKey.name();
+		return VEHICLE_PREFIX + vehicle.getEntityId() + "." + detailKey.name();
 	}
-	
+
 	private String generateKey(VehicleDetailKey detailKey, ItemStack itemStack) {
-		return itemStack.hashCode() + "." + detailKey.name();
+		return ITEM_STACK_PREFIX + itemStack.hashCode() + "." + detailKey.name();
 	}
 }
