@@ -91,8 +91,8 @@ public class CreateCarTypeConversation extends CarzConversation {
 			if (question.getConfigEntry().equals("FillMaterial")) {
 				choice = choice.toUpperCase();
 				if (Material.getMaterial(choice) == null) {
-					sendErrorMessage(context, TranslationUtils
-							.getTranslation("Error.UnknownMaterial", false) + choice);
+					sendErrorMessage(context, TranslationUtils.getValueTranslation(
+							"Error.UnknownMaterial", choice, false));
 					return this;
 				}
 			}

@@ -20,7 +20,7 @@ public class CarStore extends AbstractMenu {
 
 	@Override
 	public String getTitle() {
-		return "Car Store";
+		return TranslationUtils.getTranslation("CarStore.Heading", false);
 	}
 
 	@Override

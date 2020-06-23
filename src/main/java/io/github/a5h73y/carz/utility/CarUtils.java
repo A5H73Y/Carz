@@ -133,7 +133,7 @@ public class CarUtils {
 	 * @param playerName owner of the car
 	 */
 	public static void setOwnerDisplayName(ItemStack itemStack, String playerName) {
-		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
+		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplayOwner")
 				&& itemStack.hasItemMeta()) {
 			ItemMeta itemMeta = itemStack.getItemMeta();
 			itemMeta.setDisplayName(TranslationUtils.getTranslation("Car.PlayerCar", false)

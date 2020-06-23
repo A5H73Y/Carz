@@ -131,7 +131,7 @@ public class PluginUtils {
         BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (material == null) {
-            player.sendMessage(TranslationUtils.getTranslation("Error.UnknownMaterial") + args[2]);
+            TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], true, player);
             return;
         }
 
@@ -197,7 +197,7 @@ public class PluginUtils {
         BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (material == null) {
-            player.sendMessage(TranslationUtils.getTranslation("Error.UnknownMaterial") + args[2]);
+            TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], true, player);
             return;
         }
 

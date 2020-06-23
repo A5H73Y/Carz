@@ -65,7 +65,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("BlockTypes.Added.Amount", "&b%MATERIAL% &7added to &b%TYPE% &7blocks, with an amount of &b%AMOUNT%&7.");
 		this.addDefault("BlockTypes.Removed", "&b%MATERIAL% &7removed from &b%TYPE% &7blocks.");
 
-		this.addDefault("CarStore.Heading", "Carz - Car Store");
+		this.addDefault("CarStore.Heading", "Car Store");
 		this.addDefault("CarStore.Setup.Line1", "         ");
 		this.addDefault("CarStore.Setup.Line2", " ggggggg ");
 		this.addDefault("CarStore.Setup.Line3", "  fp nl  ");
@@ -92,7 +92,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.Owned", "This car is owned by %PLAYER%!");
 		this.addDefault("Error.UnknownCarType", "Unknown car type.");
 		this.addDefault("Error.UnknownPlayer", "Unknown player.");
-		this.addDefault("Error.UnknownMaterial", "Unknown Material: ");
+		this.addDefault("Error.UnknownMaterial", "Unknown Material: %VALUE%");
 		this.addDefault("Error.SpecifyPlayer", "Please specify a player.");
 		this.addDefault("Error.PurchaseOutstanding", "You have an outstanding purchase.");
 		this.addDefault("Error.NoPurchaseOutstanding", "You don't have an outstanding purchase.");
