@@ -5,6 +5,7 @@ import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_FUEL;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_LOCKED;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_OWNER;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
+import static org.bukkit.Material.AIR;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
@@ -23,6 +24,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
@@ -219,7 +221,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Vector vehicleVelocity = event.getVehicle().getVelocity();
         Vector playerLocationVelocity = player.getLocation().getDirection();
-        Material materialBelow = event.getVehicle().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock().getType();
+        Block blockBelow = event.getVehicle().getLocation().subtract(0.0D, 1.0D, 0.0D).getBlock();
+        Material materialBelow = blockBelow.getType();
         BlocksConfig blocksConfig = (BlocksConfig) Carz.getConfig(BLOCKS);
 
         if (blocksConfig.containsSpeedBlock(materialBelow)) {
@@ -243,17 +246,14 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         Location twoBlocksAhead = playerLocation.add(playerLocation.getDirection().multiply(2));
         twoBlocksAhead.setY(Math.max(playerLocation.getY() + 1, twoBlocksAhead.getY()));
 
-        // if the block is solid, and is part of the climb blocks (or there are no specified climb blocks)
-        boolean isClimbable = twoBlocksAhead.getBlock().getType().isSolid()
-                && ((blocksConfig.getClimbBlocks().isEmpty() || twoBlocksAhead.getBlock().getBlockData() instanceof Slab)
-                || blocksConfig.getClimbBlocks().contains(twoBlocksAhead.getBlock().getType()));
+        // determine if the Car should start climbing
+        boolean isClimbable = calculateIsClimbable(blockBelow, twoBlocksAhead, blocksConfig);
 
-        // if there is a block ahead of us
-        if (isClimbable && materialBelow != Material.AIR) {
+        if (isClimbable) {
             Location above = twoBlocksAhead.add(0, 1, 0);
 
             // if the block above it is AIR, allow to climb
-            if (above.getBlock().getType() == Material.AIR) {
+            if (above.getBlock().getType() == AIR) {
                 vehicleVelocity.setY(carz.getConfig().getClimbBlockStrength());
 
                 vehicleVelocity.setX(playerLocationVelocity.getX() / 8.0);
@@ -264,6 +264,26 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         event.getVehicle().setVelocity(vehicleVelocity);
     }
 
+    private boolean calculateIsClimbable(Block blockBelow, Location twoBlocksAhead, BlocksConfig blocksConfig) {
+        // if the block ahead isn't solid (i.e. tall grass)
+        if (blockBelow.getType() == AIR || !twoBlocksAhead.getBlock().getType().isSolid()) {
+            return false;
+        }
+
+        // if there are no specified climb blocks, all solid blocks are climbable
+        if (blocksConfig.getClimbBlocks().isEmpty()) {
+            return true;
+        }
+
+        // are slabs climbable
+        if (blockBelow.getBlockData() instanceof Slab && carz.getConfig().isAllSlabsClimb()) {
+            return true;
+        }
+
+        // if there are climb blocks, make sure the material matches the whitelist
+        return blocksConfig.getClimbBlocks().contains(twoBlocksAhead.getBlock().getType());
+    }
+
     /**
      * Car destroy event.
      *
@@ -271,15 +291,11 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
      */
     @EventHandler
     public void onCarDestroy(VehicleDestroyEvent event) {
-        if (!(event.getVehicle() instanceof Minecart)) {
+        if (!ValidationUtils.isACarzVehicle(event.getVehicle())) {
             return;
         }
 
         Minecart minecart = (Minecart) event.getVehicle();
-
-        if (!carz.getCarDataPersistence().has(VEHICLE_TYPE, minecart)) {
-            return;
-        }
 
         if (!carz.getCarDataPersistence().has(VEHICLE_OWNER, minecart)) {
             carz.getCarController().destroyCar(minecart);

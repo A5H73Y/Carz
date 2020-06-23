@@ -84,6 +84,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.CommandDisabled", "This command has been disabled.");
 		this.addDefault("Error.InCar", "You are already in a car.");
 		this.addDefault("Error.NotInCar", "You are not in a car.");
+		this.addDefault("Error.InvalidPlaceLocation", "Please place your car somewhere valid.");
 		this.addDefault("Error.HaveCar", "You already have a car.");
 		this.addDefault("Error.FuelDisabled", "Fuel is disabled.");
 		this.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: %VALUE%");

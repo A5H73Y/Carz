@@ -8,6 +8,7 @@ import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.purchases.CarPurchase;
+import io.github.a5h73y.carz.purchases.Purchasable;
 import io.github.a5h73y.carz.purchases.RefuelPurchase;
 import io.github.a5h73y.carz.purchases.UpgradePurchase;
 import io.github.a5h73y.carz.utility.PermissionUtils;
@@ -159,34 +160,39 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
         }
 
         event.setCancelled(true);
-        boolean hasOverriddenPrice = ValidationUtils.isDouble(lines[3]);
+        String strippedCostOverride = ChatColor.stripColor(lines[3]);
+        double costOverride = ValidationUtils.isDouble(strippedCostOverride)
+                ? Double.parseDouble(strippedCostOverride) : 0;
 
         switch (lines[1].toLowerCase()) {
             case "purchase":
                 String carType = ValidationUtils.isStringValid(lines[2]) ? lines[2].toLowerCase() : DEFAULT_CAR;
-                if (!ValidationUtils.canPurchaseCar(player, carType, hasOverriddenPrice)) {
+                if (!ValidationUtils.canPurchaseCar(player, carType, costOverride)) {
                     return;
                 }
 
-                carz.getEconomyApi().requestPurchase(player, new CarPurchase(carType));
+                carz.getEconomyApi().requestPurchase(player,
+                        calculateFinalCost(new CarPurchase(carType), costOverride));
                 break;
 
             case "upgrade":
-                if (!ValidationUtils.canPurchaseUpgrade(player, hasOverriddenPrice)) {
+                if (!ValidationUtils.canPurchaseUpgrade(player, costOverride)) {
                     return;
                 }
 
                 Car upgradeCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
-                carz.getEconomyApi().requestPurchase(player, new UpgradePurchase(upgradeCar));
+                carz.getEconomyApi().requestPurchase(player,
+                        calculateFinalCost(new UpgradePurchase(upgradeCar), costOverride));
                 break;
 
             case "refuel":
-                if (!ValidationUtils.canPurchaseFuel(player, hasOverriddenPrice)) {
+                if (!ValidationUtils.canPurchaseFuel(player, costOverride)) {
                     return;
                 }
 
                 Car refuelCar = carz.getCarController().getCar(player.getVehicle().getEntityId());
-                carz.getEconomyApi().requestPurchase(player, new RefuelPurchase(refuelCar));
+                carz.getEconomyApi().requestPurchase(player,
+                        calculateFinalCost(new RefuelPurchase(refuelCar), costOverride));
                 break;
 
             case "store":
@@ -199,12 +205,12 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
 
             default:
                 TranslationUtils.sendTranslation("Error.UnknownSignCommand", player);
-                return;
         }
+    }
 
-        if (hasOverriddenPrice && carz.getEconomyApi().isPurchasing(player)) {
-            carz.getEconomyApi().getPurchasing(player).setCostOverride(Double.parseDouble(lines[3]));
-        }
+    private Purchasable calculateFinalCost(Purchasable purchasable, double costOverride) {
+        purchasable.setCostOverride(costOverride);
+        return purchasable;
     }
 
     private void breakSignAndCancelEvent(SignChangeEvent event) {

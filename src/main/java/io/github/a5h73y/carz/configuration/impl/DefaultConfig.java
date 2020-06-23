@@ -44,6 +44,7 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Fuel.MaxCapacity", 3000.0);
 		this.addDefault("Fuel.GaugeScale", 40);
 
+		this.addDefault("ClimbBlocks.AllSlabs", true);
 		this.addDefault("ClimbBlocks.Strength", 0.25);
 
 		this.addDefault("Vault.Enabled", true);
@@ -111,6 +112,10 @@ public class DefaultConfig extends CarzConfiguration {
 
 	public boolean isSneakLockAction() {
 		return this.getBoolean("Key.SneakLockAction");
+	}
+
+	public boolean isAllSlabsClimb() {
+		return this.getBoolean("ClimbBlocks.AllSlabs");
 	}
 
 	public double getUpgradeIncrement() {

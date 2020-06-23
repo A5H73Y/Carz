@@ -63,6 +63,13 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
             return;
         }
 
+        Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
+
+        if (!location.getBlock().isEmpty()) {
+            TranslationUtils.sendTranslation("Error.InvalidPlaceLocation", player);
+            return;
+        }
+
         ItemStack carInHand = player.getInventory().getItemInMainHand();
 
         // if only owned cars can drive and it doesn't have a vehicle type, ignore it.
@@ -72,6 +79,11 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
             }
 
             carz.getCarDataPersistence().setValue(VEHICLE_TYPE, carInHand, CarController.DEFAULT_CAR);
+
+        } else if (!carz.getCarController().doesCarTypeExist(
+                carz.getCarDataPersistence().getValue(VEHICLE_TYPE, carInHand))) {
+            // the player has a Minecart with a vehicle type, but it no longer exists.
+            return;
         }
 
         // if the Minecart has an owner
@@ -88,7 +100,6 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
             carz.getCarDataPersistence().setValue(VEHICLE_LOCKED, carInHand, "true");
         }
 
-        Location location = event.getClickedBlock().getLocation().add(0, 1, 0);
         Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);
 
         carz.getCarDataPersistence().transferNamespaceKeyValues(carInHand, spawnedCar);

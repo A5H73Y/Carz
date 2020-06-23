@@ -7,6 +7,7 @@ import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.DelayTasks;
+import io.github.a5h73y.carz.persistence.CarDataPersistence;
 import org.bukkit.Material;
 import org.bukkit.block.data.Rail;
 import org.bukkit.entity.Minecart;
@@ -72,7 +73,14 @@ public class ValidationUtils {
 			return false;
 		}
 
-		return Carz.getInstance().getCarDataPersistence().has(VehicleDetailKey.VEHICLE_TYPE, vehicle);
+		CarDataPersistence persistence = Carz.getInstance().getCarDataPersistence();
+
+		if (!persistence.has(VehicleDetailKey.VEHICLE_TYPE, vehicle)) {
+			return false;
+		}
+
+		return Carz.getInstance().getCarController().doesCarTypeExist(
+				persistence.getValue(VehicleDetailKey.VEHICLE_TYPE, vehicle));
 	}
 
 	/**
@@ -84,7 +92,7 @@ public class ValidationUtils {
 	 * @return player can purchase
 	 */
 	public static boolean canPurchaseCar(Player player, String carType) {
-		return canPurchaseCar(player, carType, true);
+		return canPurchaseCar(player, carType, 0);
 	}
 
 	/**
@@ -93,10 +101,10 @@ public class ValidationUtils {
 	 *
 	 * @param player target player
 	 * @param carType requested car type
-	 * @param checkEconomy validate the economy
+	 * @param costOverride economy cost override
 	 * @return player can purchase
 	 */
-	public static boolean canPurchaseCar(Player player, String carType, boolean checkEconomy) {
+	public static boolean canPurchaseCar(Player player, String carType, double costOverride) {
 		if (!PermissionUtils.hasPermission(player, Permissions.PURCHASE)) {
 			return false;
 		}
@@ -116,12 +124,9 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (checkEconomy) {
-			double cost = Carz.getDefaultConfig().getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
-			return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
-		} else {
-			return true;
-		}
+		double cost = costOverride > 0 ? costOverride :
+				Carz.getDefaultConfig().getDouble("CarTypes." + carType.toLowerCase() + ".Cost");
+		return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
 	}
 
 	/**
@@ -132,7 +137,7 @@ public class ValidationUtils {
 	 * @return player can upgrade
 	 */
 	public static boolean canPurchaseUpgrade(Player player) {
-		return canPurchaseUpgrade(player, true);
+		return canPurchaseUpgrade(player, 0);
 	}
 
 	/**
@@ -140,10 +145,10 @@ public class ValidationUtils {
 	 * This includes checking the permission status.
 	 *
 	 * @param player target player
-	 * @param checkEconomy validate the economy
+	 * @param costOverride economy cost override
 	 * @return player can upgrade
 	 */
-	public static boolean canPurchaseUpgrade(Player player, boolean checkEconomy) {
+	public static boolean canPurchaseUpgrade(Player player, double costOverride) {
 		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
 			TranslationUtils.sendTranslation("Error.NotInCar", player);
 			return false;
@@ -165,12 +170,9 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (checkEconomy) {
-			double cost = Carz.getDefaultConfig().getDouble("Vault.Cost.Upgrade");
-			return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
-		} else {
-			return true;
-		}
+		double cost = costOverride > 0 ? costOverride :
+				Carz.getDefaultConfig().getDouble("Vault.Cost.Upgrade");
+		return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
 	}
 
 	/**
@@ -181,7 +183,7 @@ public class ValidationUtils {
 	 * @return player can refuel
 	 */
 	public static boolean canPurchaseFuel(Player player) {
-		return canPurchaseFuel(player, true);
+		return canPurchaseFuel(player, 0);
 	}
 
 	/**
@@ -189,10 +191,10 @@ public class ValidationUtils {
 	 * There is no permission node to purchase fuel.
 	 *
 	 * @param player target player
-	 * @param checkEconomy validate the economy
+	 * @param costOverride economy cost override
 	 * @return player can refuel
 	 */
-	public static boolean canPurchaseFuel(Player player, boolean checkEconomy) {
+	public static boolean canPurchaseFuel(Player player, double costOverride) {
 		if (!player.isInsideVehicle() || !(player.getVehicle() instanceof Minecart)) {
 			TranslationUtils.sendTranslation("Error.NotInCar", player);
 			return false;
@@ -207,14 +209,16 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (checkEconomy) {
+		double cost;
+		if (costOverride > 0) {
+			cost = costOverride;
+
+		} else {
 			double remainingFuel = Double.parseDouble(Carz.getInstance().getCarDataPersistence().getValue(
 					VehicleDetailKey.VEHICLE_FUEL, player.getVehicle()));
-			double cost = Carz.getInstance().getEconomyApi().getRefuelCost(remainingFuel);
-			return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
-		} else {
-			return true;
+			cost = Carz.getInstance().getEconomyApi().getRefuelCost(remainingFuel);
 		}
+		return Carz.getInstance().getEconomyApi().canPurchase(player, cost);
 	}
 
 	/**
