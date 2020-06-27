@@ -6,6 +6,7 @@ import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_SPEED;
 import static io.github.a5h73y.carz.enums.VehicleDetailKey.VEHICLE_TYPE;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.model.CarDetails;
 import io.github.a5h73y.carz.persistence.CarDataPersistence;
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import org.bukkit.World;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Vehicle;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -133,11 +135,10 @@ public class CarUtils {
 	 * @param playerName owner of the car
 	 */
 	public static void setOwnerDisplayName(ItemStack itemStack, String playerName) {
-		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplayOwner")
-				&& itemStack.hasItemMeta()) {
+		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplayOwner")) {
+			String playerCar = TranslationUtils.getValueTranslation("Car.PlayerCar", playerName, false);
 			ItemMeta itemMeta = itemStack.getItemMeta();
-			itemMeta.setDisplayName(TranslationUtils.getTranslation("Car.PlayerCar", false)
-					.replace("%PLAYER%", playerName));
+			itemMeta.setDisplayName(playerCar);
 			itemStack.setItemMeta(itemMeta);
 		}
 	}
@@ -152,7 +153,6 @@ public class CarUtils {
 		Carz carz = Carz.getInstance();
 
 		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
-				&& itemStack.hasItemMeta()
 				&& carz.getCarDataPersistence().has(VEHICLE_TYPE, itemStack)) {
 
 			String vehicleType = carz.getCarDataPersistence().getValue(VEHICLE_TYPE, itemStack);
@@ -185,8 +185,7 @@ public class CarUtils {
 	 */
 	public static void givePlayerKey(Player player) {
 		ItemStack itemStack = new ItemStack(Carz.getDefaultConfig().getKey());
-		String keyName = TranslationUtils.getTranslation("Car.Key.Display", false)
-				.replace("%PLAYER%", player.getName());
+		String keyName = TranslationUtils.getValueTranslation("Car.Key.Display", player.getName(), false);
 
 		Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_OWNER, itemStack, player.getName());
 		ItemMeta itemMeta = itemStack.getItemMeta();
@@ -200,5 +199,37 @@ public class CarUtils {
 		itemStack.setItemMeta(itemMeta);
 		player.getInventory().addItem(itemStack);
 		TranslationUtils.sendTranslation("Car.Key.Received", player);
+	}
+
+	/**
+	 * Display a summary of Car information to the player.
+	 * Works with a driving Car or a valid Minecart ItemStack.
+	 *
+	 * @param player requesting player
+	 * @param args command arguments
+	 */
+	public static void showCarDetails(Player player, String[] args) {
+		Carz carz = Carz.getInstance();
+		boolean extraDetails = args.length == 2 && args[1].equalsIgnoreCase("extra");
+
+		if (player.isInsideVehicle() && ValidationUtils.isACarzVehicle((Vehicle) player.getVehicle())) {
+			Car playerCar = carz.getCarController().getCar((Minecart) player.getVehicle());
+			TranslationUtils.sendHeading(TranslationUtils.getTranslation("CarDetails.Heading", false), player);
+			if (!extraDetails) {
+				player.sendMessage(playerCar.getSummary());
+			} else {
+				player.sendMessage(playerCar.toString());
+				carz.getCarDataPersistence().printDataDetails(player, player.getVehicle());
+			}
+
+		} else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART
+				&& carz.getCarDataPersistence().has(VEHICLE_TYPE, player.getInventory().getItemInMainHand())) {
+			TranslationUtils.sendHeading(TranslationUtils.getTranslation("CarDetails.Heading", false), player);
+			carz.getCarDataPersistence().printDataDetails(player,
+					player.getInventory().getItemInMainHand());
+
+		} else {
+			TranslationUtils.sendTranslation("Error.NotInCar", player);
+		}
 	}
 }

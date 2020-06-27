@@ -131,7 +131,7 @@ public class PluginUtils {
         BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (material == null) {
-            TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], true, player);
+            TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], player);
             return;
         }
 
@@ -144,12 +144,13 @@ public class PluginUtils {
 
         if (chosenType.isHasAmount()) {
             if (args.length != 4) {
-                TranslationUtils.sendValueTranslation("Error.BlockTypes.SpecifyAmount", chosenTypeName, true, player);
+                TranslationUtils.sendValueTranslation("Error.BlockTypes.SpecifyAmount",
+                        chosenTypeName.toLowerCase(), player);
                 return;
             }
 
             if (!ValidationUtils.isDouble(args[3])) {
-                TranslationUtils.sendValueTranslation("Error.InvalidNumber", args[3], true, player);
+                TranslationUtils.sendValueTranslation("Error.InvalidNumber", args[3], player);
                 return;
             }
 
@@ -160,6 +161,11 @@ public class PluginUtils {
                 player.sendMessage(Carz.getPrefix() + "If you are sure this is what you want, "
                         + "edit the blocks.yml file manually.");
                 return;
+            }
+
+            // launch blocks are divided because the best numbers are from 0.1 to 1.0, anything more can be manually adjusted
+            if (chosenTypeName.toLowerCase().equals("launch")) {
+                amount /= 100;
             }
 
             config.setBlock(chosenType, material, amount);
@@ -197,7 +203,7 @@ public class PluginUtils {
         BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (material == null) {
-            TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], true, player);
+            TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], player);
             return;
         }
 
@@ -236,7 +242,7 @@ public class PluginUtils {
         Carz.getDefaultConfig().save();
 
         Carz.getInstance().getCarController().populateCarTypes();
-        TranslationUtils.sendValueTranslation("CarType.Removed", carTypeName, true, player);
+        TranslationUtils.sendValueTranslation("CarType.Removed", carTypeName, player);
     }
 
     /**

@@ -201,8 +201,7 @@ public class CarController extends AbstractPluginReceiver {
 
         if (!player.getName().equals(owner)
                 && !PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
-            player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-                    .replace("%PLAYER%", owner));
+            TranslationUtils.sendValueTranslation("Error.Owned", owner, player);
             return;
         }
 
@@ -225,7 +224,7 @@ public class CarController extends AbstractPluginReceiver {
         Car car = getCar(player.getVehicle().getEntityId());
         EffectUtils.playEffect(player, Effect.ZOMBIE_CHEW_WOODEN_DOOR);
         TranslationUtils.sendValueTranslation("Car.UpgradeSpeed",
-                String.valueOf(car.getMaxSpeed()), true, player);
+                String.valueOf(car.getMaxSpeed()), player);
 
         EffectUtils.createUpgradeEffect((Vehicle) player.getVehicle());
     }

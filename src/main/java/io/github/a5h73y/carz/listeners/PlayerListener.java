@@ -92,8 +92,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
             // check that the owner data matches the current player
             if (!owner.equalsIgnoreCase(player.getName())) {
-                player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-                        .replace("%PLAYER%", owner));
+                TranslationUtils.sendValueTranslation("Error.Owned", owner, player);
                 return;
             }
             // lock the car by default when placed

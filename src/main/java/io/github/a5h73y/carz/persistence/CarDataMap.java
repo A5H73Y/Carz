@@ -52,36 +52,34 @@ public class CarDataMap implements CarDataPersistence {
 
 	@Override
 	public void transferNamespaceKeyValues(Entity from, ItemStack to) {
-		transferNamespaceKeyValues(VEHICLE_PREFIX + from.getEntityId() + ".",
-				to.hashCode());
+		transferNamespaceKeyValues(generatePrefix(from), generatePrefix(to));
 	}
 
 	@Override
 	public void transferNamespaceKeyValues(ItemStack from, Entity to) {
-		transferNamespaceKeyValues(ITEM_STACK_PREFIX + from.hashCode() + ".",
-				to.getEntityId());
+		transferNamespaceKeyValues(generatePrefix(from), generatePrefix(to));
 	}
 
-	private void transferNamespaceKeyValues(String keyPrefix, int to) {
+	private void transferNamespaceKeyValues(String fromPrefix, String toPrefix) {
 		Map<String, String> vehicleDetailsCopy = vehicleDetail.keySet().stream()
-				.filter(s -> s.startsWith(keyPrefix))
+				.filter(s -> s.startsWith(fromPrefix))
 				.collect(Collectors.toMap(s -> s, vehicleDetail::get));
 
 		vehicleDetailsCopy.forEach((s, s2) -> {
 			String nameSpace = s.split("\\.")[1];
-			vehicleDetail.put(to + "." + nameSpace, s2);
+			vehicleDetail.put(toPrefix + nameSpace, s2);
 			vehicleDetail.remove(s);
 		});
 	}
 
 	@Override
 	public void printDataDetails(Player player, Entity vehicle) {
-		printDataDetails(player, VEHICLE_PREFIX + vehicle.getEntityId() + ".");
+		printDataDetails(player, generatePrefix(vehicle));
 	}
 
 	@Override
 	public void printDataDetails(Player player, ItemStack itemStack) {
-		printDataDetails(player, ITEM_STACK_PREFIX + itemStack.hashCode() + ".");
+		printDataDetails(player, generatePrefix(itemStack));
 	}
 
 	private void printDataDetails(Player player, String keyPrefix) {
@@ -96,10 +94,18 @@ public class CarDataMap implements CarDataPersistence {
 	}
 
 	private String generateKey(VehicleDetailKey detailKey, Entity vehicle) {
-		return VEHICLE_PREFIX + vehicle.getEntityId() + "." + detailKey.name();
+		return generatePrefix(vehicle) + detailKey.name();
 	}
 
 	private String generateKey(VehicleDetailKey detailKey, ItemStack itemStack) {
-		return ITEM_STACK_PREFIX + itemStack.hashCode() + "." + detailKey.name();
+		return generatePrefix(itemStack) + detailKey.name();
+	}
+
+	private String generatePrefix(Entity vehicle) {
+		return VEHICLE_PREFIX + vehicle.getEntityId() + ".";
+	}
+
+	private String generatePrefix(ItemStack itemStack) {
+		return ITEM_STACK_PREFIX + itemStack.hashCode() + ".";
 	}
 }

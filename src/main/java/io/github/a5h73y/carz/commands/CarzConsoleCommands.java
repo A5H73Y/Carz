@@ -86,7 +86,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 break;
 
             case "cartypes":
-                TranslationUtils.sendHeading("Car Types", sender);
+                TranslationUtils.sendHeading(TranslationUtils.getTranslation("CarType.Heading", false), sender);
                 carz.getCarController().getCarTypes().keySet().forEach(sender::sendMessage);
                 break;
 

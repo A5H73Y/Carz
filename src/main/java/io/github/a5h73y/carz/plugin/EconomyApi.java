@@ -85,7 +85,7 @@ public class EconomyApi extends PluginWrapper {
 						? "" : " " + economy.currencyNamePlural();
 
 				TranslationUtils.sendValueTranslation("Error.PurchaseFailed",
-						cost + currencyName, true, player);
+						cost + currencyName, player);
 			}
 		}
 

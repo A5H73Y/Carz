@@ -56,7 +56,7 @@ public class PermissionUtils {
 
 		if (displayMessage) {
 			TranslationUtils.sendValueTranslation("Error.NoPermission",
-					permission.getPermission(), true, player);
+					permission.getPermission(), player);
 		}
 		return false;
 	}

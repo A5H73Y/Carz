@@ -79,14 +79,14 @@ public class SignListener extends AbstractPluginReceiver implements Listener {
                 event.setLine(3, ChatColor.RED + event.getLine(3));
 
             } else {
-                player.sendMessage(Carz.getPrefix() + "The Cost override must be numeric");
+                TranslationUtils.sendValueTranslation("Error.InvalidNumber", event.getLine(3), player);
                 breakSignAndCancelEvent(event);
                 return;
             }
         }
 
         String title = StringUtils.standardizeText(event.getLine(1));
-        TranslationUtils.sendValueTranslation("Carz.SignCreated", title, true, player);
+        TranslationUtils.sendValueTranslation("Carz.SignCreated", title, player);
         event.setLine(0, Carz.getDefaultConfig().getSignHeader());
     }
 

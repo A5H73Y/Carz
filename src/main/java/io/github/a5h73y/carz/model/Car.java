@@ -2,6 +2,7 @@ package io.github.a5h73y.carz.model;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.controllers.CarController;
+import io.github.a5h73y.carz.utility.TranslationUtils;
 
 public class Car {
 
@@ -83,12 +84,29 @@ public class Car {
 
 	@Override
 	public String toString() {
-		return "entityId = " + entityId
-				+ ", \ncarType = " + carType
-				+ ", \nmaxSpeed = " + maxSpeed
-				+ ", \ncurrentSpeed = " + currentSpeed
-				+ ", \ncurrentFuel = " + currentFuel
+		return "Entity Id: " + entityId
+				+ ", \nCar Type: " + carType
+				+ ", \nMax Speed: " + maxSpeed
+				+ ", \nCurrent Speed: " + currentSpeed
+				+ ", \nCurrent Fuel: " + currentFuel
 				+ "\n" + carDetails;
+	}
+
+	/**
+	 * Display a basic summary of the Car's details.
+	 *
+	 * @return car detail summary
+	 */
+	public String getSummary() {
+		return TranslationUtils.getValueTranslation("CarDetails.Type", carType, false)
+				+ "\n" + TranslationUtils.getValueTranslation(
+						"CarDetails.MaxSpeed", String.valueOf(maxSpeed), false)
+				+ "\n" + TranslationUtils.getValueTranslation(
+						"CarDetails.CurrentSpeed", String.valueOf(currentSpeed), false)
+				+ "\n" + TranslationUtils.getValueTranslation(
+						"CarDetails.Acceleration", String.valueOf(carDetails.getAcceleration()), false)
+				+ "\n" + TranslationUtils.getValueTranslation(
+						"CarDetails.Fuel", String.valueOf(currentFuel), false);
 	}
 
 	public int getEntityId() {

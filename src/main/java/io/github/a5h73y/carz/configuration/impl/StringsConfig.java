@@ -30,11 +30,11 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Car.EngineStop", "You switch the engine off.");
 		this.addDefault("Car.CarLocked", "You lock the car.");
 		this.addDefault("Car.CarUnlocked", "You unlock the car.");
-		this.addDefault("Car.PlayerCar", "&b%PLAYER%&f's car");
+		this.addDefault("Car.PlayerCar", "&b%VALUE%&f's car");
 		this.addDefault("Car.FuelEmpty", "Your car has run out of fuel!");
 		this.addDefault("Car.LiquidDamage", "Your car has been destroyed by liquid!");
 		this.addDefault("Car.UpgradeSpeed", "New top speed: &b%VALUE%");
-		this.addDefault("Car.Key.Display", "&b%PLAYER%&f's key");
+		this.addDefault("Car.Key.Display", "&b%VALUE%&f's key");
 		this.addDefault("Car.Key.Received", "You receive a key.");
 		this.addDefault("Car.Claimed", "You are now the owner of this car.");
 		this.addDefault("Car.OwnershipRemoved", "You have removed ownership of this car.");
@@ -48,6 +48,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Purchase.Success.Refuel", "Car Refuelled!");
 		this.addDefault("Purchase.Cancelled", "Purchase cancelled.");
 
+		this.addDefault("CarType.Heading", "Car Types");
 		this.addDefault("CarType.Create.Name", "&d What would you like this car to be called?");
 		this.addDefault("CarType.Create.StartMaxSpeed", "&d What should the Car's Start Speed be?\n&a (default = 60.0)");
 		this.addDefault("CarType.Create.MaxUpgradeSpeed", "&d What should the Car's Max Upgrade Speed be?\n&a (default = 120.0)");
@@ -70,12 +71,16 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("CarStore.Setup.Line2", " ggggggg ");
 		this.addDefault("CarStore.Setup.Line3", "  fp nl  ");
 
+		this.addDefault("CarDetails.Heading", "Car Details");
 		this.addDefault("CarDetails.Type", "&fCar Type: &b%VALUE%");
 		this.addDefault("CarDetails.MaxSpeed", "&fMax Speed: &b%VALUE%");
+		this.addDefault("CarDetails.CurrentSpeed", "&fCurrent Speed: &b%VALUE%");
 		this.addDefault("CarDetails.Acceleration", "&fAcceleration: &b%VALUE%");
 		this.addDefault("CarDetails.FuelUsage", "&fFuel Usage: &b%VALUE%");
 		this.addDefault("CarDetails.Cost", "&fCost: &b%VALUE%");
 		this.addDefault("CarDetails.Fuel", "&fFuel: &b%VALUE%");
+
+		this.addDefault("PlaceholderAPI.NoCar", "Not Driving");
 
 		this.addDefault("Error.NoPermission", "You do not have permission: &b%VALUE%");
 		this.addDefault("Error.SignProtected", "This sign is protected.");
@@ -89,7 +94,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.FuelDisabled", "Fuel is disabled.");
 		this.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: %VALUE%");
 		this.addDefault("Error.FullyUpgraded", "Your car is already fully upgraded.");
-		this.addDefault("Error.Owned", "This car is owned by %PLAYER%!");
+		this.addDefault("Error.Owned", "This car is owned by %VALUE%!");
 		this.addDefault("Error.UnknownCarType", "Unknown car type.");
 		this.addDefault("Error.UnknownPlayer", "Unknown player.");
 		this.addDefault("Error.UnknownMaterial", "Unknown Material: %VALUE%");
@@ -104,9 +109,9 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.InvalidPlaceableMaterial", "You are unable to place a Car here.");
 		this.addDefault("Error.InvalidNumber", "%VALUE% is not a valid number.");
 
-		this.addDefault("Error.BlockTypes.Invalid", "Invalid Block Type.");
+		this.addDefault("Error.BlockTypes.Invalid", "Invalid Block Type. Valid options: speed, climb, launch, placeable");
 		this.addDefault("Error.BlockTypes.AlreadyExists", "%MATERIAL% is already a %TYPE% block.");
-		this.addDefault("Error.BlockTypes.SpecifyAmount", "Invalid Syntax: /carz add %VALUE% (amount)");
+		this.addDefault("Error.BlockTypes.SpecifyAmount", "Invalid Syntax: /carz add %VALUE% (material) (amount)");
 
 		this.options().copyDefaults(true);
 	}

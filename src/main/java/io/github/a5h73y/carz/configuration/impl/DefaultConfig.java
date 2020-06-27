@@ -1,5 +1,6 @@
 package io.github.a5h73y.carz.configuration.impl;
 
+import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.configuration.CarzConfiguration;
 import io.github.a5h73y.carz.utility.StringUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
@@ -62,6 +63,7 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Other.DestroyInLiquid", true);
 		this.addDefault("Other.OnlyOwnedCarsDrive", false);
 		this.addDefault("Other.MaxPlayerOwnedCars", 5);
+		this.addDefault("Other.PreventCarPurchaseWhenExisting", false);
 		this.addDefault("Other.SignProtection", true);
 		this.addDefault("Other.UpdateCheck", true);
 		this.addDefault("Other.UseAutoTabCompletion", true);
@@ -74,6 +76,8 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("CarTypes.default.FuelUsage", 1.0);
 		this.addDefault("CarTypes.default.FillMaterial", "AIR");
 		this.addDefault("CarTypes.default.Cost", 10.0);
+
+		this.addDefault("Version", Double.valueOf(Carz.getInstance().getDescription().getVersion()));
 
 		this.options().copyDefaults(true);
 	}

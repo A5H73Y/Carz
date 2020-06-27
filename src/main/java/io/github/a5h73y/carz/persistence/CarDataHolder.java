@@ -23,11 +23,7 @@ public class CarDataHolder implements CarDataPersistence {
 	 */
 	@Override
 	public String getValue(VehicleDetailKey detailKey, ItemStack itemStack) {
-		String value = null;
-		if (itemStack.hasItemMeta()) {
-			value = getContainerValue(detailKey, itemStack.getItemMeta());
-		}
-		return value;
+		return getContainerValue(detailKey, itemStack.getItemMeta());
 	}
 
 	/**
@@ -86,7 +82,7 @@ public class CarDataHolder implements CarDataPersistence {
 	 */
 	@Override
 	public boolean has(VehicleDetailKey detailKey, ItemStack itemStack) {
-		return itemStack.hasItemMeta() && hasContainerValue(detailKey, itemStack.getItemMeta());
+		return hasContainerValue(detailKey, itemStack.getItemMeta());
 	}
 
 	/**

@@ -115,22 +115,12 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
 
             case "d":
             case "details":
-                if (player.isInsideVehicle()
-                        && carz.getCarController().getCar(player.getVehicle().getEntityId()) != null) {
-                    TranslationUtils.sendHeading("Car Details", player);
-                    player.sendMessage(carz.getCarController().getCar(player.getVehicle().getEntityId()).toString());
-                    carz.getCarDataPersistence().printDataDetails(player, player.getVehicle());
-
-                } else if (player.getInventory().getItemInMainHand().getType() == Material.MINECART) {
-                    TranslationUtils.sendHeading("Car Details", player);
-                    carz.getCarDataPersistence().printDataDetails(player,
-                            player.getInventory().getItemInMainHand());
-
-                } else {
+                if (!player.isInsideVehicle() && player.getInventory().getItemInMainHand().getType() != Material.MINECART) {
                     TranslationUtils.sendTranslation("Error.NotInCar", player);
                     return false;
                 }
 
+                CarUtils.showCarDetails(player, args);
                 break;
 
             case "a":
@@ -207,7 +197,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                TranslationUtils.sendHeading("Car Types", player);
+                TranslationUtils.sendHeading(TranslationUtils.getTranslation("CarType.Heading", false), player);
                 carz.getCarController().getCarTypes().keySet().forEach(player::sendMessage);
                 break;
 

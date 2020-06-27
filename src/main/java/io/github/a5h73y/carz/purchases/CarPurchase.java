@@ -42,7 +42,7 @@ public class CarPurchase extends Purchasable {
 	public void performPurchase(Player player) {
 		CarUtils.givePlayerCar(player, carType, true);
 		TranslationUtils.sendValueTranslation("Purchase.Success.Car",
-				StringUtils.standardizeText(carType), true, player);
+				StringUtils.standardizeText(carType), player);
 		Bukkit.getServer().getPluginManager().callEvent(new PurchaseCarEvent(player, this));
 	}
 

@@ -78,12 +78,10 @@ public class TranslationUtils {
 	 *
 	 * @param translationKey to translate
 	 * @param value to replace
-	 * @param prefix display prefix
 	 * @param players targets to receive the message
 	 */
-	public static void sendValueTranslation(String translationKey, String value, boolean prefix,
-	                                        CommandSender... players) {
-		String translation = getValueTranslation(translationKey, value, prefix);
+	public static void sendValueTranslation(String translationKey, String value, CommandSender... players) {
+		String translation = getValueTranslation(translationKey, value, true);
 		for (CommandSender player : players) {
 			player.sendMessage(translation);
 		}
@@ -96,6 +94,6 @@ public class TranslationUtils {
 	 * @param player to receive the message
 	 */
 	public static void sendHeading(String message, CommandSender player) {
-		sendValueTranslation("Carz.Heading", message, false, player);
+		player.sendMessage(getValueTranslation("Carz.Heading", message, false));
 	}
 }

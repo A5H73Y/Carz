@@ -89,8 +89,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             boolean isOwner = owner.equalsIgnoreCase(player.getName());
 
             if (!isOwner && !PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)) {
-                player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-                        .replace("%PLAYER%", owner));
+                TranslationUtils.sendValueTranslation("Error.Owned", owner, player);
                 event.setCancelled(true);
                 return;
 
@@ -160,6 +159,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         if (carz.getCarController().isDriving(player.getName())) {
             carz.getCarController().removeDriver(player.getName());
             vehicle.setMaxSpeed(0D);
+            car.resetSpeed();
             TranslationUtils.sendTranslation("Car.EngineStop", player);
             carz.getCarDataPersistence().setValue(VEHICLE_FUEL, vehicle, car.getCurrentFuel().toString());
             Bukkit.getServer().getPluginManager().callEvent(new EngineStopEvent(player, car));
@@ -309,10 +309,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
             if (!event.getAttacker().getName().equals(owner)
                     && !PermissionUtils.hasStrictPermission((Player) event.getAttacker(), Permissions.BYPASS_OWNER, false)) {
-
-                String ownedMessage = TranslationUtils.getTranslation("Error.Owned")
-                        .replace("%PLAYER%", owner);
-                event.getAttacker().sendMessage(ownedMessage);
+                TranslationUtils.sendValueTranslation("Error.Owned", owner, event.getAttacker());
 
             } else {
                 carz.getCarController().stashCar((Player) event.getAttacker(), minecart);
@@ -429,8 +426,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             String owner = carz.getCarDataPersistence().getValue(VEHICLE_OWNER, vehicle);
 
             if (!owner.equals(event.getPlayer().getName())) {
-                event.getPlayer().sendMessage(TranslationUtils.getTranslation("Error.Owned")
-                        .replace("%PLAYER%", owner));
+                TranslationUtils.sendValueTranslation("Error.Owned", owner, event.getPlayer());
                 return;
             }
         }

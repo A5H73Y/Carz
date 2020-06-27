@@ -114,7 +114,8 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (player.getInventory().contains(Material.MINECART)) {
+		if (player.getInventory().contains(Material.MINECART)
+				&& Carz.getInstance().getConfig().getBoolean("PreventCarPurchaseWhenExisting")) {
 			TranslationUtils.sendTranslation("Error.HaveCar", player);
 			return false;
 		}
@@ -237,8 +238,7 @@ public class ValidationUtils {
 		if (Carz.getInstance().getCarDataPersistence().has(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle())) {
 			String owner = Carz.getInstance().getCarDataPersistence()
 					.getValue(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
-			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-					.replace("%PLAYER%", owner));
+			TranslationUtils.sendValueTranslation("Error.Owned", owner, player);
 			return false;
 		}
 
@@ -268,8 +268,7 @@ public class ValidationUtils {
 
 		if (!PermissionUtils.hasStrictPermission(player, Permissions.BYPASS_OWNER, false)
 				&& !owner.equalsIgnoreCase(player.getName())) {
-			player.sendMessage(TranslationUtils.getTranslation("Error.Owned")
-					.replace("%PLAYER%", owner));
+			TranslationUtils.sendValueTranslation("Error.Owned", owner, player);
 			return false;
 		}
 

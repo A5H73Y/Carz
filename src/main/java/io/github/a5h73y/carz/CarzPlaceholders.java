@@ -1,6 +1,7 @@
 package io.github.a5h73y.carz;
 
 import io.github.a5h73y.carz.model.Car;
+import io.github.a5h73y.carz.utility.TranslationUtils;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 
@@ -43,7 +44,7 @@ public class CarzPlaceholders extends PlaceholderExpansion {
         Car car = getPlayersCar(player);
 
         if (car == null) {
-            return "";
+            return TranslationUtils.getTranslation("PlaceholderAPI.NoCar", false);
         }
 
         // car detail specific
