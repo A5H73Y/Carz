@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114782028-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-114782028-2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/flatly/bootstrap.min.css" integrity="sha384-mhpbKVUOPCSocLzx2ElRISIORFRwr1ZbO9bAlowgM5kO7hnpRBe+brVj8NNPUiFs" crossorigin="anonymous">
@@ -20,48 +28,46 @@
 <body>
 <div id="navigation-placeholder"></div>
 
-<div class="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-xl-8">
-                <h1>Part 3: Block Types</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <h1>Part 3: Block Types</h1>
 
-                <div id="contents-placeholder"></div>
+            <div id="contents-placeholder"></div>
 
-                <h2>Description</h2>
-                <p>For each Block Type, you are able to specify a list of Materials which make up that action. The available actions include: climb, placeable, speed and launch.</p>
-                <p class="no-margin">Each of these can be added to using <strong>/carz add (type) (Material)</strong>. Some may need an extra argument for the amount, such as the strength of the speed block or the amount of height from a launch block.</p>
-                <p class="font-italic">The contents of each block type are stored in the blocks.yml config file.</p>
+            <h2>Description</h2>
+            <p>For each Block Type, you are able to specify a list of Materials which make up that action. The available actions include: climb, placeable, speed and launch.</p>
+            <p class="no-margin">Each of these can be added to using <strong>/carz add (type) (Material)</strong>. Some may need an extra argument for the amount, such as the strength of the speed block or the amount of height from a launch block.</p>
+            <p class="font-italic">The contents of each block type are stored in the blocks.yml config file.</p>
 
-                <h2 id="climb">Climb Block</h2>
-                <p>Climb blocks provide the ability for a car to climb up certain types of Materials. The climb mechanic will check the block in front of the Minecart for a valid Material, check if there is space above it to climb to, then proceed to elevate the car up the block.</p>
-                <p><strong>If there are no specified Climb Blocks, EVERY Material is climbable.</strong></p>
+            <h2 id="climb">Climb Block</h2>
+            <p>Climb blocks provide the ability for a car to climb up certain types of Materials. The climb mechanic will check the block in front of the Minecart for a valid Material, check if there is space above it to climb to, then proceed to elevate the car up the block.</p>
+            <p><strong>If there are no specified Climb Blocks, EVERY Material is climbable.</strong></p>
 
-                <h2 id="placeable">Placeable Block</h2>
-                <p>Placeable blocks provide the ability to restrict where players are able to physically place Cars.</p>
-                <p><strong>If there are no specified Placeable Blocks, EVERY Material is placeable.</strong></p>
+            <h2 id="placeable">Placeable Block</h2>
+            <p>Placeable blocks provide the ability to restrict where players are able to physically place Cars.</p>
+            <p><strong>If there are no specified Placeable Blocks, EVERY Material is placeable.</strong></p>
 
-                <h2 id="speed">Speed Block</h2>
-                <p>Speed blocks provide the ability to give the car an extra speed boost when driven over, before gradually returning your car to it's normal speed.</p>
-                <p>Speed blocks are also able to lower the cars speed when driven on, for example if the car should drive slowly on grass then set the speed block to a value below 1.0.</p>
-                <p>The value specified is a multiplier of the car's maximum speed, so <code>10</code> would be 10x their speed, and <code>0.1</code> would be 10% of their speed.</p>
-                <p class="font-italic">There is validation to prevent numbers below 0 and over 100. Anything exceeding 100 will cause the Car to almost teleport forward which isn't advised. Anything under 0 will seemingly reverse the car, and could be used to restrict the car from entering certain areas. If desired, manual editing of the <code>blocks.yml</code> file is required.</p>
+            <h2 id="speed">Speed Block</h2>
+            <p>Speed blocks provide the ability to give the car an extra speed boost when driven over, before gradually returning your car to it's normal speed.</p>
+            <p>Speed blocks are also able to lower the cars speed when driven on, for example if the car should drive slowly on grass then set the speed block to a value below 1.0.</p>
+            <p>The value specified is a multiplier of the car's maximum speed, so <code>10</code> would be 10x their speed, and <code>0.1</code> would be 10% of their speed.</p>
+            <p class="font-italic">There is validation to prevent numbers below 0 and over 100. Anything exceeding 100 will cause the Car to almost teleport forward which isn't advised. Anything under 0 will seemingly reverse the car, and could be used to restrict the car from entering certain areas. If desired, manual editing of the <code>blocks.yml</code> file is required.</p>
 
-                <h4>Examples</h4>
-                <p class="no-margin">Value: 10</p>
-                <video autoplay loop controls>
-                    <source src="" type="video/mp4">
-                </video>
+            <h4>Examples</h4>
+            <p class="no-margin">Value: 10</p>
+            <video autoplay loop controls>
+                <source src="" type="video/mp4">
+            </video>
 
-                <p class="no-margin">Value: 0.1</p>
-                <video autoplay loop controls>
-                    <source src="https://thumbs.gfycat.com/PiercingMetallicItaliangreyhound-mobile.mp4" type="video/mp4">
-                </video>
+            <p class="no-margin">Value: 0.1</p>
+            <video autoplay loop controls>
+                <source src="https://thumbs.gfycat.com/PiercingMetallicItaliangreyhound-mobile.mp4" type="video/mp4">
+            </video>
 
-                <h2 id="launch">Launch Block</h2>
-                <p class="no-margin">Launch blocks provide the ability to add a y velocity of the car, giving the illusion of launching them into the air.</p>
-                <p>It's worth noting that values between 0.0 and 2.0 seem to be most effective, anything over 2 will launch too high.</p>
-            </div>
+            <h2 id="launch">Launch Block</h2>
+            <p class="no-margin">Launch blocks provide the ability to add a y velocity of the car, giving the illusion of launching them into the air.</p>
+            <p>It's worth noting that values between 0.0 and 2.0 seem to be most effective, anything over 2 will launch too high.</p>
         </div>
     </div>
 </div>

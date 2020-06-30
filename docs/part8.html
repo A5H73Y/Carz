@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114782028-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-114782028-2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/flatly/bootstrap.min.css" integrity="sha384-mhpbKVUOPCSocLzx2ElRISIORFRwr1ZbO9bAlowgM5kO7hnpRBe+brVj8NNPUiFs" crossorigin="anonymous">
@@ -20,26 +28,25 @@
 <body>
 <div id="navigation-placeholder"></div>
 
-<div class="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-xl-8">
-                <h1>Part 8: Developer Tutorials</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <h1>Part 8: Developer Tutorials</h1>
 
-                <div id="contents-placeholder"></div>
+            <div id="contents-placeholder"></div>
 
-                <h2>Description</h2>
-                <p>Are you a developer? Great! You can make the most of out Carz's functionality to create the perfect experience for your server. I've made the plugin super easy to expand and integrate into, first we will import the Carz project to begin working with it.</p>
+            <h2>Description</h2>
+            <p>Are you a developer? Great! You can make the most of out Carz's functionality to create the perfect experience for your server. I've made the plugin super easy to expand and integrate into, first we will import the Carz project to begin working with it.</p>
 
-                <h2 id="importCarz">Importing Carz into your Project</h2>
-                <p>You will want to add Carz's repository to the list of repositories so that you can bring in the Carz project.</p>
-                <pre><code>&lt;repository&gt;
+            <h2 id="importCarz">Importing Carz into your Project</h2>
+            <p>You will want to add Carz's repository to the list of repositories so that you can bring in the Carz project.</p>
+            <pre><code>&lt;repository&gt;
     &lt;id&gt;a5h73y-repo&lt;/id&gt;
     &lt;url&gt;https://dl.bintray.com/a5h73y/repo/&lt;/url&gt;
 &lt;/repository&gt;</code></pre>
 
-                <p>Add the following dependency to your list of dependencies and let Maven import the project.</p>
-                <pre><code>&lt;dependency&gt;
+            <p>Add the following dependency to your list of dependencies and let Maven import the project.</p>
+            <pre><code>&lt;dependency&gt;
     &lt;groupId&gt;me.A5H73Y&lt;/groupId&gt;
     &lt;artifactId&gt;Carz&lt;/artifactId&gt;
     &lt;version&gt;(INSERT LATEST VERSION)&lt;/version&gt;
@@ -47,37 +54,37 @@
     &lt;scope&gt;provided&lt;/scope&gt;
 &lt;/dependency&gt;</code></pre>
 
-                <p>Maven should now import the Carz project and its dependencies, make sure your project builds correctly and then continue.</p>
-                <p>You can also add the Carz.jar to your classpath if you wish for the same outcome, but Maven makes this stage considerably easier.</p>
+            <p>Maven should now import the Carz project and its dependencies, make sure your project builds correctly and then continue.</p>
+            <p>You can also add the Carz.jar to your classpath if you wish for the same outcome, but Maven makes this stage considerably easier.</p>
 
-                <h2 id="setupPlugin">Setting up your plugin</h2>
-                <p>You'll need to decide if your plugin depends on the Carz plugin, or if it is just an optional dependency. In your plugin.yml enter either of the following:</p>
-                <pre><code>depend: [Carz]
+            <h2 id="setupPlugin">Setting up your plugin</h2>
+            <p>You'll need to decide if your plugin depends on the Carz plugin, or if it is just an optional dependency. In your plugin.yml enter either of the following:</p>
+            <pre><code>depend: [Carz]
 softdepend: [Carz]</code></pre>
 
-                <p>This will allow Carz to fully initialize before you start to use it.</p>
-                <p>Now you need to check if the Carz plugin has started correctly within the code, this is for you to check and handle. But will look something like: </p>
-                <pre><code>Plugin carz = getServer().getPluginManager().getPlugin("Carz");
+            <p>This will allow Carz to fully initialize before you start to use it.</p>
+            <p>Now you need to check if the Carz plugin has started correctly within the code, this is for you to check and handle. But will look something like: </p>
+            <pre><code>Plugin carz = getServer().getPluginManager().getPlugin("Carz");
 if (carz != null && carz.isEnabled()) {
     System.out.println("Found Carz v" + carz.getDescription().getVersion())
 } else {
     /* oh no, Carz isn't installed */
 }</code></pre>
-                <p>If your Plugin successfully links with Carz, your plugin can now interact with Carz and listen to some of the events it fires.</p>
+            <p>If your Plugin successfully links with Carz, your plugin can now interact with Carz and listen to some of the events it fires.</p>
 
-                <h2 id="carzEvents">Carz Events</h2>
-                <p>There are a list of custom Events that Carz creates, that you can listen to:</p>
-                <ul>
-                    <li>CarStashEvent</li>
-                    <li>EngineStartEvent</li>
-                    <li>EngineStopEvent</li>
-                    <li>PurchaseCarEvent</li>
-                    <li>PurchaseFuelEvent</li>
-                    <li>PurchaseUpgradeEvent</li>
-                </ul>
-                <p>Each of these will give you at least the Player object and the relevant objects to use.</p>
-                <p>To listen for a Carz event you must create a Listener class and register it correctly, then create an EventHandler like any normal event:</p>
-                <pre><code>@EventHandler
+            <h2 id="carzEvents">Carz Events</h2>
+            <p>There are a list of custom Events that Carz creates, that you can listen to:</p>
+            <ul>
+                <li>CarStashEvent</li>
+                <li>EngineStartEvent</li>
+                <li>EngineStopEvent</li>
+                <li>PurchaseCarEvent</li>
+                <li>PurchaseFuelEvent</li>
+                <li>PurchaseUpgradeEvent</li>
+            </ul>
+            <p>Each of these will give you at least the Player object and the relevant objects to use.</p>
+            <p>To listen for a Carz event you must create a Listener class and register it correctly, then create an EventHandler like any normal event:</p>
+            <pre><code>@EventHandler
 public void onCarzEngineStart(EngineStartEvent event) {
     Car startedCar = event.getCar();
     Player player = event.getPlayer();
@@ -85,10 +92,9 @@ public void onCarzEngineStart(EngineStartEvent event) {
     player.sendMessage("You started car " + startedCar.getEntityId());
 }</code></pre>
 
-                <div class="card card-body bg-light">
-                    <p class="no-margin">Do you feel like Carz and its users could benefit from the changes you've made?</p>
-                    <p class="no-margin"><a href="https://github.com/A5H73Y/Carz/pulls">Create a Pull Request</a> and I will take a look at it.</p>
-                </div>
+            <div class="card card-body bg-light">
+                <p class="no-margin">Do you feel like Carz and its users could benefit from the changes you've made?</p>
+                <p class="no-margin"><a href="https://github.com/A5H73Y/Carz/pulls">Create a Pull Request</a> and I will take a look at it.</p>
             </div>
         </div>
     </div>

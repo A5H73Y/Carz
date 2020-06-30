@@ -1,6 +1,14 @@
 <!doctype html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114782028-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-114782028-2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/flatly/bootstrap.min.css" integrity="sha384-mhpbKVUOPCSocLzx2ElRISIORFRwr1ZbO9bAlowgM5kO7hnpRBe+brVj8NNPUiFs" crossorigin="anonymous">
@@ -20,52 +28,50 @@
 <body>
 <div id="navigation-placeholder"></div>
 
-<div class="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-xl-8">
-                <h1>Part 7: Other Plugin Support</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <h1>Part 7: Other Plugin Support</h1>
 
-                <div id="contents-placeholder"></div>
+            <div id="contents-placeholder"></div>
 
-                <h2>Description</h2>
-                <p>Carz is able to integrate with supported plugins to extend functionality. If integration is desired, make sure the plugin(s) are installed and start correctly, then Carz will display a success message on start up (if configured).</p>
+            <h2>Description</h2>
+            <p>Carz is able to integrate with supported plugins to extend functionality. If integration is desired, make sure the plugin(s) are installed and start correctly, then Carz will display a success message on start up (if configured).</p>
 
-                <h2 id="vault">Vault</h2>
-                <p>For information on Economy / Vault, <a href="part4.html">click here</a>.</p>
+            <h2 id="vault">Vault</h2>
+            <p>For information on Economy / Vault, <a href="part4.html">click here</a>.</p>
 
-                <h2 id="bountifulAPI">BountifulAPI</h2>
-                <p>BountifulAPI adds the ability to display titles and various other notifications, rather than printing the messages into the chat.</p>
-                <p>Once connected, Carz will use the action bar to display the remaining fuel when requested and various other messages.</p>
-                <img src="https://i.imgur.com/lMvggwR.png" alt="/carz fuel bountifulapi usage" class="img-thumbnail"/>
-                <p>BountifulAPI created by connorlinfoot, available here: <a href="https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/">https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/</a></p>
+            <h2 id="bountifulAPI">BountifulAPI</h2>
+            <p>BountifulAPI adds the ability to display titles and various other notifications, rather than printing the messages into the chat.</p>
+            <p>Once connected, Carz will use the action bar to display the remaining fuel when requested and various other messages.</p>
+            <img src="https://i.imgur.com/lMvggwR.png" alt="/carz fuel bountifulapi usage" class="img-thumbnail"/>
+            <p>BountifulAPI created by connorlinfoot, available here: <a href="https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/">https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/</a></p>
 
-                <h2 id="placeholderAPI">PlaceholderAPI</h2>
-                <p>PlaceholderAPI support provides various available Carz placeholder values, which can be used to extend to other plugins to allow for better customizability.</p>
+            <h2 id="placeholderAPI">PlaceholderAPI</h2>
+            <p>PlaceholderAPI support provides various available Carz placeholder values, which can be used to extend to other plugins to allow for better customizability.</p>
 
-                <img src="https://i.imgur.com/qOl5m4i.png" alt="carz placeholders" class="img-thumbnail"/>
-                <p>PlaceholderAPI created by clip, available here: <a href="https://www.spigotmc.org/resources/placeholderapi.6245/">https://www.spigotmc.org/resources/placeholderapi.6245/</a></p>
+            <img src="https://i.imgur.com/qOl5m4i.png" alt="carz placeholders" class="img-thumbnail"/>
+            <p>PlaceholderAPI created by clip, available here: <a href="https://www.spigotmc.org/resources/placeholderapi.6245/">https://www.spigotmc.org/resources/placeholderapi.6245/</a></p>
 
-                <h4>Available Carz placeholders</h4>
-                <p class="font-italic">All placeholders use the player's current car for context. Each of these placeholders must be prefixed by <code>carz_</code> to be recognised.</p>
+            <h4>Available Carz placeholders</h4>
+            <p class="font-italic">All placeholders use the player's current car for context. Each of these placeholders must be prefixed by <code>carz_</code> to be recognised.</p>
 
-                <dl class="row">
-                    <dt class="col-sm-3"><code>fuelgauge</code></dt>
-                    <dd class="col-sm-9">Displays the car's fuel gauge. indicating how much fuel they have remaining in a bar.</dd>
+            <dl class="row">
+                <dt class="col-sm-3"><code>fuelgauge</code></dt>
+                <dd class="col-sm-9">Displays the car's fuel gauge. indicating how much fuel they have remaining in a bar.</dd>
 
-                    <dt class="col-sm-3"><code>speed</code></dt>
-                    <dd class="col-sm-9">Displays the car's current speed.</dd>
+                <dt class="col-sm-3"><code>speed</code></dt>
+                <dd class="col-sm-9">Displays the car's current speed.</dd>
 
-                    <dt class="col-sm-3"><code>fuel</code></dt>
-                    <dd class="col-sm-9">Displays the car's current fuel amount.</dd>
+                <dt class="col-sm-3"><code>fuel</code></dt>
+                <dd class="col-sm-9">Displays the car's current fuel amount.</dd>
 
-                    <dt class="col-sm-3"><code>maxfuel</code></dt>
-                    <dd class="col-sm-9">Displays the car's maximum fuel amount.</dd>
+                <dt class="col-sm-3"><code>maxfuel</code></dt>
+                <dd class="col-sm-9">Displays the car's maximum fuel amount.</dd>
 
-                    <dt class="col-sm-3"><code>cartype</code></dt>
-                    <dd class="col-sm-9">Displays the car's type.</dd>
-                </dl>
-            </div>
+                <dt class="col-sm-3"><code>cartype</code></dt>
+                <dd class="col-sm-9">Displays the car's type.</dd>
+            </dl>
         </div>
     </div>
 </div>

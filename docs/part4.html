@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114782028-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-114782028-2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/flatly/bootstrap.min.css" integrity="sha384-mhpbKVUOPCSocLzx2ElRISIORFRwr1ZbO9bAlowgM5kO7hnpRBe+brVj8NNPUiFs" crossorigin="anonymous">
@@ -20,33 +28,31 @@
 <body>
 <div id="navigation-placeholder"></div>
 
-<div class="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-xl-8">
-                <h1>Part 4: Economy</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <h1>Part 4: Economy</h1>
 
-                <div id="contents-placeholder"></div>
+            <div id="contents-placeholder"></div>
 
-                <h2>Description</h2>
-                <p class="no-margin">Carz can link to any Economy plugin that supports Vault.</p>
-                <p>When linked, each Carz purchase type can have an associated cost. Any economy based purchase will be prevented until the player has earned enough money (for example buying a car).</p>
-                <p>The configuration option in the config.yml is "Vault.Enabled" and must be set to true. When Carz starts up, it will print a message whether it connected to Vault Economy successfully.</p>
-                <p class="font-italic">Vault created by Sleaker, available here: <a href="https://www.spigotmc.org/resources/vault.34315/">https://www.spigotmc.org/resources/vault.34315/</a></p>
+            <h2>Description</h2>
+            <p class="no-margin">Carz can link to any Economy plugin that supports Vault.</p>
+            <p>When linked, each Carz purchase type can have an associated cost. Any economy based purchase will be prevented until the player has earned enough money (for example buying a car).</p>
+            <p>The configuration option in the config.yml is "Vault.Enabled" and must be set to true. When Carz starts up, it will print a message whether it connected to Vault Economy successfully.</p>
+            <p class="font-italic">Vault created by Sleaker, available here: <a href="https://www.spigotmc.org/resources/vault.34315/">https://www.spigotmc.org/resources/vault.34315/</a></p>
 
-                <h2 id="confirmation">Purchase Confirmation</h2>
-                <p>If configured, the player can be asked to confirm purchases before the cost amount is deducted from their account. This acts as a good way to provide a summary of what the user is about to do, for example purchase a car.</p>
-                <img src="https://i.imgur.com/l8d6LT2.png" alt="purchase confirmation example" class="img-thumbnail">
+            <h2 id="confirmation">Purchase Confirmation</h2>
+            <p>If configured, the player can be asked to confirm purchases before the cost amount is deducted from their account. This acts as a good way to provide a summary of what the user is about to do, for example purchase a car.</p>
+            <img src="https://i.imgur.com/l8d6LT2.png" alt="purchase confirmation example" class="img-thumbnail">
 
-                <h2 id="customAmounts">Custom Costs</h2>
-                <p class="no-margin">Each type of purchase will have a default cost defined in the config, with exception to car types which will each have an individual defined cost.</p>
-                <p>These costs can be overridden through Carz signs, by specifying the new cost on the bottom line.</p>
-                <img src="https://i.imgur.com/xOAh7Ce.png" alt="cost override sign" class="img-thumbnail">
+            <h2 id="customAmounts">Custom Costs</h2>
+            <p class="no-margin">Each type of purchase will have a default cost defined in the config, with exception to car types which will each have an individual defined cost.</p>
+            <p>These costs can be overridden through Carz signs, by specifying the new cost on the bottom line.</p>
+            <img src="https://i.imgur.com/xOAh7Ce.png" alt="cost override sign" class="img-thumbnail">
 
-                <h2 id="summary">Economy Summary</h2>
-                <p>Entering the command <strong>/carz economy</strong> will display a breakdown of each cost and various economy details.</p>
-                <img src="https://i.imgur.com/fVQekYD.png" alt="carz economy usage" class="img-thumbnail">
-            </div>
+            <h2 id="summary">Economy Summary</h2>
+            <p>Entering the command <strong>/carz economy</strong> will display a breakdown of each cost and various economy details.</p>
+            <img src="https://i.imgur.com/fVQekYD.png" alt="carz economy usage" class="img-thumbnail">
         </div>
     </div>
 </div>

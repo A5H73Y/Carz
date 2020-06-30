@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114782028-2"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-114782028-2');
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.0/flatly/bootstrap.min.css" integrity="sha384-mhpbKVUOPCSocLzx2ElRISIORFRwr1ZbO9bAlowgM5kO7hnpRBe+brVj8NNPUiFs" crossorigin="anonymous">
@@ -20,136 +28,134 @@
 <body>
 <div id="navigation-placeholder"></div>
 
-<div class="content">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 col-xl-8">
-                <h1>Part 1: The Basics</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <h1>Part 1: The Basics</h1>
 
-                <div id="contents-placeholder"></div>
+            <div id="contents-placeholder"></div>
 
-                <h2 id="permissions">Permissions</h2>
-                <p>If you want to use permissions for the plugin, ensure <code>Other.UsePermissions</code> in the <span class="font-italic">config.yml</span> is set to <code>true</code>. Otherwise the players will not require permissions for most functionality.</p>
+            <h2 id="permissions">Permissions</h2>
+            <p>If you want to use permissions for the plugin, ensure <code>Other.UsePermissions</code> in the <span class="font-italic">config.yml</span> is set to <code>true</code>. Otherwise the players will not require permissions for most functionality.</p>
 
-                <dl class="row">
-                    <dt class="col-sm-3"><code>Carz.*</code></dt>
-                    <dd class="col-sm-9">All Carz permissions.</dd>
+            <dl class="row">
+                <dt class="col-sm-3"><code>Carz.*</code></dt>
+                <dd class="col-sm-9">All Carz permissions.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.Admin</code></dt>
-                    <dd class="col-sm-9">Ability to perform Administration commands.</dd>
+                <dt class="col-sm-3"><code>Carz.Admin</code></dt>
+                <dd class="col-sm-9">Ability to perform Administration commands.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.Purchase</code></dt>
-                    <dd class="col-sm-9">Ability to purchase an owned Car.</dd>
+                <dt class="col-sm-3"><code>Carz.Purchase</code></dt>
+                <dd class="col-sm-9">Ability to purchase an owned Car.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.Place</code></dt>
-                    <dd class="col-sm-9">Ability to place a Car.</dd>
+                <dt class="col-sm-3"><code>Carz.Place</code></dt>
+                <dd class="col-sm-9">Ability to place a Car.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.Drive</code></dt>
-                    <dd class="col-sm-9">Ability to drive a Car.</dd>
+                <dt class="col-sm-3"><code>Carz.Drive</code></dt>
+                <dd class="col-sm-9">Ability to drive a Car.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.Upgrade</code></dt>
-                    <dd class="col-sm-9">Ability to upgrade a Car.</dd>
+                <dt class="col-sm-3"><code>Carz.Upgrade</code></dt>
+                <dd class="col-sm-9">Ability to upgrade a Car.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.CreateSign</code></dt>
-                    <dd class="col-sm-9">Ability to create Carz signs.</dd>
+                <dt class="col-sm-3"><code>Carz.CreateSign</code></dt>
+                <dd class="col-sm-9">Ability to create Carz signs.</dd>
 
-                    <dt class="col-sm-3"><code>Carz.BypassOwner</code></dt>
-                    <dd class="col-sm-9">Bypass the ownership checks of the Car.</dd>
-                </dl>
+                <dt class="col-sm-3"><code>Carz.BypassOwner</code></dt>
+                <dd class="col-sm-9">Bypass the ownership checks of the Car.</dd>
+            </dl>
 
-                <h2 id="commandHelp">Commands</h2>
-                <p class="no-margin">Every available command can be found in-game using <strong>/carz cmds</strong>. The list will be built based on permissions and configuration.</p>
-                <p class="font-italic">For console commands, use <strong>/carzc cmds</strong></p>
-                <img src="https://i.imgur.com/9RhUea2.png" alt="All commands." class="img-thumbnail">
+            <h2 id="commandHelp">Commands</h2>
+            <p class="no-margin">Every available command can be found in-game using <strong>/carz cmds</strong>. The list will be built based on permissions and configuration.</p>
+            <p class="font-italic">For console commands, use <strong>/carzc cmds</strong></p>
+            <img src="https://i.imgur.com/9RhUea2.png" alt="All commands." class="img-thumbnail">
 
-                <h4>/carz purchase [cartype]</h4>
-                <p>Request a purchase to purchase an owned car to your inventory. You will have full ownership of the car, being able to protect and lock it from other players.</p>
-                <p class="no-margin">You can specify which type of Car you would like to purchase by using the optional parameter, if not specified the "default" car will be used.</p>
-                <p class="font-italic">If Economy is enabled, a player must have sufficient funds before successfully purchasing.</p>
-                <img src="https://i.imgur.com/l8d6LT2.png" alt="/carz purchase usage" class="img-thumbnail"/>
-                <p class="font-italic">* Permission: <code>Carz.Purchase</code>.</p>
+            <h4>/carz purchase [cartype]</h4>
+            <p>Request a purchase to purchase an owned car to your inventory. You will have full ownership of the car, being able to protect and lock it from other players.</p>
+            <p class="no-margin">You can specify which type of Car you would like to purchase by using the optional parameter, if not specified the "default" car will be used.</p>
+            <p class="font-italic">If Economy is enabled, a player must have sufficient funds before successfully purchasing.</p>
+            <img src="https://i.imgur.com/l8d6LT2.png" alt="/carz purchase usage" class="img-thumbnail"/>
+            <p class="font-italic">* Permission: <code>Carz.Purchase</code>.</p>
 
-                <h4>/carz upgrade</h4>
-                <p class="no-margin">Request a purchase to upgrade the speed of the Car you are currently driving. This will play a sound and the car will immediately be increased in speed. </p>
-                <p class="font-italic">If Economy is enabled, a player must have sufficient funds before successfully purchasing.</p>
-                <img src="https://i.imgur.com/6llxbtz.png" alt="/carz upgrade usage" class="img-thumbnail"/>
-                <p class="font-italic">* Permission: <code>Carz.Upgrade</code>.</p>
+            <h4>/carz upgrade</h4>
+            <p class="no-margin">Request a purchase to upgrade the speed of the Car you are currently driving. This will play a sound and the car will immediately be increased in speed. </p>
+            <p class="font-italic">If Economy is enabled, a player must have sufficient funds before successfully purchasing.</p>
+            <img src="https://i.imgur.com/6llxbtz.png" alt="/carz upgrade usage" class="img-thumbnail"/>
+            <p class="font-italic">* Permission: <code>Carz.Upgrade</code>.</p>
 
-                <h4>/carz refuel</h4>
-                <p class="no-margin">Request a purchase to fill the fuel in the current car.</p>
-                <p class="font-italic">No extra permission is required. If Economy is enabled a player must have sufficient funds before successfully purchasing. If configured, the cost can scale depending on the amount of fuel left in the car.</p>
-                <img src="https://i.imgur.com/u8Fv9oI.png" alt="/carz refuel usage" class="img-thumbnail"/>
+            <h4>/carz refuel</h4>
+            <p class="no-margin">Request a purchase to fill the fuel in the current car.</p>
+            <p class="font-italic">No extra permission is required. If Economy is enabled a player must have sufficient funds before successfully purchasing. If configured, the cost can scale depending on the amount of fuel left in the car.</p>
+            <img src="https://i.imgur.com/u8Fv9oI.png" alt="/carz refuel usage" class="img-thumbnail"/>
 
-                <h4>/carz fuel</h4>
-                <p class="no-margin">Display's the current Car's fuel level. <span class="font-italic">If Fuel is enabled.</span></p>
-                <img src="https://i.imgur.com/m9fpKcS.png" alt="/carz fuel usage" class="img-thumbnail"/>
-                <p class="no-margin italic">If BountifulAPI is enabled, this will display as an Action Bar message.</p>
-                <img src="https://i.imgur.com/lMvggwR.png" alt="/carz fuel bountifulapi usage" class="img-thumbnail"/>
+            <h4>/carz fuel</h4>
+            <p class="no-margin">Display's the current Car's fuel level. <span class="font-italic">If Fuel is enabled.</span></p>
+            <img src="https://i.imgur.com/m9fpKcS.png" alt="/carz fuel usage" class="img-thumbnail"/>
+            <p class="no-margin italic">If BountifulAPI is enabled, this will display as an Action Bar message.</p>
+            <img src="https://i.imgur.com/lMvggwR.png" alt="/carz fuel bountifulapi usage" class="img-thumbnail"/>
 
-                <h4>/carz spawn [cartype]</h4>
-                <p class="no-margin">Places an unowned Minecart in your inventory. You can specify which type of Car you would like to spawn by using the optional parameter, if not specified the "default" car will be used.</p>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz spawn [cartype]</h4>
+            <p class="no-margin">Places an unowned Minecart in your inventory. You can specify which type of Car you would like to spawn by using the optional parameter, if not specified the "default" car will be used.</p>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <h4>/carz details</h4>
-                <p class="no-margin">Display a summary of the current car's details and metadata.</p>
-                <p class="font-italic">If you have a Car in your hand it will display the Car's metadata.</p>
-                <img src="https://i.imgur.com/lU70diT.png" alt="/carz details usage" class="img-thumbnail"/>
+            <h4>/carz details</h4>
+            <p class="no-margin">Display a summary of the current car's details and metadata.</p>
+            <p class="font-italic">If you have a Car in your hand it will display the Car's metadata.</p>
+            <img src="https://i.imgur.com/lU70diT.png" alt="/carz details usage" class="img-thumbnail"/>
 
-                <h4>/carz add (type) (material) [amount]</h4>
-                <p>Add the specified Material into a Block Type's list. Available Block Types include: climb, speed, launch & placeable; speed and launch require the <span class="font-italic">amount</span> parameter. Changes are reflected immediately.</p>
-                <p class="no-margin">For more information about Block Types, <a href="part3.html">click here</a>.</p>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz add (type) (material) [amount]</h4>
+            <p>Add the specified Material into a Block Type's list. Available Block Types include: climb, speed, launch & placeable; speed and launch require the <span class="font-italic">amount</span> parameter. Changes are reflected immediately.</p>
+            <p class="no-margin">For more information about Block Types, <a href="part3.html">click here</a>.</p>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <h4>/carz remove (type) (material)</h4>
-                <p>Remove the specified Material from a Block Type's list. Available Block Types include: climb, speed, launch & placeable. Changes are reflected immediately.</p>
-                <p class="no-margin">For more information about Block Types, <a href="part3.html">click here</a>.</p>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz remove (type) (material)</h4>
+            <p>Remove the specified Material from a Block Type's list. Available Block Types include: climb, speed, launch & placeable. Changes are reflected immediately.</p>
+            <p class="no-margin">For more information about Block Types, <a href="part3.html">click here</a>.</p>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <h4>/carz stash</h4>
-                <p class="no-margin">Stash the vehicle you are currently driving, back into a Minecart placed into your inventory. This can also be achieved by hitting the owned car.</p>
+            <h4>/carz stash</h4>
+            <p class="no-margin">Stash the vehicle you are currently driving, back into a Minecart placed into your inventory. This can also be achieved by hitting the owned car.</p>
 
-                <h4>/carz claim</h4>
-                <p class="no-margin">Claim ownership of an un-owned Minecart you are currently in.</p>
+            <h4>/carz claim</h4>
+            <p class="no-margin">Claim ownership of an un-owned Minecart you are currently in.</p>
 
-                <h4>/carz removeowner</h4>
-                <p class="no-margin">Remove the ownership of an owned Minecart you are currently in.</p>
+            <h4>/carz removeowner</h4>
+            <p class="no-margin">Remove the ownership of an owned Minecart you are currently in.</p>
 
-                <h4>/carz createtype</h4>
-                <p class="no-margin">Create a new Car Type. A conversation will be started to allow you to fully customise the car. Once the conversation is complete, the new Car Type is available to purchase.</p>
-                <p class="font-italic">If Economy is enabled, you will be asked to specify a cost of purchase.</p>
-                <img src="https://i.imgur.com/zn7N5p2.png" alt="/carz createtype usage" class="img-thumbnail"/>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz createtype</h4>
+            <p class="no-margin">Create a new Car Type. A conversation will be started to allow you to fully customise the car. Once the conversation is complete, the new Car Type is available to purchase.</p>
+            <p class="font-italic">If Economy is enabled, you will be asked to specify a cost of purchase.</p>
+            <img src="https://i.imgur.com/zn7N5p2.png" alt="/carz createtype usage" class="img-thumbnail"/>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <h4>/carz removetype (car type)</h4>
-                <p class="no-margin">Remove an existing Car Type from the available Car Types. The change will be applied immediately.</p>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz removetype (car type)</h4>
+            <p class="no-margin">Remove an existing Car Type from the available Car Types. The change will be applied immediately.</p>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <h4>/carz cartypes</h4>
-                <p class="no-margin">List the available Car types to purchase.</p>
-                <img src="https://i.imgur.com/aBM3Xmt.png" alt="/carz cartypes usage" class="img-thumbnail"/>
-                <p class="font-italic">* Permission: <code>Carz.Purchase</code>.</p>
+            <h4>/carz cartypes</h4>
+            <p class="no-margin">List the available Car types to purchase.</p>
+            <img src="https://i.imgur.com/aBM3Xmt.png" alt="/carz cartypes usage" class="img-thumbnail"/>
+            <p class="font-italic">* Permission: <code>Carz.Purchase</code>.</p>
 
-                <h4>/carz confirm <small>/carz cancel</small></h4>
-                <p>If purchase confirmation is enabled, this command will be required to be entered to process the purchase request.</p>
+            <h4>/carz confirm <small>/carz cancel</small></h4>
+            <p>If purchase confirmation is enabled, this command will be required to be entered to process the purchase request.</p>
 
-                <h4>/carz economy</h4>
-                <p class="no-margin">Display all economy related information, including each purchase type available.</p>
-                <img src="https://i.imgur.com/fVQekYD.png" alt="/carz economy usage" class="img-thumbnail"/>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz economy</h4>
+            <p class="no-margin">Display all economy related information, including each purchase type available.</p>
+            <img src="https://i.imgur.com/fVQekYD.png" alt="/carz economy usage" class="img-thumbnail"/>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <h4>/carz store</h4>
-                <p>Open a GUI car store, displaying each available Car type and its details. Clicking a entry will request a purchase of that Car.</p>
-                <img src="https://i.imgur.com/HpiEr3h.png" alt="carz store" class="img-thumbnail"/>
-                <p class="font-italic">* Permission: <code>Carz.Purchase</code>.</p>
+            <h4>/carz store</h4>
+            <p>Open a GUI car store, displaying each available Car type and its details. Clicking a entry will request a purchase of that Car.</p>
+            <img src="https://i.imgur.com/HpiEr3h.png" alt="carz store" class="img-thumbnail"/>
+            <p class="font-italic">* Permission: <code>Carz.Purchase</code>.</p>
 
-                <h4>/carz reload</h4>
-                <p class="no-margin">Reload the Carz configuration files.</p>
-                <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
+            <h4>/carz reload</h4>
+            <p class="no-margin">Reload the Carz configuration files.</p>
+            <p class="font-italic">* Strict Permission: <code>Carz.Admin</code>.</p>
 
-                <div class="card card-body bg-light">
-                    <p class="no-margin">* = if permissions are enabled.</p>
-                    <p class="no-margin">Strict = if permissions are disabled, <abbr title="server operator">op</abbr> is required.</p>
-                </div>
+            <div class="card card-body bg-light">
+                <p class="no-margin">* = if permissions are enabled.</p>
+                <p class="no-margin">Strict = if permissions are disabled, <abbr title="server operator">op</abbr> is required.</p>
             </div>
         </div>
     </div>
