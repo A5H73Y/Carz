@@ -21,7 +21,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 	private static final String SESSION_CAR_TYPE = "carType";
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+(\\.\\d+)?");
-	private static final Pattern STRING_PATTERN = Pattern.compile("^[A-Za-z]+$");
+	private static final Pattern STRING_PATTERN = Pattern.compile("^[A-Za-z_]+$");
 
 	private static final List<CarDetailQuestion> carTypeConversion = Arrays.asList(
 			new CarDetailQuestion("StartMaxSpeed", NUMBER_PATTERN),

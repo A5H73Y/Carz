@@ -22,7 +22,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Carz.ConfigReloaded", "The config has been reloaded.");
 		this.addDefault("Carz.SignRemoved", "Carz sign removed!");
 		this.addDefault("Carz.CarsDestroyed", "All cars destroyed!");
-		this.addDefault("Carz.SignCreated", "%VALUE% sign created.");
+		this.addDefault("Carz.SignCreated", "&b%VALUE% &7sign created.");
 		this.addDefault("Carz.Heading", "-- &9&l%VALUE% &r--");
 
 		this.addDefault("Car.Spawned", "Car Spawned.");
@@ -82,7 +82,7 @@ public class StringsConfig extends CarzConfiguration {
 
 		this.addDefault("PlaceholderAPI.NoCar", "Not Driving");
 
-		this.addDefault("Error.NoPermission", "You do not have permission: &b%VALUE%");
+		this.addDefault("Error.NoPermission", "You do not have permission: &4%VALUE%");
 		this.addDefault("Error.SignProtected", "This sign is protected.");
 		this.addDefault("Error.UnknownCommand", "Unknown Command.");
 		this.addDefault("Error.UnknownSignCommand", "Unknown Sign Command.");
@@ -92,12 +92,12 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.InvalidPlaceLocation", "Please place your car somewhere valid.");
 		this.addDefault("Error.HaveCar", "You already have a car.");
 		this.addDefault("Error.FuelDisabled", "Fuel is disabled.");
-		this.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: %VALUE%");
+		this.addDefault("Error.PurchaseFailed", "Purchase failed. Cost: &4%VALUE%");
 		this.addDefault("Error.FullyUpgraded", "Your car is already fully upgraded.");
-		this.addDefault("Error.Owned", "This car is owned by %VALUE%!");
+		this.addDefault("Error.Owned", "This car is owned by &b%VALUE%");
 		this.addDefault("Error.UnknownCarType", "Unknown car type.");
 		this.addDefault("Error.UnknownPlayer", "Unknown player.");
-		this.addDefault("Error.UnknownMaterial", "Unknown Material: %VALUE%");
+		this.addDefault("Error.UnknownMaterial", "Unknown Material: &4%VALUE%");
 		this.addDefault("Error.SpecifyPlayer", "Please specify a player.");
 		this.addDefault("Error.PurchaseOutstanding", "You have an outstanding purchase.");
 		this.addDefault("Error.NoPurchaseOutstanding", "You don't have an outstanding purchase.");
@@ -107,7 +107,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.NotEnoughArgs", "Not enough arguments.");
 		this.addDefault("Error.OwnedCarsLimit", "You have reached the amount of Owned cars you can place.");
 		this.addDefault("Error.InvalidPlaceableMaterial", "You are unable to place a Car here.");
-		this.addDefault("Error.InvalidNumber", "%VALUE% is not a valid number.");
+		this.addDefault("Error.InvalidNumber", "&4%VALUE% &7is not a valid number.");
 
 		this.addDefault("Error.BlockTypes.Invalid", "Invalid Block Type. Valid options: speed, climb, launch, placeable");
 		this.addDefault("Error.BlockTypes.AlreadyExists", "%MATERIAL% is already a %TYPE% block.");

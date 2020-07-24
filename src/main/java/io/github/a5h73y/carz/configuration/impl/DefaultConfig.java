@@ -58,13 +58,15 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("PlaceholderAPI.Enabled", true);
 
 		this.addDefault("Other.ControlCarsWhileFalling", true);
-		this.addDefault("Other.DamageEntities.Enabled", true);
+		this.addDefault("Other.DamageEntities.Enabled", false);
 		this.addDefault("Other.DamageEntities.Damage", 5.0);
 		this.addDefault("Other.DestroyInLiquid", true);
+		this.addDefault("Other.DisableFallDamage", false);
 		this.addDefault("Other.OnlyOwnedCarsDrive", false);
 		this.addDefault("Other.MaxPlayerOwnedCars", 5);
 		this.addDefault("Other.PreventCarPurchaseWhenExisting", false);
 		this.addDefault("Other.SignProtection", true);
+		this.addDefault("Other.StartCarOnVehicleEnter", false);
 		this.addDefault("Other.UpdateCheck", true);
 		this.addDefault("Other.UseAutoTabCompletion", true);
 		this.addDefault("Other.UseEffects", true);
@@ -91,7 +93,7 @@ public class DefaultConfig extends CarzConfiguration {
 	}
 
 	public String getStrippedSignHeader() {
-		return ChatColor.stripColor(StringUtils.colour(getSignHeader()));
+		return ChatColor.stripColor(getSignHeader());
 	}
 
 	public boolean isDestroyInLiquid() {
@@ -120,6 +122,14 @@ public class DefaultConfig extends CarzConfiguration {
 
 	public boolean isAllSlabsClimb() {
 		return this.getBoolean("ClimbBlocks.AllSlabs");
+	}
+
+	public boolean isFallDamageDisabled() {
+		return this.getBoolean("Other.DisableFallDamage");
+	}
+
+	public boolean isGiveKeyOnEnter() {
+		return this.getBoolean("Key.GiveOnCarEnter");
 	}
 
 	public double getUpgradeIncrement() {

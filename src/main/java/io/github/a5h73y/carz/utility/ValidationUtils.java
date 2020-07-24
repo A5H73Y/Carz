@@ -163,7 +163,7 @@ public class ValidationUtils {
 			return false;
 		}
 
-		Car currentCar = Carz.getInstance().getCarController().getCar(player.getVehicle().getEntityId());
+		Car currentCar = Carz.getInstance().getCarController().getCar((Minecart) player.getVehicle());
 
 		if (currentCar.getMaxSpeed() + Carz.getDefaultConfig().getUpgradeIncrement()
 				>= currentCar.getCarDetails().getMaxUpgradeSpeed()) {

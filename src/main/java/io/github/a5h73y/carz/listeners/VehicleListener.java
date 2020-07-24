@@ -25,6 +25,7 @@ import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Minecart;
@@ -105,9 +106,14 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             carz.getFuelController().displayFuelLevel(player);
         }
 
-        if (carz.getConfig().getBoolean("Key.GiveOnCarEnter")
+        if (carz.getConfig().isGiveKeyOnEnter()
                 && !player.getInventory().contains(Carz.getDefaultConfig().getKey())) {
             CarUtils.givePlayerKey(player);
+        }
+
+        if (carz.getConfig().getBoolean("Other.StartCarOnVehicleEnter")) {
+            PlayerInteractEvent interactEvent = new PlayerInteractEvent(player, Action.RIGHT_CLICK_AIR, null, null, BlockFace.SELF);
+            Bukkit.getServer().getPluginManager().callEvent(interactEvent);
         }
     }
 
@@ -390,6 +396,10 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         if (event.getEntity() instanceof LivingEntity) {
+            if (event.getEntity() instanceof Player && carz.getCarController().isDriving(event.getEntity().getName())) {
+                return;
+            }
+
             double damage = carz.getConfig().getDouble("Other.DamageEntities.Damage");
             ((LivingEntity) event.getEntity()).damage(damage, player);
         }

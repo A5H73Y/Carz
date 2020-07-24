@@ -22,7 +22,7 @@ import io.github.a5h73y.carz.plugin.EconomyApi;
 import io.github.a5h73y.carz.plugin.PlaceholderApi;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
-import org.bstats.bukkit.MetricsLite;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carz extends JavaPlugin {
@@ -75,7 +75,7 @@ public class Carz extends JavaPlugin {
         setupPlugins();
 
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
-        new MetricsLite(this, BUKKIT_PLUGIN_ID);
+        new Metrics(this, BUKKIT_PLUGIN_ID);
         checkForUpdates();
     }
 
@@ -88,6 +88,12 @@ public class Carz extends JavaPlugin {
         instance = null;
     }
 
+    /**
+     * Get the Default config.
+     * Overrides the default getConfig() method.
+     *
+     * @return default config
+     */
     @Override
     public DefaultConfig getConfig() {
         return (DefaultConfig) this.configManager.get(ConfigType.DEFAULT);
@@ -104,20 +110,21 @@ public class Carz extends JavaPlugin {
     }
 
     /**
-     * The Carz message prefix.
-     * @return carz prefix from the config.
-     */
-    public static String getPrefix() {
-        return TranslationUtils.getTranslation("Carz.Prefix", false);
-    }
-
-    /**
      * Get the default config.yml file.
      *
      * @return {@link DefaultConfig}
      */
     public static DefaultConfig getDefaultConfig() {
-        return (DefaultConfig) instance.configManager.get(ConfigType.DEFAULT);
+        return instance.getConfig();
+    }
+
+    /**
+     * The Carz message prefix.
+     *
+     * @return carz prefix from the config.
+     */
+    public static String getPrefix() {
+        return TranslationUtils.getTranslation("Carz.Prefix", false);
     }
 
     public ConfigManager getConfigManager() {

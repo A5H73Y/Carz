@@ -252,7 +252,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                     return false;
                 }
 
-                Carz.getInstance().getConfigManager().reloadConfigs();
+                carz.getConfigManager().reloadConfigs();
                 TranslationUtils.sendTranslation("Carz.ConfigReloaded", player);
                 break;
 

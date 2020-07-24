@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -130,5 +131,20 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
 
         Car car = carz.getCarController().getCar((Minecart) player.getVehicle());
         carz.getCarDataPersistence().setValue(VEHICLE_FUEL, player.getVehicle(), car.getCurrentFuel().toString());
+    }
+
+    /**
+     * When the player takes fall damage.
+     *
+     * @param event {@link EntityDamageEvent}
+     */
+    @EventHandler
+    public void onFallDamage(EntityDamageEvent event) {
+        if (event.getEntity() instanceof Player
+                && carz.getCarController().isDriving(event.getEntity().getName())
+                && event.getCause() == EntityDamageEvent.DamageCause.FALL
+                && carz.getConfig().isFallDamageDisabled()) {
+            event.setCancelled(true);
+        }
     }
 }

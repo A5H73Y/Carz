@@ -1,6 +1,10 @@
 package io.github.a5h73y.carz.plugin;
 
 import io.github.a5h73y.carz.Carz;
+import io.github.a5h73y.carz.utility.PluginUtils;
+import com.connorlinfoot.bountifulapi.BountifulAPI;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;
 
 /**
@@ -9,9 +13,17 @@ import org.bukkit.entity.Player;
  */
 public class BountifulApi extends PluginWrapper {
 
+	private boolean useSpigotMethods;
+
 	@Override
 	public String getPluginName() {
 		return "BountifulAPI";
+	}
+
+	@Override
+	protected void initialise() {
+		super.initialise();
+		useSpigotMethods = PluginUtils.getMinorServerVersion() > 9;
 	}
 
 	/**
@@ -22,8 +34,12 @@ public class BountifulApi extends PluginWrapper {
 	 * @param message message
 	 */
 	public void sendTitle(Player player, String message) {
-		if (isEnabled()) {
-			com.connorlinfoot.bountifulapi.BountifulAPI.sendTitle(player, 10, 40, 10, message, null);
+		if (useSpigotMethods) {
+			player.sendTitle(message, "", 10, 40, 10);
+
+		} else if (isEnabled()) {
+			BountifulAPI.sendTitle(player, 10, 40, 10, message, null);
+
 		} else {
 			player.sendMessage(Carz.getPrefix() + message);
 		}
@@ -37,8 +53,12 @@ public class BountifulApi extends PluginWrapper {
 	 * @param message message
 	 */
 	public void sendActionBar(Player player, String message) {
-		if (isEnabled()) {
-			com.connorlinfoot.bountifulapi.BountifulAPI.sendActionBar(player, message, 40);
+		if (useSpigotMethods) {
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+
+		} else if (isEnabled()) {
+			BountifulAPI.sendActionBar(player, message, 40);
+
 		} else {
 			player.sendMessage(Carz.getPrefix() + message);
 		}

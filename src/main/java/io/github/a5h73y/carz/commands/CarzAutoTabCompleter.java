@@ -18,9 +18,9 @@ import org.bukkit.entity.Player;
  */
 public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabCompleter {
 
-    private final List<String> addRemoveList = Arrays.asList("climb", "speed", "launch", "placeable");
+    private static final List<String> ADD_REMOVE_LIST = Arrays.asList("climb", "speed", "launch", "placeable");
 
-    private final List<String> questionList = Arrays.asList("confirm", "cancel");
+    private static final List<String> QUESTION_LIST = Arrays.asList("confirm", "cancel");
 
     public CarzAutoTabCompleter(final Carz carz) {
         super(carz);
@@ -61,7 +61,7 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
 
         // if they have an outstanding purchase, make those the only options
         if (carz.getEconomyApi().isPurchasing(player)) {
-            return questionList;
+            return QUESTION_LIST;
         }
 
         allowedCommands.add("cmds");
@@ -115,7 +115,7 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         switch (command) {
             case "add":
             case "remove":
-                allowedCommands = addRemoveList;
+                allowedCommands = ADD_REMOVE_LIST;
                 break;
             case "purchase":
             case "spawn":

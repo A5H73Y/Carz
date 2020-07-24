@@ -44,6 +44,14 @@ public class TranslationUtils {
 		return getTranslation(translationKey, true);
 	}
 
+	/**
+	 * Get translation of string key with prefix, replacing a value placeholder.
+	 *
+	 * @param translationKey to translate
+	 * @param value to populate
+	 * @param prefix display Carz prefix
+	 * @return String of appropriate translation
+	 */
 	public static String getValueTranslation(String translationKey, String value, boolean prefix) {
 		return valuePlaceholder.matcher(getTranslation(translationKey, prefix))
 				.replaceAll(value == null ? "" : value);
