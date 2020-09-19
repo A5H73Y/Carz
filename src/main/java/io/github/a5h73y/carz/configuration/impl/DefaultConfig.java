@@ -2,7 +2,6 @@ package io.github.a5h73y.carz.configuration.impl;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.configuration.CarzConfiguration;
-import io.github.a5h73y.carz.utility.StringUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -39,6 +38,7 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("CommandEnabled.Refuel", true);
 		this.addDefault("CommandEnabled.Upgrade", true);
 		this.addDefault("CommandEnabled.Store", true);
+		this.addDefault("CommandEnabled.Give", true);
 
 		this.addDefault("Fuel.Enabled", true);
 		this.addDefault("Fuel.ScaleCost", true);

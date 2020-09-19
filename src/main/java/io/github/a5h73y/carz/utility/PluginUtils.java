@@ -6,12 +6,16 @@ import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.enums.BlockType;
 import io.github.a5h73y.carz.enums.Commands;
 import io.github.a5h73y.carz.enums.ConfigType;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 /**
  * Plugin related utility methods.
@@ -37,6 +41,18 @@ public class PluginUtils {
     }
 
     /**
+     * Validate the length of the arguments before allowing it to be processed further.
+     *
+     * @param sender command sender
+     * @param args command arguments
+     * @param required required args length
+     * @return whether the arguments match the criteria
+     */
+    public static boolean validateArgs(CommandSender sender, String[] args, int required) {
+        return validateArgs(sender, args, required, required);
+    }
+
+    /**
      * Validate the range of the arguments before allowing it to be processed further.
      *
      * @param sender command sender
@@ -46,14 +62,14 @@ public class PluginUtils {
      * @return whether the arguments match the criteria
      */
     public static boolean validateArgs(CommandSender sender, String[] args, int minimum, int maximum) {
-        if (args.length < minimum) {
-            sender.sendMessage(TranslationUtils.getTranslation("Error.NotEnoughArgs")
-                    + " (between " + minimum + " and " + maximum + ")");
+        if (args.length > maximum) {
+            TranslationUtils.sendValueTranslation("Error.TooMany", String.valueOf(maximum), sender);
+            TranslationUtils.sendValueTranslation("Help.Command", args[0].toLowerCase(), sender);
             return false;
 
-        } else if (args.length > maximum) {
-            sender.sendMessage(TranslationUtils.getTranslation("Error.TooManyArgs")
-                    + " (between " + minimum + " and " + maximum + ")");
+        } else if (args.length < minimum) {
+            TranslationUtils.sendValueTranslation("Error.TooLittle", String.valueOf(minimum), sender);
+            TranslationUtils.sendValueTranslation("Help.Command", args[0].toLowerCase(), sender);
             return false;
         }
         return true;
@@ -127,13 +143,14 @@ public class PluginUtils {
         }
 
         Material material = Material.getMaterial(args[2].toUpperCase());
-        String chosenTypeName = StringUtils.standardizeText(chosenType.name());
-        BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (material == null) {
             TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], player);
             return;
         }
+
+        String chosenTypeName = StringUtils.standardizeText(chosenType.name());
+        BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (config.alreadyExists(chosenType, material)) {
             player.sendMessage(TranslationUtils.getTranslation("Error.BlockTypes.AlreadyExists")
@@ -199,13 +216,14 @@ public class PluginUtils {
         }
 
         Material material = Material.getMaterial(args[2].toUpperCase());
-        String chosenTypeName = StringUtils.standardizeText(chosenType.name());
-        BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (material == null) {
             TranslationUtils.sendValueTranslation("Error.UnknownMaterial", args[2], player);
             return;
         }
+
+        String chosenTypeName = StringUtils.standardizeText(chosenType.name());
+        BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
 
         if (!config.alreadyExists(chosenType, material)) {
             player.sendMessage(material.name() + " isn't a " + chosenTypeName + " block.");
@@ -222,6 +240,42 @@ public class PluginUtils {
         player.sendMessage(TranslationUtils.getTranslation("BlockTypes.Removed")
                 .replace("%MATERIAL%", material.name())
                 .replace("%TYPE%", chosenTypeName));
+    }
+
+    /**
+     * List out the contents of the Block Type.
+     *
+     * @param player requesting player
+     * @param args command arguments
+     */
+    public static void listBlockType(Player player, String[] args) {
+        BlockType chosenType;
+
+        try {
+            chosenType = BlockType.valueOf(args[1].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            TranslationUtils.sendTranslation("Error.BlockTypes.Invalid", player);
+            return;
+        }
+
+        BlocksConfig config = (BlocksConfig) Carz.getConfig(ConfigType.BLOCKS);
+        List<String> rawMaterials = new ArrayList<>();
+
+        if (chosenType.isHasAmount()) {
+            ConfigurationSection typeSection = config.getConfigurationSection(chosenType.getConfigPath());
+            rawMaterials = typeSection != null ? new ArrayList<>(typeSection.getKeys(false)) : rawMaterials;
+        } else {
+            rawMaterials = config.getStringList(chosenType.getConfigPath());
+        }
+
+        TranslationUtils.sendHeading(StringUtils.standardizeText(chosenType.name()), player);
+        if (rawMaterials.isEmpty()) {
+            player.sendMessage("No results found.");
+        } else {
+            for (String rawMaterial : rawMaterials) {
+                player.sendMessage("* " + rawMaterial);
+            }
+        }
     }
 
     /**

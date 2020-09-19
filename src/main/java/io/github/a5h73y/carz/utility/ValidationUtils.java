@@ -8,16 +8,24 @@ import io.github.a5h73y.carz.enums.VehicleDetailKey;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.DelayTasks;
 import io.github.a5h73y.carz.persistence.CarDataPersistence;
+import java.util.Arrays;
+import java.util.List;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.Rail;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Vehicle;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * Validation related utility methods.
  */
 public class ValidationUtils {
+
+	private static final List<String> RAIL_MATERIALS =
+			Arrays.asList("RAILS", "ACTIVATOR_RAIL", "DETECTOR_RAIL", "POWERED_RAIL");
 
 	/**
 	 * Validate if the input is a valid String.
@@ -26,6 +34,7 @@ public class ValidationUtils {
 	 * @return input is a valid String
 	 */
 	public static boolean isStringValid(String input) {
+
 		return input != null && !input.trim().isEmpty();
 	}
 
@@ -69,7 +78,7 @@ public class ValidationUtils {
 			return false;
 		}
 
-		if (vehicle.getLocation().getBlock().getBlockData() instanceof Rail) {
+		if (isRail(vehicle.getLocation().getBlock())) {
 			return false;
 		}
 
@@ -166,7 +175,7 @@ public class ValidationUtils {
 		Car currentCar = Carz.getInstance().getCarController().getCar((Minecart) player.getVehicle());
 
 		if (currentCar.getMaxSpeed() + Carz.getDefaultConfig().getUpgradeIncrement()
-				>= currentCar.getCarDetails().getMaxUpgradeSpeed()) {
+				> currentCar.getCarDetails().getMaxUpgradeSpeed()) {
 			TranslationUtils.sendTranslation("Error.FullyUpgraded", player);
 			return false;
 		}
@@ -308,5 +317,49 @@ public class ValidationUtils {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Validate if the player is currently able to give a car.
+	 * This includes checking the permission status.
+	 *
+	 * @param player requesting player
+	 * @param targetPlayerName target player name
+	 * @return player can give car
+	 */
+	public static boolean canGiveCar(Player player, String targetPlayerName) {
+		if (!PermissionUtils.hasPermission(player, Permissions.GIVE)) {
+			return false;
+		}
+
+		ItemStack itemStack = player.getInventory().getItemInMainHand();
+
+		if (itemStack.getType() != Material.MINECART) {
+			TranslationUtils.sendTranslation("Error.NotHoldingCar", player);
+			return false;
+		}
+
+		CarDataPersistence carDataPersistence = Carz.getInstance().getCarDataPersistence();
+
+		if (!carDataPersistence.has(VehicleDetailKey.VEHICLE_TYPE, itemStack)) {
+			TranslationUtils.sendTranslation("Error.NotHoldingCar", player);
+			return false;
+		}
+
+		Player targetPlayer = Bukkit.getPlayer(targetPlayerName);
+		if (targetPlayer == null || !targetPlayer.isOnline()) {
+			TranslationUtils.sendTranslation("Error.UnknownPlayer", player);
+			return false;
+		}
+
+		return true;
+	}
+
+	public static boolean isRail(Block block) {
+		if (PluginUtils.getMinorServerVersion() >= 13) {
+			return block.getBlockData() instanceof Rail;
+		} else {
+			return RAIL_MATERIALS.contains(block.getType().name());
+		}
 	}
 }

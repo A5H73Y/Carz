@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.a5h73y</groupId>
     <artifactId>Carz</artifactId>
-    <version>7.1</version>
+    <version>7.2</version>
     <packaging>jar</packaging>
 
     <name>Carz</name>
@@ -67,8 +67,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.15.2-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Vault API -->
         <dependency>
@@ -83,6 +89,12 @@
             <artifactId>BountifulAPI</artifactId>
             <version>1.6.4</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- Placeholder API -->
         <dependency>

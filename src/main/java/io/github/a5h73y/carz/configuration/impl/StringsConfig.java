@@ -17,13 +17,17 @@ public class StringsConfig extends CarzConfiguration {
 	protected void initializeConfig() {
 		this.addDefault("Carz.Prefix", "&0[&bCarz&0]&7 ");
 		this.addDefault("Carz.SignHeader", "&0[&bCarz&0]");
-		this.addDefault("Carz.Commands", "To display all commands enter &f/carz cmds");
 		this.addDefault("Carz.ConsoleCommands", "To display all commands enter &f/carzc cmds");
 		this.addDefault("Carz.ConfigReloaded", "The config has been reloaded.");
 		this.addDefault("Carz.SignRemoved", "Carz sign removed!");
 		this.addDefault("Carz.CarsDestroyed", "All cars destroyed!");
 		this.addDefault("Carz.SignCreated", "&b%VALUE% &7sign created.");
 		this.addDefault("Carz.Heading", "-- &9&l%VALUE% &r--");
+
+		this.addDefault("Help.Command", "&7/carz help &9%VALUE% &0: &7To learn more about this command.");
+		this.addDefault("Help.Commands", "To display all commands enter &f/carz cmds");
+		this.addDefault("Help.CommandSyntax", "&7Syntax: &f/carz %VALUE%");
+		this.addDefault("Help.CommandExample", "&7Example: &f%VALUE%");
 
 		this.addDefault("Car.Spawned", "Car Spawned.");
 		this.addDefault("Car.EngineStart", "You switch the engine on.");
@@ -38,6 +42,8 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Car.Key.Received", "You receive a key.");
 		this.addDefault("Car.Claimed", "You are now the owner of this car.");
 		this.addDefault("Car.OwnershipRemoved", "You have removed ownership of this car.");
+		this.addDefault("Car.Given", "You have given &b%VALUE% &7your car.");
+		this.addDefault("Car.Received", "You have received a car from &b%VALUE%&7.");
 
 		this.addDefault("Purchase.Confirm.Purchase", "&7Enter &a/carz confirm &7to confirm, or &c/carz cancel &7to cancel the purchase.");
 		this.addDefault("Purchase.Confirm.Car", "You are about to purchase a &b%TYPE% &7car, costing &b%COST%%CURRENCY%&7.");
@@ -70,6 +76,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("CarStore.Setup.Line1", "         ");
 		this.addDefault("CarStore.Setup.Line2", " ggggggg ");
 		this.addDefault("CarStore.Setup.Line3", "  fp nl  ");
+		this.addDefault("CarStore.Material.Filler", "GRAY_STAINED_GLASS");
 
 		this.addDefault("CarDetails.Heading", "Car Details");
 		this.addDefault("CarDetails.Type", "&fCar Type: &b%VALUE%");
@@ -103,8 +110,9 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("Error.NoPurchaseOutstanding", "You don't have an outstanding purchase.");
 		this.addDefault("Error.CarNotDriven", "This car hasn't been driven yet.");
 		this.addDefault("Error.NoOwnership", "This car doesn't have an owner.");
-		this.addDefault("Error.TooManyArgs", "Too many arguments.");
-		this.addDefault("Error.NotEnoughArgs", "Not enough arguments.");
+		this.addDefault("Error.NotHoldingCar", "You need to be holding a Car to give it.");
+		this.addDefault("Error.TooMany", "Too many arguments! (%VALUE%)");
+		this.addDefault("Error.TooLittle", "Not enough arguments! (%VALUE%)");
 		this.addDefault("Error.OwnedCarsLimit", "You have reached the amount of Owned cars you can place.");
 		this.addDefault("Error.InvalidPlaceableMaterial", "You are unable to place a Car here.");
 		this.addDefault("Error.InvalidNumber", "&4%VALUE% &7is not a valid number.");

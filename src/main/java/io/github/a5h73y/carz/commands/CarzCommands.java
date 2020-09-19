@@ -19,6 +19,7 @@ import io.github.a5h73y.carz.utility.PermissionUtils;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -46,9 +47,9 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
 
         Player player = (Player) sender;
 
-        if (args.length < 1) {
+        if (args.length == 0) {
             player.sendMessage(Carz.getPrefix() + "proudly created by " + ChatColor.AQUA + "A5H73Y");
-            TranslationUtils.sendTranslation("Carz.Commands", player);
+            TranslationUtils.sendTranslation("Help.Commands", player);
             return false;
         }
 
@@ -139,16 +140,27 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
             case "remove":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
+
+                } else if (!PluginUtils.validateArgs(player, args, 3)) {
+                    return false;
                 }
 
                 PluginUtils.removeBlockType(player, args);
                 break;
 
-            case "stash":
-                if (!PluginUtils.isCommandEnabled(player, Commands.PURCHASE)) {
+            case "l":
+            case "list":
+                if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
+                    return false;
+
+                } else if (!PluginUtils.validateArgs(player, args, 2)) {
                     return false;
                 }
 
+                PluginUtils.listBlockType(player, args);
+                break;
+
+            case "stash":
                 carz.getCarController().stashCar(player);
                 break;
 
@@ -158,6 +170,21 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 }
 
                 carz.getCarController().claimOwnership(player);
+                break;
+
+            case "g":
+            case "give":
+                if (!PluginUtils.isCommandEnabled(player, Commands.GIVE)) {
+                    return false;
+
+                } else if (!PluginUtils.validateArgs(player, args, 2)) {
+                    return false;
+
+                } else if (!ValidationUtils.canGiveCar(player, args[1])) {
+                    return false;
+                }
+
+                carz.getCarController().giveCar(player, Bukkit.getPlayer(args[1]));
                 break;
 
             case "ro":
@@ -184,7 +211,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
 
-                } else if (!PluginUtils.validateArgs(player, args, 2, 2)) {
+                } else if (!PluginUtils.validateArgs(player, args, 2)) {
                     return false;
                 }
 
@@ -247,6 +274,18 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
                 carz.getGuiManager().showMenu(player, GuiMenu.CAR_STORE);
                 break;
 
+            case "help":
+                CarzHelp.lookupCommandHelp(args, player);
+                break;
+
+            case "about":
+            case "ver":
+            case "version":
+                player.sendMessage(Carz.getPrefix() + "Server is running Carz " + ChatColor.GRAY
+                        + carz.getDescription().getVersion());
+                player.sendMessage("This plugin was developed by " + ChatColor.GOLD + "A5H73Y");
+                break;
+
             case "reload":
                 if (!PermissionUtils.hasStrictPermission(player, Permissions.ADMIN)) {
                     return false;
@@ -263,7 +302,7 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
 
             default:
                 TranslationUtils.sendTranslation("Error.UnknownCommand", player);
-                TranslationUtils.sendTranslation("Carz.Commands", player);
+                TranslationUtils.sendTranslation("Help.Commands", player);
         }
 
         return true;

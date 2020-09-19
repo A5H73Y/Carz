@@ -166,7 +166,7 @@ public class EconomyApi extends PluginWrapper {
 	public String getCurrencyName(double amount) {
 		String value = null;
 
-		if (economy.isEnabled()) {
+		if (isEnabled()) {
 			if (amount == 1.0) {
 				value = economy.currencyNameSingular();
 			} else {

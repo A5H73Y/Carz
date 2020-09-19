@@ -19,10 +19,10 @@
     <meta property="og:site_name" content="Carz Tutorials" />
     <meta property="og:image" content="https://a5h73y.github.io/Carz/img/logo.jpg" />
     <meta property="og:url" content="https://a5h73y.github.io/Carz/part7.html" />
-    <meta property="og:title" content="Part 7: Other Plugin Support" />
+    <meta property="og:title" content="Part 7: Developer Tutorials" />
     <meta name="theme-color" content="#FFFF00">
     <meta name="msapplication-TileColor" content="#FFFF00">
-    <title>Carz Tutorials - Part 7: Other Plugin Support</title>
+    <title>Carz Tutorials - Part 7: Developer Tutorials</title>
 </head>
 
 <body>
@@ -31,47 +31,71 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-xl-8">
-            <h1>Part 7: Other Plugin Support</h1>
+            <h1>Part 7: Developer Tutorials</h1>
 
             <div id="contents-placeholder"></div>
 
             <h2>Description</h2>
-            <p>Carz is able to integrate with supported plugins to extend functionality. If integration is desired, make sure the plugin(s) are installed and start correctly, then Carz will display a success message on start up (if configured).</p>
+            <p>Are you a developer? Great! You can make the most of out Carz's functionality to create the perfect experience for your server. I've made the plugin super easy to expand and integrate into, first we will import the Carz project to begin working with it.</p>
 
-            <h2 id="vault">Vault</h2>
-            <p>For information on Economy / Vault, <a href="part4.html">click here</a>.</p>
+            <h2 id="importCarz">Importing Carz into your Project</h2>
+            <p>You will want to add Carz's repository to the list of repositories so that you can bring in the Carz project.</p>
+            <pre><code>&lt;repository&gt;
+    &lt;id&gt;a5h73y-repo&lt;/id&gt;
+    &lt;url&gt;https://dl.bintray.com/a5h73y/repo/&lt;/url&gt;
+&lt;/repository&gt;</code></pre>
 
-            <h2 id="bountifulAPI">BountifulAPI</h2>
-            <p>BountifulAPI adds the ability to display titles and various other notifications, rather than printing the messages into the chat.</p>
-            <p>Once connected, Carz will use the action bar to display the remaining fuel when requested and various other messages.</p>
-            <img src="https://i.imgur.com/lMvggwR.png" alt="/carz fuel bountifulapi usage" class="img-thumbnail"/>
-            <p>BountifulAPI created by connorlinfoot, available here: <a href="https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/">https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/</a></p>
+            <p>Add the following dependency to your list of dependencies and let Maven import the project.</p>
+            <pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;me.A5H73Y&lt;/groupId&gt;
+    &lt;artifactId&gt;Carz&lt;/artifactId&gt;
+    &lt;version&gt;(INSERT LATEST VERSION)&lt;/version&gt;
+    &lt;type&gt;jar&lt;/type&gt;
+    &lt;scope&gt;provided&lt;/scope&gt;
+&lt;/dependency&gt;</code></pre>
 
-            <h2 id="placeholderAPI">PlaceholderAPI</h2>
-            <p>PlaceholderAPI support provides various available Carz placeholder values, which can be used to extend to other plugins to allow for better customizability.</p>
+            <p>Maven should now import the Carz project and its dependencies, make sure your project builds correctly and then continue.</p>
+            <p>You can also add the Carz.jar to your classpath if you wish for the same outcome, but Maven makes this stage considerably easier.</p>
 
-            <img src="https://i.imgur.com/qOl5m4i.png" alt="carz placeholders" class="img-thumbnail"/>
-            <p>PlaceholderAPI created by clip, available here: <a href="https://www.spigotmc.org/resources/placeholderapi.6245/">https://www.spigotmc.org/resources/placeholderapi.6245/</a></p>
+            <h2 id="setupPlugin">Setting up your plugin</h2>
+            <p>You'll need to decide if your plugin depends on the Carz plugin, or if it is just an optional dependency. In your plugin.yml enter either of the following:</p>
+            <pre><code>depend: [Carz]
+softdepend: [Carz]</code></pre>
 
-            <h4>Available Carz placeholders</h4>
-            <p class="font-italic">All placeholders use the player's current car for context. Each of these placeholders must be prefixed by <code>carz_</code> to be recognised.</p>
+            <p>This will allow Carz to fully initialize before you start to use it.</p>
+            <p>Now you need to check if the Carz plugin has started correctly within the code, this is for you to check and handle. But will look something like: </p>
+            <pre><code>Plugin carz = getServer().getPluginManager().getPlugin("Carz");
+if (carz != null && carz.isEnabled()) {
+    System.out.println("Found Carz v" + carz.getDescription().getVersion())
+} else {
+    /* oh no, Carz isn't installed */
+}</code></pre>
+            <p>If your Plugin successfully links with Carz, your plugin can now interact with Carz and listen to some of the events it fires.</p>
 
-            <dl class="row">
-                <dt class="col-sm-3"><code>fuelgauge</code></dt>
-                <dd class="col-sm-9">Displays the car's fuel gauge. indicating how much fuel they have remaining in a bar.</dd>
+            <h2 id="carzEvents">Carz Events</h2>
+            <p>There are a list of custom Events that Carz creates, that you can listen to:</p>
+            <ul>
+                <li>CarStashEvent</li>
+                <li>EngineStartEvent</li>
+                <li>EngineStopEvent</li>
+                <li>PurchaseCarEvent</li>
+                <li>PurchaseFuelEvent</li>
+                <li>PurchaseUpgradeEvent</li>
+            </ul>
+            <p>Each of these will give you at least the Player object and the relevant objects to use.</p>
+            <p>To listen for a Carz event you must create a Listener class and register it correctly, then create an EventHandler like any normal event:</p>
+            <pre><code>@EventHandler
+public void onCarzEngineStart(EngineStartEvent event) {
+    Car startedCar = event.getCar();
+    Player player = event.getPlayer();
 
-                <dt class="col-sm-3"><code>speed</code></dt>
-                <dd class="col-sm-9">Displays the car's current speed.</dd>
+    player.sendMessage("You started car " + startedCar.getEntityId());
+}</code></pre>
 
-                <dt class="col-sm-3"><code>fuel</code></dt>
-                <dd class="col-sm-9">Displays the car's current fuel amount.</dd>
-
-                <dt class="col-sm-3"><code>maxfuel</code></dt>
-                <dd class="col-sm-9">Displays the car's maximum fuel amount.</dd>
-
-                <dt class="col-sm-3"><code>cartype</code></dt>
-                <dd class="col-sm-9">Displays the car's type.</dd>
-            </dl>
+            <div class="card card-body bg-light">
+                <p class="no-margin">Do you feel like Carz and its users could benefit from the changes you've made?</p>
+                <p class="no-margin"><a href="https://github.com/A5H73Y/Carz/pulls">Create a Pull Request</a> and I will take a look at it.</p>
+            </div>
         </div>
     </div>
 </div>

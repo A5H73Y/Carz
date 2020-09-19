@@ -5,6 +5,7 @@ import de.themoep.inventorygui.InventoryGui;
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.enums.GuiMenu;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
+import io.github.a5h73y.carz.utility.TranslationUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -38,7 +39,8 @@ public class CarzGuiManager extends AbstractPluginReceiver {
 	 */
 	public void showMenu(Player player, AbstractMenu menu) {
 		InventoryGui gui = new InventoryGui(carz, null, CARZ_TITLE_PREFIX + menu.getTitle(), menu.getGuiSetup());
-		gui.setFiller(new ItemStack(Material.GRAY_STAINED_GLASS, 1));
+		Material material = Material.valueOf(TranslationUtils.getTranslation("CarStore.Material.Filler", false));
+		gui.setFiller(new ItemStack(material, 1));
 
 		gui.addElement(menu.getGroupContent(gui, player));
 

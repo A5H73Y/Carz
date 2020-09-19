@@ -10,6 +10,7 @@ import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.model.Car;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.utility.PlayerUtils;
+import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.Bukkit;
@@ -54,7 +55,7 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
         }
 
         // make sure they aren't trying to place a normal Minecart (i.e on rails)
-        if (event.getClickedBlock().getBlockData() instanceof Rail) {
+        if (ValidationUtils.isRail(event.getClickedBlock())) {
             return;
         }
 
@@ -97,7 +98,9 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
                 return;
             }
             // lock the car by default when placed
-            carz.getCarDataPersistence().setValue(VEHICLE_LOCKED, carInHand, "true");
+            if (PluginUtils.getMinorServerVersion() >= 14) {
+                carz.getCarDataPersistence().setValue(VEHICLE_LOCKED, carInHand, "true");
+            }
         }
 
         Minecart spawnedCar = location.getWorld().spawn(location, Minecart.class);

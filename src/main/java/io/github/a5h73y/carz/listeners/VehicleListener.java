@@ -112,7 +112,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         if (carz.getConfig().getBoolean("Other.StartCarOnVehicleEnter")) {
-            PlayerInteractEvent interactEvent = new PlayerInteractEvent(player, Action.RIGHT_CLICK_AIR, null, null, BlockFace.SELF);
+            PlayerInteractEvent interactEvent = new PlayerInteractEvent(player,
+                    Action.RIGHT_CLICK_AIR, null, null, BlockFace.SELF);
             Bukkit.getServer().getPluginManager().callEvent(interactEvent);
         }
     }
@@ -190,12 +191,11 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
             return;
         }
 
-        if (event.getVehicle().getPassengers().isEmpty()
-                || !(event.getVehicle().getPassengers().get(0) instanceof Player)) {
+        Player player = CarUtils.getPlayerDrivingVehicle(event.getVehicle());
+
+        if (player == null) {
             return;
         }
-
-        Player player = (Player) event.getVehicle().getPassengers().get(0);
 
         if (!carz.getCarController().isDriving(player.getName())) {
             return;
@@ -282,7 +282,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         }
 
         // are slabs climbable
-        if (blockBelow.getBlockData() instanceof Slab && carz.getConfig().isAllSlabsClimb()) {
+        if (carz.getConfig().isAllSlabsClimb() && blockBelow.getBlockData() instanceof Slab) {
             return true;
         }
 
@@ -376,16 +376,15 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
      */
     @EventHandler
     public void onVehicleCollide(VehicleEntityCollisionEvent event) {
-        if (event.getVehicle().getPassengers().isEmpty()
-                || !(event.getVehicle().getPassengers().get(0) instanceof Player)) {
-            return;
-        }
-
         if (!(event.getVehicle() instanceof Minecart)) {
             return;
         }
 
-        Player player = (Player) event.getVehicle().getPassengers().get(0);
+        Player player = CarUtils.getPlayerDrivingVehicle(event.getVehicle());
+
+        if (player == null) {
+            return;
+        }
 
         if (!carz.getCarController().isDriving(player.getName())) {
             return;

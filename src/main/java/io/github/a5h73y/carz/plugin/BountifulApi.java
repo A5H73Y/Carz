@@ -1,8 +1,8 @@
 package io.github.a5h73y.carz.plugin;
 
+import com.connorlinfoot.bountifulapi.BountifulAPI;
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.utility.PluginUtils;
-import com.connorlinfoot.bountifulapi.BountifulAPI;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.entity.Player;

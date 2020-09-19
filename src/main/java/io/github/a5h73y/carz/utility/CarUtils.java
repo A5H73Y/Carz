@@ -84,12 +84,12 @@ public class CarUtils {
 		}
 
 		ItemStack itemStack = new ItemStack(Material.MINECART);
-		Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_TYPE, itemStack, carType);
 
 		if (owner) {
-			Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_OWNER, itemStack, player.getName());
 			setOwnerDisplayName(itemStack, player);
+			Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_OWNER, itemStack, player.getName());
 		}
+		Carz.getInstance().getCarDataPersistence().setValue(VEHICLE_TYPE, itemStack, carType);
 		setCarSummaryInformation(itemStack);
 
 		player.getInventory().addItem(itemStack);
@@ -107,11 +107,10 @@ public class CarUtils {
 		CarDataPersistence carDataPersistence = Carz.getInstance().getCarDataPersistence();
 		ItemStack itemStack = new ItemStack(Material.MINECART);
 
-		carDataPersistence.transferNamespaceKeyValues(vehicle, itemStack);
-
-		if (carDataPersistence.has(VEHICLE_OWNER, itemStack)) {
-			setOwnerDisplayName(itemStack, carDataPersistence.getValue(VEHICLE_OWNER, itemStack));
+		if (carDataPersistence.has(VEHICLE_OWNER, vehicle)) {
+			setOwnerDisplayName(itemStack, carDataPersistence.getValue(VEHICLE_OWNER, vehicle));
 		}
+		carDataPersistence.transferNamespaceKeyValues(vehicle, itemStack);
 		setCarSummaryInformation(itemStack);
 
 		player.getInventory().addItem(itemStack);
@@ -146,13 +145,15 @@ public class CarUtils {
 	/**
 	 * Add Car's summary information to the ItemStack.
 	 * All details will be derived from the item meta utils.
+	 * Only server versions 1.14+ will apply these effects as changes to ItemMeta will change ItemStack hashcode.
 	 *
 	 * @param itemStack item stack
 	 */
 	public static void setCarSummaryInformation(ItemStack itemStack) {
 		Carz carz = Carz.getInstance();
 
-		if (Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
+		if (PluginUtils.getMinorServerVersion() >= 14
+				&& Carz.getDefaultConfig().getBoolean("CarItem.DisplaySummaryInformation")
 				&& carz.getCarDataPersistence().has(VEHICLE_TYPE, itemStack)) {
 
 			String vehicleType = carz.getCarDataPersistence().getValue(VEHICLE_TYPE, itemStack);
@@ -231,5 +232,19 @@ public class CarUtils {
 		} else {
 			TranslationUtils.sendTranslation("Error.NotInCar", player);
 		}
+	}
+
+	public static Player getPlayerDrivingVehicle(Vehicle vehicle) {
+		Player result;
+
+		try {
+			result = !vehicle.getPassengers().isEmpty() && vehicle.getPassengers().get(0) instanceof Player
+					? (Player) vehicle.getPassengers().get(0) : null;
+		} catch (NoSuchMethodError ex) {
+			result = vehicle.getPassenger() != null && vehicle.getPassenger() instanceof Player
+					? (Player) vehicle.getPassenger() : null;
+		}
+
+		return result;
 	}
 }

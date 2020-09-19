@@ -10,6 +10,7 @@ import io.github.a5h73y.carz.other.AbstractPluginReceiver;
 import io.github.a5h73y.carz.utility.CarUtils;
 import io.github.a5h73y.carz.utility.EffectUtils;
 import io.github.a5h73y.carz.utility.PermissionUtils;
+import io.github.a5h73y.carz.utility.PlayerUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
 import io.github.a5h73y.carz.utility.ValidationUtils;
 import java.util.HashMap;
@@ -165,11 +166,15 @@ public class CarController extends AbstractPluginReceiver {
      * @param vehicle {@link Vehicle}
      */
     private void removeAllDriversFromVehicle(Vehicle vehicle) {
-        if (vehicle == null || vehicle.getPassengers().isEmpty()) {
+        if (vehicle == null) {
             return;
         }
 
-        vehicle.getPassengers().forEach(entity -> removeDriver(entity.getName()));
+        Player player = CarUtils.getPlayerDrivingVehicle(vehicle);
+
+        if (player != null) {
+            removeDriver(player.getName());
+        }
     }
 
     /**
@@ -315,5 +320,22 @@ public class CarController extends AbstractPluginReceiver {
 
         carz.getCarDataPersistence().remove(VehicleDetailKey.VEHICLE_OWNER, player.getVehicle());
         TranslationUtils.sendTranslation("Car.OwnershipRemoved", player);
+    }
+
+    /**
+     * Give target player the player's Car.
+     * The ownership will be transferred to the target player.
+     *
+     * @param player requesting player
+     * @param targetPlayer target player
+     */
+    public void giveCar(Player player, Player targetPlayer) {
+        if (carz.getCarDataPersistence().has(VehicleDetailKey.VEHICLE_OWNER, player.getInventory().getItemInMainHand())) {
+            carz.getCarDataPersistence().setValue(VehicleDetailKey.VEHICLE_OWNER,
+                    player.getInventory().getItemInMainHand(), targetPlayer.getName());
+        }
+        PlayerUtils.transferItemStackToDifferentPlayer(player, targetPlayer);
+        TranslationUtils.sendValueTranslation("Car.Given", targetPlayer.getName(), player);
+        TranslationUtils.sendValueTranslation("Car.Received", player.getName(), targetPlayer);
     }
 }

@@ -10,7 +10,8 @@ public enum Commands {
     PURCHASE("CommandEnabled.Purchase"),
     REFUEL("CommandEnabled.Refuel"),
     UPGRADE("CommandEnabled.Upgrade"),
-    STORE("CommandEnabled.Store");
+    STORE("CommandEnabled.Store"),
+    GIVE("CommandEnabled.Give");
 
     private final String configPath;
 

@@ -58,7 +58,6 @@ public abstract class CarzConfiguration extends YamlConfiguration {
 	protected void reload() {
 		try {
 			this.load(file);
-
 		} catch (IOException | InvalidConfigurationException e) {
 			PluginUtils.log("Failed to load file: " + getFileName(), 2);
 			e.printStackTrace();
@@ -76,7 +75,6 @@ public abstract class CarzConfiguration extends YamlConfiguration {
 		try {
 			file.createNewFile();
 			PluginUtils.log("Created " + getFileName());
-
 		} catch (Exception e) {
 			PluginUtils.log("Failed to create file: " + getFileName(), 2);
 			e.printStackTrace();

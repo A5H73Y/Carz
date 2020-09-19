@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-114782028-2"></script>
@@ -19,10 +19,10 @@
     <meta property="og:site_name" content="Carz Tutorials" />
     <meta property="og:image" content="https://a5h73y.github.io/Carz/img/logo.jpg" />
     <meta property="og:url" content="https://a5h73y.github.io/Carz/part6.html" />
-    <meta property="og:title" content="Part 6: Races" />
+    <meta property="og:title" content="Part 6: Other Plugin Support" />
     <meta name="theme-color" content="#FFFF00">
     <meta name="msapplication-TileColor" content="#FFFF00">
-    <title>Carz Tutorials - Part 6: Races</title>
+    <title>Carz Tutorials - Part 6: Other Plugin Support</title>
 </head>
 
 <body>
@@ -31,12 +31,47 @@
 <div class="container">
     <div class="row">
         <div class="col-12 col-xl-8">
-            <h1>Part 6: Races (Coming Soon)</h1>
+            <h1>Part 6: Other Plugin Support</h1>
 
             <div id="contents-placeholder"></div>
 
             <h2>Description</h2>
-            <p>Due to the large undertaking of adding Races to the Carz plugin, this will be added in a later release.</p>
+            <p>Carz is able to integrate with supported plugins to extend functionality. If integration is desired, make sure the plugin(s) are installed and start correctly, then Carz will display a success message on start up (if configured).</p>
+
+            <h2 id="vault">Vault</h2>
+            <p>For information on Economy / Vault, <a href="part4.html">click here</a>.</p>
+
+            <h2 id="bountifulAPI">BountifulAPI</h2>
+            <p>BountifulAPI adds the ability to display titles and various other notifications, rather than printing the messages into the chat.</p>
+            <p>Once connected, Carz will use the action bar to display the remaining fuel when requested and various other messages.</p>
+            <img src="https://i.imgur.com/lMvggwR.png" alt="/carz fuel bountifulapi usage" class="img-thumbnail"/>
+            <p>BountifulAPI created by connorlinfoot, available here: <a href="https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/">https://www.spigotmc.org/resources/bountifulapi-1-8-1-13.1394/</a></p>
+
+            <h2 id="placeholderAPI">PlaceholderAPI</h2>
+            <p>PlaceholderAPI support provides various available Carz placeholder values, which can be used to extend to other plugins to allow for better customizability.</p>
+
+            <img src="https://i.imgur.com/qOl5m4i.png" alt="carz placeholders" class="img-thumbnail"/>
+            <p>PlaceholderAPI created by clip, available here: <a href="https://www.spigotmc.org/resources/placeholderapi.6245/">https://www.spigotmc.org/resources/placeholderapi.6245/</a></p>
+
+            <h4>Available Carz placeholders</h4>
+            <p class="font-italic">All placeholders use the player's current car for context. Each of these placeholders must be prefixed by <code>carz_</code> to be recognised.</p>
+
+            <dl class="row">
+                <dt class="col-sm-3"><code>fuelgauge</code></dt>
+                <dd class="col-sm-9">Displays the car's fuel gauge. indicating how much fuel they have remaining in a bar.</dd>
+
+                <dt class="col-sm-3"><code>speed</code></dt>
+                <dd class="col-sm-9">Displays the car's current speed.</dd>
+
+                <dt class="col-sm-3"><code>fuel</code></dt>
+                <dd class="col-sm-9">Displays the car's current fuel amount.</dd>
+
+                <dt class="col-sm-3"><code>maxfuel</code></dt>
+                <dd class="col-sm-9">Displays the car's maximum fuel amount.</dd>
+
+                <dt class="col-sm-3"><code>cartype</code></dt>
+                <dd class="col-sm-9">Displays the car's type.</dd>
+            </dl>
         </div>
     </div>
 </div>

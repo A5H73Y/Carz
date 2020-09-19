@@ -1,0 +1,202 @@
+[
+  {
+    "command": "purchase",
+    "title": "Request to purchase a Car",
+    "arguments": "[carType]",
+    "example": "/carz purchase sport",
+    "description": "Request to purchase a Car of a certain type using the command. If Economy is enabled, the player must have sufficient funds for the requested Car. If purchase confirmation is enabled, the user will be presented with a summary of the Car they are about to purchase, with a prompt to confirm the request. If successful, the player will receive an Owned car of the type requested.",
+    "permission": "Carz.Purchase",
+    "enabledConfig": "CommandEnabled.Purchase",
+    "consoleSyntax": null
+  },
+  {
+    "command": "upgrade",
+    "title": "Request to upgrade the Car",
+    "arguments": null,
+    "example": "/carz upgrade",
+    "description": "Request to upgrade the player's current Car's speed using the command. If Economy is enabled, the player must have sufficient funds for the requested upgrade. If purchase confirmation is enabled, the user will be presented with a summary of the Upgrade they are about to purchase, with a prompt to confirm the request. If successful, the Car will receive an immediate speed upgrade of the amount.",
+    "permission": "Carz.Upgrade",
+    "enabledConfig": "CommandEnabled.Upgrade",
+    "consoleSyntax": null
+  },
+  {
+    "command": "refuel",
+    "title": "Request to Refuel the Car",
+    "arguments": null,
+    "example": "/carz refuel",
+    "description": "Request to refuel the player's current Car using the command. If Economy is enabled, the player must have sufficient funds for the refuel. If scale cost is enabled, the cost will be calculated to the highest quarter percent (i.e. 25%, 50%, 75%). If purchase confirmation is enabled, the user will be presented with a summary of the fuel they are about to purchase, with a prompt to confirm the request. If successful, the Car's fuel will be fully restored to the maximum amount.",
+    "permission": null,
+    "enabledConfig": "CommandEnabled.Refuel",
+    "consoleSyntax": null
+  },
+  {
+    "command": "fuel",
+    "title": "Display remaining fuel",
+    "arguments": null,
+    "example": "/carz fuel",
+    "description": "When driving the player is able to display the remaining fuel in the car, presented in a fuel gauge.",
+    "permission": null,
+    "enabledConfig": null,
+    "consoleSyntax": null
+  },
+  {
+    "command": "spawn",
+    "title": "Spawn an unowned Car",
+    "arguments": "[carType]",
+    "example": "/carz spawn sport",
+    "description": "Spawn the requested Car to the player's inventory, which will be unowned.",
+    "permission": "Carz.Admin",
+    "enabledConfig": "CommandEnabled.Spawn",
+    "consoleSyntax": "carzc spawn (player) [carType]"
+  },
+  {
+    "command": "details",
+    "title": "Display details of Car",
+    "arguments": "[extra]",
+    "example": "/carz details extra",
+    "description": "Display a summary of the Car's details; for extra information provide the extra arguments.",
+    "permission": null,
+    "enabledConfig": null,
+    "consoleSyntax": null
+  },
+  {
+    "command": "add",
+    "title": "Add a Material to a BlockType list",
+    "arguments": "(climb, launch, speed, placeable) (Material) [strength]",
+    "example": "/carz add speed OBSIDIAN 10",
+    "description": "Add a Material to a list of the chosen BlockType. Speed and Launch block types require an extra argument to specify the strength of the effect.",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc add (climb, launch, speed, placeable) (Material) [strength]"
+  },
+  {
+    "command": "remove",
+    "title": "Remove a Material from a BlockType list",
+    "arguments": "(climb, launch, speed, placeable) (Material)",
+    "example": "/carz remove speed OBSIDIAN",
+    "description": "Remove a Material from a list of the chosen BlockType.",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc remove (climb, launch, speed, placeable) (Material)"
+  },
+  {
+    "command": "list",
+    "title": "Display the contents of a BlockType list",
+    "arguments": "(climb, launch, speed, placeable)",
+    "example": "/carz list speed",
+    "description": "Display the contents of the chosen BlockType list.",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc list (climb, launch, speed, placeable)"
+  },
+  {
+    "command": "stash",
+    "title": "Stash a Car to the Inventory",
+    "arguments": null,
+    "example": "/carz stash",
+    "description": "Stash away the Car the player is driving to their inventory as a Minecart.",
+    "permission": null,
+    "enabledConfig": null,
+    "consoleSyntax": null
+  },
+  {
+    "command": "claim",
+    "title": "Claim an unowned Car",
+    "arguments": null,
+    "example": "/carz claim",
+    "description": "The player may claim ownership of an unowned car, allowing them to lock the car to the user.",
+    "permission": null,
+    "enabledConfig": null,
+    "consoleSyntax": null
+  },
+  {
+    "command": "give",
+    "title": "Give another Player a Car",
+    "arguments": "(player)",
+    "example": "/carz give A5H73Y",
+    "description": "The player can give another player a Car that they are holding in the form of a Minecart, all of the details will be transferred and setting the new owner to the target player.",
+    "permission": "Carz.Give",
+    "enabledConfig": "CommandEnabled.Give",
+    "consoleSyntax": null
+  },
+  {
+    "command": "removeowner",
+    "title": "Remove Ownership of Car",
+    "arguments": null,
+    "example": "/carz removeowner",
+    "description": "Remove Ownership of a Car, allows the Car to be claimed by another player.",
+    "permission": "Carz.BypassOwner",
+    "enabledConfig": null,
+    "consoleSyntax": null
+  },
+  {
+    "command": "createtype",
+    "title": "Create a new Car Type",
+    "arguments": null,
+    "example": "/carz createtype",
+    "description": "Start a Conversation to create a new Car Type. The player will be guided through questions to create the desired new Car Type.",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc createtype"
+  },
+  {
+    "command": "removetype",
+    "title": "Remove a Car Type",
+    "arguments": "(carType)",
+    "example": "/carz removetype sport",
+    "description": "Remove a Car Type from the available types to choose from.",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc removetype (carType)"
+  },
+  {
+    "command": "cartypes",
+    "title": "Display available Car Types",
+    "arguments": null,
+    "example": "/carz cartypes",
+    "description": "Display all the available Car Types to purchase to the player.",
+    "permission": "Carz.Purchase",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc cartypes"
+  },
+  {
+    "command": "economy",
+    "title": "Display Economy Information",
+    "arguments": null,
+    "example": "/carz economy",
+    "description": "Display all the Economy / Vault information configured. Each of the Car Types and their associated costs will be displayed.",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc economy"
+  },
+  {
+    "command": "store",
+    "title": "Display Car Type Store",
+    "arguments": null,
+    "example": "/carz store",
+    "description": "Display the available Car Types to purchase in an inventory, simply clicking an entry will submit a request to purchase the car of the type. Hovering over each entry will display a summary of each Car Type details.",
+    "permission": "Carz.Purchase",
+    "enabledConfig": "CommandEnabled.Store",
+    "consoleSyntax": null
+  },
+  {
+    "command": "reload",
+    "title": "Reload the Carz configuration.",
+    "arguments": null,
+    "example": "/carz reload",
+    "description": "Reload each of the Carz configuration files; changes made to the config.yml and strings.yml will be immediately applied",
+    "permission": "Carz.Admin",
+    "enabledConfig": null,
+    "consoleSyntax": "carzc reload"
+  },
+  {
+    "command": "cmds",
+    "title": "Display Carz commands",
+    "arguments": null,
+    "example": "/carz cmds",
+    "description": "Display all the available commands to the requesting player. The list will be built based on player permissions and configuration.",
+    "permission": null,
+    "enabledConfig": null,
+    "consoleSyntax": "carzc cmds"
+  }
+]

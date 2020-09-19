@@ -1,13 +1,12 @@
 package io.github.a5h73y.carz.commands;
 
 import io.github.a5h73y.carz.Carz;
-import io.github.a5h73y.carz.enums.Commands;
-import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.other.AbstractPluginReceiver;
-import io.github.a5h73y.carz.utility.PermissionUtils;
+import io.github.a5h73y.carz.other.CommandUsage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -18,7 +17,7 @@ import org.bukkit.entity.Player;
  */
 public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabCompleter {
 
-    private static final List<String> ADD_REMOVE_LIST = Arrays.asList("climb", "speed", "launch", "placeable");
+    private static final List<String> BLOCK_TYPES_LIST = Arrays.asList("climb", "speed", "launch", "placeable");
 
     private static final List<String> QUESTION_LIST = Arrays.asList("confirm", "cancel");
 
@@ -57,56 +56,18 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
     }
 
     private List<String> populateMainCommands(Player player) {
-        List<String> allowedCommands = new ArrayList<>();
-
         // if they have an outstanding purchase, make those the only options
         if (carz.getEconomyApi().isPurchasing(player)) {
             return QUESTION_LIST;
         }
 
-        allowedCommands.add("cmds");
-        allowedCommands.add("claim");
-        allowedCommands.add("details");
-
-        if (carz.getFuelController().isFuelEnabled()) {
-            allowedCommands.add("fuel");
-
-            if (carz.getConfig().getBoolean(Commands.REFUEL.getConfigPath())) {
-                allowedCommands.add("refuel");
-            }
-        }
-
-        if (PermissionUtils.hasStrictPermission(player, Permissions.PURCHASE, false)) {
-            allowedCommands.add("stash");
-            allowedCommands.add("cartypes");
-
-            if (carz.getConfig().getBoolean(Commands.PURCHASE.getConfigPath())) {
-                allowedCommands.add("purchase");
-            }
-            if (carz.getConfig().getBoolean(Commands.STORE.getConfigPath())) {
-                allowedCommands.add("store");
-            }
-        }
-
-        if (carz.getConfig().getBoolean(Commands.UPGRADE.getConfigPath())
-                && PermissionUtils.hasStrictPermission(player, Permissions.UPGRADE, false)) {
-            allowedCommands.add("upgrade");
-        }
-
-        if (PermissionUtils.hasStrictPermission(player, Permissions.ADMIN, false)) {
-            allowedCommands.add("add");
-            allowedCommands.add("remove");
-            allowedCommands.add("createtype");
-            allowedCommands.add("removetype");
-            allowedCommands.add("economy");
-            allowedCommands.add("reload");
-
-            if (carz.getConfig().getBoolean(Commands.SPAWN.getConfigPath())) {
-                allowedCommands.add("spawn");
-            }
-        }
-
-        return allowedCommands;
+        return carz.getCommandUsages().stream()
+                .filter(commandUsage -> commandUsage.getEnabledConfig() == null
+                        || carz.getConfig().getBoolean(commandUsage.getEnabledConfig()))
+                .filter(commandUsage -> commandUsage.getPermission() == null
+                        || player.hasPermission(commandUsage.getPermission()))
+                .map(CommandUsage::getCommand)
+                .collect(Collectors.toList());
     }
 
     private List<String> populateChildCommands(String command) {
@@ -115,7 +76,8 @@ public class CarzAutoTabCompleter extends AbstractPluginReceiver implements TabC
         switch (command) {
             case "add":
             case "remove":
-                allowedCommands = ADD_REMOVE_LIST;
+            case "list":
+                allowedCommands = BLOCK_TYPES_LIST;
                 break;
             case "purchase":
             case "spawn":

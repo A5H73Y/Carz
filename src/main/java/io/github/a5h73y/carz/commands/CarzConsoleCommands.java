@@ -78,7 +78,7 @@ public class CarzConsoleCommands extends AbstractPluginReceiver implements Comma
                 break;
 
             case "removetype":
-                if (!PluginUtils.validateArgs(sender, args, 2, 2)) {
+                if (!PluginUtils.validateArgs(sender, args, 2)) {
                     return false;
                 }
 

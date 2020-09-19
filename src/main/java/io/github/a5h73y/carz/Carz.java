@@ -1,5 +1,6 @@
 package io.github.a5h73y.carz;
 
+import com.google.gson.GsonBuilder;
 import io.github.a5h73y.carz.commands.CarzAutoTabCompleter;
 import io.github.a5h73y.carz.commands.CarzCommands;
 import io.github.a5h73y.carz.commands.CarzConsoleCommands;
@@ -14,6 +15,7 @@ import io.github.a5h73y.carz.listeners.PlayerListener;
 import io.github.a5h73y.carz.listeners.SignListener;
 import io.github.a5h73y.carz.listeners.VehicleListener;
 import io.github.a5h73y.carz.other.CarzUpdater;
+import io.github.a5h73y.carz.other.CommandUsage;
 import io.github.a5h73y.carz.persistence.CarDataHolder;
 import io.github.a5h73y.carz.persistence.CarDataMap;
 import io.github.a5h73y.carz.persistence.CarDataPersistence;
@@ -22,12 +24,18 @@ import io.github.a5h73y.carz.plugin.EconomyApi;
 import io.github.a5h73y.carz.plugin.PlaceholderApi;
 import io.github.a5h73y.carz.utility.PluginUtils;
 import io.github.a5h73y.carz.utility.TranslationUtils;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Carz extends JavaPlugin {
 
-    private static final int BUKKIT_PLUGIN_ID = 42269;
+    private static final int BSTATS_PLUGIN_ID = 2371;
     private static final int SPIGOT_PLUGIN_ID = 56255;
     private static Carz instance;
 
@@ -40,6 +48,7 @@ public class Carz extends JavaPlugin {
     private ConfigManager configManager;
     private CarzGuiManager guiManager;
     private CarDataPersistence carDataPersistence;
+    private List<CommandUsage> commandUsages;
 
     /**
      * Get the plugin's instance.
@@ -57,14 +66,20 @@ public class Carz extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        if (PluginUtils.getMinorServerVersion() < 12) {
+            PluginUtils.log("Unsupported server version, 1.12+ is supported.", 2);
+            this.setEnabled(false);
+            return;
+        }
+
         configManager = new ConfigManager(this.getDataFolder());
         carController = new CarController(this);
         fuelController = new FuelController(this);
         guiManager = new CarzGuiManager(this);
 
         if (PluginUtils.getMinorServerVersion() < 14) {
-            PluginUtils.log("Unsupported server version, expect unintended behaviour.", 2);
             carDataPersistence = new CarDataMap();
+            PluginUtils.log("Depreciated server version, expect unintended behaviour.", 2);
         } else {
             carDataPersistence = new CarDataHolder();
         }
@@ -75,7 +90,7 @@ public class Carz extends JavaPlugin {
         setupPlugins();
 
         getLogger().info("Enabled Carz v" + getDescription().getVersion());
-        new Metrics(this, BUKKIT_PLUGIN_ID);
+        new Metrics(this, BSTATS_PLUGIN_ID);
         checkForUpdates();
     }
 
@@ -159,6 +174,10 @@ public class Carz extends JavaPlugin {
         return placeholderApi;
     }
 
+    public List<CommandUsage> getCommandUsages() {
+        return commandUsages;
+    }
+
     private void setupPlugins() {
         bountifulApi = new BountifulApi();
         economyApi = new EconomyApi();
@@ -171,6 +190,10 @@ public class Carz extends JavaPlugin {
         if (getConfig().getBoolean("Other.UseAutoTabCompletion")) {
             getCommand("carz").setTabCompleter(new CarzAutoTabCompleter(this));
         }
+        String json = new BufferedReader(new InputStreamReader(getResource("carzCommands.json"), StandardCharsets.UTF_8))
+                .lines().collect(Collectors.joining("\n"));
+
+        commandUsages = Arrays.asList(new GsonBuilder().create().fromJson(json, CommandUsage[].class));
     }
 
     private void registerEvents() {

@@ -6,6 +6,7 @@ import org.bukkit.NamespacedKey;
 /**
  * All Available Vehicle Detail Keys.
  * Stored against the Minecart / ItemStack for persisting information.
+ * NamespacedKey was introduced in 1.12 and for this reason is the minimum supported version.
  */
 public enum VehicleDetailKey {
 
