@@ -9,5 +9,6 @@ website: "https://a5h73y.github.io/Carz/"
 commands:
   carz:
     description: Carz commands
+    aliases: [car]
   carzc:
     description: Carz non-player commands

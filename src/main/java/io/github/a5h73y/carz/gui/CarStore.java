@@ -64,7 +64,7 @@ public class CarStore extends AbstractMenu {
 
 							// fuel usage
 							TranslationUtils.getValueTranslation("CarDetails.FuelUsage",
-									String.valueOf(details.getAcceleration()), false),
+									String.valueOf(details.getFuelUsage()), false),
 
 							// economy cost
 							TranslationUtils.getValueTranslation("CarDetails.Cost",
