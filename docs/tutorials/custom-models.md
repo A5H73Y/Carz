@@ -29,7 +29,7 @@ Once installed I would recommend the following plugins using `Filter -> Plugins`
 Now you are free to use the Software to create your own models which sit upon a Minecart.  
 The Minecart will still be visible but with the shape of the custom model taking form on top, hiding it.
 
-I have created a custom model which should fully consume the default Minecart model and give you some points of reference: [Download here](/files/Minecart.bbmodel)
+I have created a custom model which should fully consume the default Minecart model and give you some points of reference: [Download here](https://a5h73y.github.io/Carz/files/Minecart.bbmodel)
 
 ### Export the Model
 
