@@ -1,8 +1,6 @@
 Block Types
 ======
 
-## Description
-
 Carz can link to any Economy plugin that supports Vault.
 
 When linked, each Carz purchase type can have an associated cost. Any economy based purchase will be prevented until the player has earned enough money (for example buying a car).

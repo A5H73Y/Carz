@@ -1,8 +1,6 @@
 Compatible Plugins
 ======
 
-## Description
-
 Carz is able to integrate with supported plugins to extend functionality. If integration is desired, make sure the plugin(s) are installed and start correctly, then Carz will display a success message on start up (if configured).
 
 ## Economy / Vault

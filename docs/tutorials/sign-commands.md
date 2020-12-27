@@ -1,8 +1,6 @@
 Sign Commands
 ======
 
-## Description
-
 Carz command usage can be completely disabled in the config to allow for full immersion of role-play by using signs for every Carz function. This includes: buying a car, upgrading a car, and refueling your car. Ideally you could have a different building for each of these purposes.
 
 If Carz is linked to an Economy plugin, the cost of the purchase will be displayed at the bottom of the sign.  

@@ -1,8 +1,6 @@
 Developer Tutorials
 ======
 
-## Description
-
 Are you a developer? Great! You can make the most of out Carz's functionality to create the perfect experience for your server. I've made the plugin super easy to expand and integrate into, first we will import Carz project to begin working with it.
 
 ## Importing Carz into your Project

@@ -1,8 +1,6 @@
 Block Types
 ======
 
-## Description
-
 For each Block Type, you are able to specify a list of Materials which make up that action. The available actions include: `climb, placeable, speed & launch`.
 
 Each of these can be added to using `/carz add (type) (Material)`. Some may need an extra argument for the amount, such as the strength of the speed block, or the amount of height from a launch block.
