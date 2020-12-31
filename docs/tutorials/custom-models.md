@@ -17,12 +17,14 @@ I would suggest [Blockbench](https://blockbench.net/) as it is free and can be c
 
 ### Configure Software
 
-Once installed I would recommend the following plugins using `Filter -> Plugins`:
+Once installed I would recommend the following plugins using `File -> Plugins -> Available`:
 
 - Plaster
 - Resource Pack Exporter
 - Shape Generator
 - Texture Editor
+
+![Installed Plugins](https://i.imgur.com/Lu1LI7k.png "Installed Plugins")
 
 ### Creating the Model
 
@@ -31,15 +33,57 @@ The Minecart will still be visible but with the shape of the custom model taking
 
 I have created a custom model which should fully consume the default Minecart model and give you some points of reference: [Download here](https://a5h73y.github.io/Carz/files/Minecart.bbmodel)
 
+![Example Model](https://i.imgur.com/BBwWZ0Y.png "Example Model")
+
+### Editing the Model
+
+It is up to you to learn the software and create the Car you desire. I was able to work out the basics after looking on YouTube.
+
+To keep the Minecart hidden, you must cover all parts of it as demonstrated in the Model I have provided.
+
 ### Export the Model
 
 Once you're ready to test out your creation, go to `File -> Export -> Export Resource Pack`. Give the Resource Pack a name and description to reference it easily and save it.
 
+![Exporting Model](https://i.imgur.com/5iw9wlm.png "Exporting Model")
+
 The Model will be packaged into a zip file that Minecraft will accept as a Resource Pack. 
 Open up Minecraft `Options... -> Resource Packs... -> Open Pack Folder` drop your freshly created zip file in here. Minecraft should update the results to include your new Resource Pack.
 
+![Resource Pack Imported](https://i.imgur.com/0LLZBbG.png "Resource Pack Imported")
+
 Click the Arrow on your Resource Pack, ignore any message about it possibly being incompatible, and click Done.
 
-**By Default, the Exporting Resource Pack will override the `GLASS` Material (You could change this).**
+**By Default, the Exporting Resource Pack will override the `glass` Material.**
 
-To test your model, create a new car type `/carz createtype` go through the steps and specify the `Fill Material` as `GLASS`. Obtain the car using `/carz spawn (type)` and place the Minecart received and you should see your new model! 
+**The Material it overrides can be changed by opening the Archive (zip file) and navigating to `\assets\minecraft\models\block\` and renaming the json file to be a valid Material name available here: [https://minecraft.gamepedia.com/Resource_Pack/Folders](https://minecraft.gamepedia.com/Resource_Pack/Folders)**
+
+To test your model, create a new car type `/carz createtype` go through the steps and specify the `Fill Material` as `GLASS`. 
+
+![Created Car Type](https://i.imgur.com/FJHwDiV.png "Created Car Type")
+
+Obtain the car using `/carz spawn (type)` and place the Minecart received, and you should see your new model! 
+
+![Custom Car Model spawned](https://i.imgur.com/BVbMQG0.png "Custom Car Model spawned")
+
+*Some Materials get rotated without me being able to handle it, for example the CONCRETE_POWDER blocks will be rotated 90 degrees; test your model often to make sure it's behaving as you expect.*
+
+## Available Models
+
+Here are some models I have created for you to use. I am not a 3D modeller so they are very basic but will allow you to differentiate between the car types.
+
+### Hide Minecarts
+
+I've created a Resource Pack which simply removes the Minecart's default texture pack. This means that it will appear invisible (with a shadow), this will allow you to create your own models without the restriction of needing to wrap the default Minecart.
+
+Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/HideMinecart.zip)
+
+### Blue Car
+
+![Blue Car Picture](https://i.imgur.com/dUpf5D1.png "Blue Car Picture")
+
+Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/BlueCar.zip)
+
+Material: `BLUE_CONCRETE_POWDER`
+
+Model: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/BlueCar.bbmodel)
