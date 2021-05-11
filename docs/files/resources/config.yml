@@ -1,0 +1,104 @@
+CarTypes:
+  default:
+    StartMaxSpeed: 60.0
+    MaxUpgradeSpeed: 200.0
+    Acceleration: 5.0
+    FuelUsage: 1.0
+    FillMaterial: AIR
+    Cost: 10.0
+  black:
+    FillMaterial: BLACK_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  blue:
+    FillMaterial: BLUE_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  brown:
+    FillMaterial: BROWN_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  cyan:
+    FillMaterial: CYAN_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  gray:
+    FillMaterial: GRAY_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  green:
+    FillMaterial: GREEN_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  lightblue:
+    FillMaterial: LIGHT_BLUE_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  lightgray:
+    FillMaterial: LIGHT_GRAY_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  lime:
+    FillMaterial: LIME_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  magenta:
+    FillMaterial: MAGENTA_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  orange:
+    FillMaterial: ORANGE_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  pink:
+    FillMaterial: PINK_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  purple:
+    FillMaterial: PURPLE_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  red:
+    FillMaterial: RED_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  white:
+    FillMaterial: WHITE_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0
+  yellow:
+    FillMaterial: YELLOW_GLAZED_TERRACOTTA
+    MaxUpgradeSpeed: 120.0
+    Acceleration: 1.0
+    StartMaxSpeed: 60.0
+    FuelUsage: 1.0

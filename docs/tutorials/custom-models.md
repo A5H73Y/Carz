@@ -7,6 +7,38 @@ The way it achieves this is by placing a Material inside the Minecart whilst you
 
 **This is fairly unique to Carz and you aren't likely to find any resources online.**
 
+## Available Models
+
+Here are some models I have created for you to use. I am not a 3D modeller, so they are very basic but will allow you to differentiate between the car types.
+
+### Carz Pack
+
+This Resource pack replaces each colour of GLAZED_TERRACOTTA with a matching Car model. Each Car Colour will need its own matching entry in the config.yml, I have provided [config here](https://a5h73y.github.io/Carz/files/resources/config.yml) which you can copy into your config.yml.
+
+![Carz Pack Picture](https://i.imgur.com/jODhG6j.png "Carz Pack Picture")
+
+Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/CarzPack_1.0.zip)
+
+Material: `(COLOUR)_GLAZED_TERRACOTTA`
+
+bbmodel: [Click Here](https://a5h73y.github.io/Carz/files/resources/CarzVehicle.bbmodel)
+
+### Hide Minecarts
+
+I've created a Resource Pack which simply removes the Minecart's default texture pack. This means that it will appear invisible (with a shadow), this will allow you to create your own models without the restriction of needing to wrap the default Minecart.
+
+Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/HideMinecart_1.0.zip)
+
+### Blue Car
+
+![Blue Car Picture](https://i.imgur.com/dUpf5D1.png "Blue Car Picture")
+
+Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/BlueCar.zip)
+
+Material: `BLUE_CONCRETE_POWDER`
+
+bbmodel: [Click Here](https://a5h73y.github.io/Carz/files/resources/BlueCar.bbmodel)
+
 ## How do I create my own models?
 
 ### Required Software
@@ -31,7 +63,7 @@ Once installed I would recommend the following plugins using `File -> Plugins ->
 Now you are free to use the Software to create your own models which sit upon a Minecart.  
 The Minecart will still be visible but with the shape of the custom model taking form on top, hiding it.
 
-I have created a custom model which should fully consume the default Minecart model and give you some points of reference: [Download here](https://a5h73y.github.io/Carz/files/Minecart.bbmodel)
+I have created a custom model which should fully consume the default Minecart model and give you some points of reference: [Download here](https://a5h73y.github.io/Carz/files/resources/Minecart.bbmodel)
 
 ![Example Model](https://i.imgur.com/BBwWZ0Y.png "Example Model")
 
@@ -67,23 +99,3 @@ Obtain the car using `/carz spawn (type)` and place the Minecart received, and y
 ![Custom Car Model spawned](https://i.imgur.com/BVbMQG0.png "Custom Car Model spawned")
 
 *Some Materials get rotated without me being able to handle it, for example the CONCRETE_POWDER blocks will be rotated 90 degrees; test your model often to make sure it's behaving as you expect.*
-
-## Available Models
-
-Here are some models I have created for you to use. I am not a 3D modeller so they are very basic but will allow you to differentiate between the car types.
-
-### Hide Minecarts
-
-I've created a Resource Pack which simply removes the Minecart's default texture pack. This means that it will appear invisible (with a shadow), this will allow you to create your own models without the restriction of needing to wrap the default Minecart.
-
-Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/HideMinecart.zip)
-
-### Blue Car
-
-![Blue Car Picture](https://i.imgur.com/dUpf5D1.png "Blue Car Picture")
-
-Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/BlueCar.zip)
-
-Material: `BLUE_CONCRETE_POWDER`
-
-Model: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/BlueCar.bbmodel)
