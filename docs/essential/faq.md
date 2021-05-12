@@ -5,6 +5,10 @@ Frequently Asked Questions
 
 If you have a permission plugin, you will find all of the [permissions here](permissions.md). If you don't want to use permissions, you can disable `Other.UsePermissions` in the `config.yml`.
 
+#### How do I drive?
+
+By default, you can spawn or purchase a car, then enter the Minecart and it should give you a key (stick). Right click with the key to start the engine, then look in the direction you want to drive; it's that easy!
+
 #### How can I use the Carz models? ####
 
 I have created a resource pack that replaces each colour of GLAZED_TERRACOTTA with a matching Car model.
@@ -16,6 +20,12 @@ In the `server.properties` set `resource-pack=https\://a5h73y.github.io/Carz/fil
 Now you can create any type of Car you want, then setting the Fill Material to (COLOUR)_GLAZED_TERRACOTTA.
 
 If you want an example of populated CarTypes, take a look at [my config.yml](https://a5h73y.github.io/Carz/files/resources/config.yml) and copy them into your config.yml.
+
+#### How can I speed up / slow down my Car?
+
+Each Car Type can have its own properties _(MaxSpeed, Acceleration, Cost, etc.)_. There is a default car type found in the `config.yml` which you can modify, or just create your own using `/carz createtype`.
+
+Alternatively, you can use [Speed Blocks](https://a5h73y.github.io/Carz/#/tutorials/block-types?id=speed-block). These will allow you to modify the Car's speed based on which Material they are driving upon. 
 
 ## Terms / Meanings
 
