@@ -9,7 +9,7 @@ To make changes, edit to the value you want, save the file, then enter `/carz re
 
 Some properties require the server to restart to apply the changes, these include adding 3rd party plugin support, etc.
 
-View the annotated configuration file here: [https://pastebin.com/eQGLqpVD](https://pastebin.com/eQGLqpVD)
+View the annotated configuration file here: [https://pastebin.com/pPNWtwMC](https://pastebin.com/pPNWtwMC)
 
 _This is correct as of Carz v7.0_
 

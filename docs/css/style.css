@@ -2,6 +2,10 @@
     font-size: 3rem;
 }
 
+.markdown-section h5 {
+    font-size: 1.1rem;
+}
+
 .markdown-section h1, .markdown-section h2 {
     border-bottom: 1px solid #ccc;
 }
@@ -10,6 +14,10 @@
     line-height: 1.6rem;
     margin: 1em 0;
     font-size: 18px;
+}
+
+.markdown-section details p {
+    margin: 0.5em auto;
 }
 
 .sidebar ul li a {
@@ -28,7 +36,11 @@ img {
     max-width: 30%;
 }
 
-h5, h4, h3, h2, h1 {
+h1.app-name {
+    display: none;
+}
+
+h5 {
     margin: 0;
 }
 
@@ -43,8 +55,4 @@ details > summary {
 details > div {
     padding: 4px 4px 4px 10px;
     border: solid thin darkgrey;
-}
-
-.page_toc {
-    padding-top: 10px;
 }

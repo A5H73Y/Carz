@@ -1,6 +1,8 @@
 Changelog
 ======
 
+Please note that each version of Carz is backwards compatible with the previous version and will automatically upgrade your config upon start up. There will be no manual intervention unless stated in breaking changes.
+
 ## Carz 7.3
 - Added "Car" alias
 

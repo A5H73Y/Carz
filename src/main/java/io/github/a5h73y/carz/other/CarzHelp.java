@@ -29,7 +29,7 @@ public class CarzHelp {
     }
 
     /**
-     * Lookup and display the syntax and description for each Parkour command.
+     * Lookup and display the syntax and description for each Carz command.
      *
      * @param args
      * @param sender

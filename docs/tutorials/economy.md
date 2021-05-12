@@ -1,4 +1,4 @@
-Block Types
+Economy
 ======
 
 Carz can link to any Economy plugin that supports Vault.
