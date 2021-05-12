@@ -31,12 +31,22 @@ There is validation to prevent numbers below 0 and over 100. Anything exceeding 
 
 #### Examples
 
+Setting GOLD_BLOCK to 5 Speed:
+
+[Fast Speed Block](https://thumbs.gfycat.com/MistyInsistentFlyingfish-mobile.mp4 ':include :type=video loop controls')
+
 Setting GRASS_BLOCK to 0.1 Speed:
 
-[Slow Block](https://thumbs.gfycat.com/PiercingMetallicItaliangreyhound-mobile.mp4 ':include :type=.mp4')
+[Slow Speed Block](https://thumbs.gfycat.com/ClutteredOrneryHart-mobile.mp4 ':include :type=video loop controls')
 
 ## Launch Block
 
 Launch blocks provide the ability to add a y velocity of the car, giving the illusion of launching them into the air.
 
 It's worth noting that values between 0.0 and 2.0 seem to be most effective, anything over 2 will launch too high.
+
+#### Examples
+
+Setting GLOWSTONE to 20 Launch:
+
+[Launch Block](https://thumbs.gfycat.com/ParallelIncredibleBagworm-mobile.mp4 ':include :type=video loop controls')
