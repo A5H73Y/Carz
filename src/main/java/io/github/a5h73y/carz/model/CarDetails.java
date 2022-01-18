@@ -12,7 +12,7 @@ public class CarDetails {
 
 	private final double fuelUsage;
 
-	private Material fillMaterial = Material.AIR;
+	private String fillMaterialData;
 
 	/**
 	 * Car Details model.
@@ -22,20 +22,16 @@ public class CarDetails {
 	 * @param maxUpgradeSpeed absolute maximum speed of the car
 	 * @param acceleration acceleration speed of the car
 	 * @param fuelUsage amount of fuel used during acceleration
-	 * @param fillMaterial material to place inside the Minecart
+	 * @param fillMaterialData material to place inside the Minecart
 	 */
 	public CarDetails(double startMaxSpeed, double maxUpgradeSpeed, double acceleration,
-	                  double fuelUsage, String fillMaterial) {
+	                  double fuelUsage, String fillMaterialData) {
 
 		this.startMaxSpeed = Math.max(0.0, startMaxSpeed);
 		this.maxUpgradeSpeed = Math.max(0.0, maxUpgradeSpeed);
 		this.acceleration = Math.max(0.0, acceleration);
 		this.fuelUsage = Math.max(0.0, fuelUsage);
-
-		Material material = Material.getMaterial(fillMaterial);
-		if (material != null) {
-			this.fillMaterial = material;
-		}
+		this.fillMaterialData = fillMaterialData;
 	}
 
 	public double getStartMaxSpeed() {
@@ -54,8 +50,8 @@ public class CarDetails {
 		return fuelUsage;
 	}
 
-	public Material getFillMaterial() {
-		return fillMaterial;
+	public String getFillMaterialData() {
+		return fillMaterialData;
 	}
 
 	@Override
@@ -64,6 +60,6 @@ public class CarDetails {
 				+ ", \nMax Upgrade Speed: " + maxUpgradeSpeed
 				+ ", \nAcceleration: " + acceleration
 				+ ", \nFuel Usage: " + fuelUsage
-				+ ", \nFill Material: " + fillMaterial;
+				+ ", \nFill Material Data: " + fillMaterialData;
 	}
 }

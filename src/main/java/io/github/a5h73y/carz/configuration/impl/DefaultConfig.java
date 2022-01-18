@@ -77,7 +77,7 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("CarTypes.default.MaxUpgradeSpeed", 200.0);
 		this.addDefault("CarTypes.default.Acceleration", 5.0);
 		this.addDefault("CarTypes.default.FuelUsage", 1.0);
-		this.addDefault("CarTypes.default.FillMaterial", "AIR");
+		this.addDefault("CarTypes.default.FillMaterialData", "");
 		this.addDefault("CarTypes.default.Cost", 10.0);
 
 		this.addDefault("Version", Double.valueOf(Carz.getInstance().getDescription().getVersion()));

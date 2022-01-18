@@ -289,8 +289,8 @@ public class CarController extends AbstractPluginReceiver {
             double maxSpeed = carz.getConfig().getDouble(configPath + ".MaxUpgradeSpeed");
             double acceleration = carz.getConfig().getDouble(configPath + ".Acceleration");
             double fuelUsage = carz.getConfig().getDouble(configPath + ".FuelUsage");
-            String fillMaterial = carz.getConfig().getString(configPath + ".FillMaterial");
-            carTypes.put(carType, new CarDetails(startSpeed, maxSpeed, acceleration, fuelUsage, fillMaterial));
+            String fillMaterialData = carz.getConfig().getString(configPath + ".FillMaterialData");
+            carTypes.put(carType, new CarDetails(startSpeed, maxSpeed, acceleration, fuelUsage, fillMaterialData));
         }
     }
 

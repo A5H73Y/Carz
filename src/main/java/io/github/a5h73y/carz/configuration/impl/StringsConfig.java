@@ -60,7 +60,7 @@ public class StringsConfig extends CarzConfiguration {
 		this.addDefault("CarType.Create.MaxUpgradeSpeed", "&d What should the Car's Max Upgrade Speed be?\n&a (default = 120.0)");
 		this.addDefault("CarType.Create.Acceleration", "&d What should the Car's Acceleration be?\n&a (default = 1.0)");
 		this.addDefault("CarType.Create.FuelUsage", "&d What should the Fuel Usage be?\n&a (default = 1.0)");
-		this.addDefault("CarType.Create.FillMaterial", "&d What should the Fill Material be?\n&a (default = AIR)");
+		this.addDefault("CarType.Create.FillMaterialData", "&d What should the Fill Material be?\n&a (default = minecraft:AIR)");
 		this.addDefault("CarType.Create.Cost", "&d How much should the car cost?\n&a (default = 10.0)");
 		this.addDefault("CarType.Create.Success", "&d All done, &a%VALUE% &dcreated.");
 		this.addDefault("CarType.Removed", "&b%VALUE% &7removed.");

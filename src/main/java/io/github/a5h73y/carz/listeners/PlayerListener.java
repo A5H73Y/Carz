@@ -17,7 +17,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Rail;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -108,10 +107,10 @@ public class PlayerListener extends AbstractPluginReceiver implements Listener {
         carz.getCarDataPersistence().transferNamespaceKeyValues(carInHand, spawnedCar);
 
         String vehicleType = carz.getCarDataPersistence().getValue(VEHICLE_TYPE, spawnedCar);
-        Material fillMaterial = carz.getCarController().getCarTypes().get(vehicleType).getFillMaterial();
+        String fillMaterialData = carz.getCarController().getCarTypes().get(vehicleType).getFillMaterialData();
 
-        if (fillMaterial != null && fillMaterial != Material.AIR) {
-            BlockData data = Bukkit.createBlockData(fillMaterial);
+        if (ValidationUtils.isStringValid(fillMaterialData)) {
+            BlockData data = Bukkit.createBlockData(fillMaterialData);
             spawnedCar.setDisplayBlockData(data);
         }
 

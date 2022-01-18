@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
-import org.bukkit.Material;
+
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
@@ -21,14 +21,14 @@ public class CreateCarTypeConversation extends CarzConversation {
 	private static final String SESSION_CAR_TYPE = "carType";
 
 	private static final Pattern NUMBER_PATTERN = Pattern.compile("\\d+(\\.\\d+)?");
-	private static final Pattern STRING_PATTERN = Pattern.compile("^[A-Za-z_]+$");
+	private static final Pattern MINECRAFT_MATERIAL_DATA_PATTERN = Pattern.compile("^[A-Za-z_:=\\[\\]\"]+$");
 
 	private static final List<CarDetailQuestion> carTypeConversion = Arrays.asList(
 			new CarDetailQuestion("StartMaxSpeed", NUMBER_PATTERN),
 			new CarDetailQuestion("MaxUpgradeSpeed", NUMBER_PATTERN),
 			new CarDetailQuestion("Acceleration", NUMBER_PATTERN),
 			new CarDetailQuestion("FuelUsage", NUMBER_PATTERN),
-			new CarDetailQuestion("FillMaterial", STRING_PATTERN)
+			new CarDetailQuestion("FillMaterialData", MINECRAFT_MATERIAL_DATA_PATTERN)
 	);
 
 	public CreateCarTypeConversation(Conversable player) {
@@ -51,7 +51,7 @@ public class CreateCarTypeConversation extends CarzConversation {
 		public Prompt acceptInput(ConversationContext context, String input) {
 			List<String> existingCarTypes = Carz.getDefaultConfig().getStringList("CarTypes");
 
-			if (!STRING_PATTERN.matcher(input).matches()) {
+			if (!MINECRAFT_MATERIAL_DATA_PATTERN.matcher(input).matches()) {
 				sendErrorMessage(context, TranslationUtils
 						.getTranslation("CarType.Error.InvalidName", false));
 				return this;
@@ -86,15 +86,6 @@ public class CreateCarTypeConversation extends CarzConversation {
 				sendErrorMessage(context, TranslationUtils
 						.getTranslation("CarType.Error.InvalidValue", false));
 				return this;
-			}
-
-			if (question.getConfigEntry().equals("FillMaterial")) {
-				choice = choice.toUpperCase();
-				if (Material.getMaterial(choice) == null) {
-					sendErrorMessage(context, TranslationUtils.getValueTranslation(
-							"Error.UnknownMaterial", choice, false));
-					return this;
-				}
 			}
 
 			answers.put(question.getConfigEntry(), choice);
