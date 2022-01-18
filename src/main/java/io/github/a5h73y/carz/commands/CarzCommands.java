@@ -22,11 +22,15 @@ import io.github.a5h73y.carz.utility.ValidationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Player related Carz commands handling.
@@ -38,7 +42,10 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,
+                             @NotNull Command command,
+                             @NotNull String label,
+                             @NotNull String... args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(Carz.getPrefix() + "'/carz' is only available in game.");
             sender.sendMessage(Carz.getPrefix() + "Use '/carzc' for console commands.");
@@ -112,6 +119,18 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
 
                 CarUtils.givePlayerCar(player, args.length > 1 ? args[1] : DEFAULT_CAR);
                 TranslationUtils.sendTranslation("Car.Spawned", player);
+                break;
+
+            case "start":
+                PlayerInteractEvent interactEvent = new PlayerInteractEvent(player,
+                        Action.RIGHT_CLICK_AIR, null, null, BlockFace.SELF);
+                Bukkit.getServer().getPluginManager().callEvent(interactEvent);
+                break;
+
+            case "blockdata":
+                player.sendMessage(player.getInventory().getItemInMainHand().getType().createBlockData().getAsString());
+                player.sendMessage(player.getLocation().getBlock().getBlockData().getAsString());
+                player.sendMessage(player.getLocation().subtract(0, 1, 0).getBlock().getBlockData().getAsString());
                 break;
 
             case "d":

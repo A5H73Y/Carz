@@ -34,7 +34,6 @@ public class ValidationUtils {
 	 * @return input is a valid String
 	 */
 	public static boolean isStringValid(String input) {
-
 		return input != null && !input.trim().isEmpty();
 	}
 

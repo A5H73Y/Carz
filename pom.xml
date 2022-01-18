@@ -45,11 +45,6 @@
             <id>CodeMC</id>
             <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
-        <!-- My Bintray repo -->
-        <repository>
-            <id>a5h73y-repo</id>
-            <url>https://dl.bintray.com/a5h73y/repo/</url>
-        </repository>
         <!-- Placeholder API Repo -->
         <repository>
             <id>placeholderapi-repo</id>
@@ -85,9 +80,9 @@
         </dependency>
         <!-- Bountiful API -->
         <dependency>
-            <groupId>com.connorlinfoot</groupId>
+            <groupId>com.github.ConnorLinfoot</groupId>
             <artifactId>BountifulAPI</artifactId>
-            <version>1.6.4</version>
+            <version>1f1ef523a4bea125592ce3a11a163aca5d159761</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

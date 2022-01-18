@@ -67,6 +67,7 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Other.PreventCarPurchaseWhenExisting", false);
 		this.addDefault("Other.SignProtection", true);
 		this.addDefault("Other.StartCarOnVehicleEnter", false);
+		this.addDefault("Other.DriveAnyMinecart", false);
 		this.addDefault("Other.UpdateCheck", true);
 		this.addDefault("Other.UseAutoTabCompletion", true);
 		this.addDefault("Other.UseEffects", true);

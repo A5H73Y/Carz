@@ -73,6 +73,13 @@
     "enabledConfig": "CommandEnabled.Give"
   },
   {
+    "command": "help",
+    "title": "Display Command Help",
+    "arguments": "(command)",
+    "example": "/carz help purchase",
+    "description": "Display helpful information about the specified command, including syntax and an example."
+  },
+  {
     "command": "list",
     "title": "Display the contents of a BlockType list",
     "arguments": "(climb, launch, speed, placeable)",
@@ -141,6 +148,12 @@
     "permission": "Carz.Admin",
     "enabledConfig": "CommandEnabled.Spawn",
     "consoleSyntax": "carzc spawn (player) [carType]"
+  },
+  {
+    "command": "start",
+    "title": "Start the Car's engine",
+    "example": "/carz start",
+    "description": "Start the Car the Player is sat in, as an alternative to using a key."
   },
   {
     "command": "stash",

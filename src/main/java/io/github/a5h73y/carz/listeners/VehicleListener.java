@@ -9,6 +9,7 @@ import static org.bukkit.Material.AIR;
 
 import io.github.a5h73y.carz.Carz;
 import io.github.a5h73y.carz.configuration.impl.BlocksConfig;
+import io.github.a5h73y.carz.controllers.CarController;
 import io.github.a5h73y.carz.enums.Permissions;
 import io.github.a5h73y.carz.event.EngineStartEvent;
 import io.github.a5h73y.carz.event.EngineStopEvent;
@@ -64,6 +65,13 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
     public void onVehicleEnter(VehicleEnterEvent event) {
         if (!(event.getEntered() instanceof Player)) {
             return;
+        }
+
+        if (event.getVehicle() instanceof Minecart
+                && !ValidationUtils.isRail(event.getVehicle().getLocation().getBlock())
+                && !carz.getCarDataPersistence().has(VEHICLE_TYPE, event.getVehicle())
+                && carz.getConfig().getBoolean("Other.DriveAnyMinecart")) {
+            carz.getCarDataPersistence().setValue(VEHICLE_TYPE, event.getVehicle(), CarController.DEFAULT_CAR);
         }
 
         if (!ValidationUtils.isACarzVehicle(event.getVehicle())) {
