@@ -1,4 +1,4 @@
-Carz Placeholders
+Vehiclez Placeholders
 ======
 
 <script>
@@ -7,4 +7,4 @@ Carz Placeholders
 
 #### Example Usage
 
-![Carz Placeholders](https://i.imgur.com/qOl5m4i.png "Carz Placeholders")
+![Vehiclez Placeholders](https://i.imgur.com/qOl5m4i.png "Vehiclez Placeholders")

@@ -1,14 +1,15 @@
-name: Carz
+name: Vehiclez
 version: ${project.version}
 description: ${project.description}
 softdepend: [Vault, BountifulAPI, PlaceholderAPI]
 author: A5H73Y
-main: io.github.a5h73y.carz.Carz
+main: io.github.a5h73y.vehiclez.Vehiclez
 api-version: "1.13"
-website: "https://a5h73y.github.io/Carz/"
+website: "https://a5h73y.github.io/Vehiclez/"
 commands:
-  carz:
-    description: Carz commands
-    aliases: [car]
-  carzc:
-    description: Carz non-player commands
+  vehiclez:
+    description: Vehiclez commands
+    aliases: [vz, carz, planez]
+  vehiclezc:
+    description: Vehiclez non-player commands
+    aliases: [vzc, carzc, planezc]

@@ -4,27 +4,30 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.github.a5h73y</groupId>
-    <artifactId>Carz</artifactId>
-    <version>7.3</version>
+    <artifactId>Vehiclez</artifactId>
+    <version>8.0.0</version>
     <packaging>jar</packaging>
 
-    <name>Carz</name>
-    <description>Drive in Minecraft.</description>
-    <url>https://a5h73y.github.io/Carz/</url>
+    <name>Vehiclez</name>
+    <description>The ultimate vehicle plugin.</description>
+    <url>https://a5h73y.github.io/Vehiclez/</url>
 
     <properties>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <issueManagement>
-        <url>https://github.com/A5H73Y/Carz/issues</url>
         <system>GitHub Issues</system>
+        <url>https://github.com/A5H73Y/Vehiclez/issues</url>
     </issueManagement>
 
     <licenses>
         <license>
             <name>MIT License</name>
-            <url>http://www.opensource.org/licenses/mit-license.php</url>
+            <url>https://opensource.org/licenses/mit-license.php</url>
             <distribution>repo</distribution>
         </license>
     </licenses>
@@ -35,20 +38,15 @@
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
-        <!-- Vault Repo -->
+        <!-- Jitpack Repo -->
         <repository>
-            <id>vault-repo</id>
+            <id>jitpack-repo</id>
             <url>https://jitpack.io/</url>
-        </repository>
-        <!-- bStats Repo -->
-        <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public/</url>
         </repository>
         <!-- Placeholder API Repo -->
         <repository>
             <id>placeholderapi-repo</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <!-- InventoryGui -->
         <repository>
@@ -62,20 +60,37 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
+                    <groupId>com.google.code.findbugs</groupId>
+                    <artifactId>jsr305</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.google.j2objc</groupId>
+                    <artifactId>j2objc-annotations</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <!-- Vault API -->
         <dependency>
-            <groupId>net.milkbowl.vault</groupId>
+            <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
+            <version>1.7.1</version>
+            <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!-- Placeholder API -->
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.11.2</version>
             <scope>provided</scope>
         </dependency>
         <!-- Bountiful API -->
@@ -91,26 +106,32 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!-- Placeholder API -->
-        <dependency>
-            <groupId>me.clip</groupId>
-            <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- bStats -->
         <dependency>
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
-            <version>1.8</version>
+            <version>3.0.0</version>
             <scope>compile</scope>
         </dependency>
         <!-- InventoryGui -->
         <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>inventorygui</artifactId>
-            <version>1.4.2-SNAPSHOT</version>
+            <version>1.5-SNAPSHOT</version>
             <scope>compile</scope>
+        </dependency>
+        <!-- Version Compare -->
+        <dependency>
+            <groupId>io.github.g00fy2</groupId>
+            <artifactId>versioncompare</artifactId>
+            <version>1.5.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Simplix Storage -->
+        <dependency>
+            <groupId>com.github.simplix-softworks</groupId>
+            <artifactId>simplixstorage</artifactId>
+            <version>3.2.5</version>
         </dependency>
     </dependencies>
 
@@ -131,19 +152,17 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.3.0</version>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <outputDirectory>${export_dir}</outputDirectory>
                 </configuration>
             </plugin>
 
@@ -153,12 +172,7 @@
                 <version>3.2.4</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <artifactSet>
-                        <includes>
-                            <include>org.bstats:*</include>
-                            <include>de.themoep:*</include>
-                        </includes>
-                    </artifactSet>
+                    <minimizeJar>true</minimizeJar>
                     <filters>
                         <filter>
                             <artifact>*:*</artifact>
@@ -167,10 +181,20 @@
                             </excludes>
                         </filter>
                     </filters>
+                    <artifactSet>
+                        <excludes>
+                            <exclude>org.jetbrains:annotations</exclude>
+                            <exclude>org.slf4j:*</exclude>
+                        </excludes>
+                    </artifactSet>
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>io.github.a5h73y.carz</shadedPattern>
+                            <shadedPattern>io.github.a5h73y.vehiclez.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>com.github.simplix-softworks</pattern>
+                            <shadedPattern>io.github.a5h73y.vehiclez.storage</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>
@@ -217,8 +241,8 @@
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>3.1.1</version>
                 <configuration>
-                    <configLocation>src/main/resources/a5h73y_checks.xml</configLocation>
-                    <encoding>UTF-8</encoding>
+                    <configLocation>src/main/resources/vehiclezCheckstyles.xml</configLocation>
+                    <encoding>${project.build.sourceEncoding}</encoding>
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                     <linkXRef>false</linkXRef>
@@ -235,12 +259,4 @@
             </plugin>
         </plugins>
     </build>
-
-    <distributionManagement>
-        <repository>
-            <id>bintray-a5h73y-repo</id>
-            <name>A5H73Y-repo</name>
-            <url>https://api.bintray.com/maven/a5h73y/repo/Carz/;publish=1</url>
-        </repository>
-    </distributionManagement>
 </project>

@@ -1,12 +1,12 @@
 Sign Commands
 ======
 
-Carz command usage can be completely disabled in the config to allow for full immersion of role-play by using signs for every Carz function. This includes: buying a car, upgrading a car, and refueling your car. Ideally you could have a different building for each of these purposes.
+Vehiclez command usage can be completely disabled in the config to allow for full immersion of role-play by using signs for every Vehiclez function. This includes: buying a car, upgrading a car, and refueling your car. Ideally you could have a different building for each of these purposes.
 
-If Carz is linked to an Economy plugin, the cost of the purchase will be displayed at the bottom of the sign.  
+If Vehiclez is linked to an Economy plugin, the cost of the purchase will be displayed at the bottom of the sign.  
 _You are able to override the default cost by entering a number at the bottom (forth line) of the sign, which will be the new cost of the purchase._
 
-**If Carz signs aren't working for non-ops, this will be because of an external reason. This could include the server.properties spawn-protection or a 3rd party plugin, and not because of the Carz plugin.**
+**If Vehiclez signs aren't working for non-ops, this will be because of an external reason. This could include the server.properties spawn-protection or a 3rd party plugin, and not because of the Vehiclez plugin.**
 
 ## Purchase Car
 

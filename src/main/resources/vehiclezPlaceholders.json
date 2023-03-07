@@ -1,0 +1,346 @@
+[
+  {
+    "heading": "Global Placeholders",
+    "alias": "gl",
+    "description": "These are global Parkour values.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_global_version%",
+        "output": "7.0.0",
+        "description": "The installed version of the Parkour plugin."
+      },
+      {
+        "placeholder": "%parkour_global_course_count%",
+        "output": "12",
+        "description": "The number of Courses created."
+      },
+      {
+        "placeholder": "%parkour_global_player_count%",
+        "output": "3",
+        "description": "The number of active Parkour players."
+      }
+    ]
+  },
+  {
+    "heading": "Player Placeholders",
+    "alias": "pl",
+    "description": "These are values with context to the provided Player.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_player_level%",
+        "output": "30",
+        "description": "The Player's ParkourLevel."
+      },
+      {
+        "placeholder": "%parkour_player_rank%",
+        "output": "&6Legend",
+        "description": "The Player's ParkourRank."
+      },
+      {
+        "placeholder": "%parkour_player_parkoins%",
+        "output": "1234",
+        "description": "The Player's number of Parkoins."
+      },
+      {
+        "placeholder": "%parkour_player_last_completed%",
+        "output": "easy1",
+        "description": "The latest Course the Player completed."
+      },
+      {
+        "placeholder": "%parkour_player_last_joined%",
+        "output": "easy2",
+        "description": "The latest Course the Player joined."
+      },
+      {
+        "placeholder": "%parkour_player_courses_completed%",
+        "output": "10",
+        "description": "The number of Courses the Player has completed."
+      },
+      {
+        "placeholder": "%parkour_player_courses_uncompleted%",
+        "output": "2",
+        "description": "The number of Courses the Player has yet to be completed."
+      },
+      {
+        "placeholder": "%parkour_player_course_completed_(course)%",
+        "output": "Yes",
+        "description": "Completion status for whether the Player completed the specified Course. The output can be customised in the strings.yml (PlaceholderAPI.CurrentCourseCompleted & PlaceholderAPI.CurrentCourseNotCompleted)."
+      },
+      {
+        "placeholder": "%parkour_player_course_position_(course)%",
+        "output": "3",
+        "description": "Output the Player's position on the leaderboards for the provided course."
+      },
+      {
+        "placeholder": "%parkour_player_prize_delay_(course)%",
+        "output": "1 day, 2 hours",
+        "description": "The time delay before the Player can receive the specified Course prize again. The output can be customised in the strings.yml (Display.X)."
+      },
+      {
+        "placeholder": "%parkour_player_personal_best_(course)_time%",
+        "output": "00:01:23",
+        "description": "The Player's personal best time on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_player_personal_best_(course)_milliseconds%",
+        "output": "123456",
+        "description": "The Player's personal best time, in milliseconds, on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_player_personal_best_(course)_deaths%",
+        "output": "3",
+        "description": "The number of deaths accumulated for the Player's personal best time on the specified Course."
+      }
+    ]
+  },
+  {
+    "heading": "Course Placeholders",
+    "alias": "co",
+    "description": "These are values with context to a provided Course.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_course_displayname_(course)%",
+        "output": "&4Easy &6Course",
+        "description": "The display name of the Course, falls back to course name if not set."
+      },
+      {
+        "placeholder": "%parkour_course_record_(course)_time%",
+        "output": "00:01:23",
+        "description": "The global best time on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_record_(course)_milliseconds%",
+        "output": "123456",
+        "description": "The global best time, in milliseconds, on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_record_(course)_deaths%",
+        "output": "3",
+        "description": "The number of deaths accumulated for the global best time on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_record_(course)_player%",
+        "output": "3",
+        "description": "The Player's name for the global best time on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_completions_(course)%",
+        "output": "50",
+        "description": "The number of times the specified Course has been completed."
+      },
+      {
+        "placeholder": "%parkour_course_views_(course)%",
+        "output": "100",
+        "description": "The number of times the specified Course has been viewed."
+      },
+      {
+        "placeholder": "%parkour_course_creator_(course)%",
+        "output": "A5H73Y",
+        "description": "The creator of the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_minparkourlevel_(course)%",
+        "output": "10",
+        "description": "The minimum ParkourLevel required to join the Course."
+      },
+      {
+        "placeholder": "%parkour_course_rewardparkourlevel_(course)%",
+        "output": "10",
+        "description": "The ParkourLevel rewarded for completing the Course."
+      },
+      {
+        "placeholder": "%parkour_course_rewardparkourleveladd_(course)%",
+        "output": "1",
+        "description": "The added ParkourLevel rewarded for completing the Course."
+      },
+      {
+        "placeholder": "%parkour_course_parkourmode_(course)%",
+        "output": "FREEDOM",
+        "description": "The ParkourMode set on the Course."
+      },
+      {
+        "placeholder": "%parkour_course_maxdeaths_(course)%",
+        "output": "10",
+        "description": "The maximum number of deaths allowed for the Course."
+      },
+      {
+        "placeholder": "%parkour_course_maxtime_(course)%",
+        "output": "00:01:20",
+        "description": "The maximum time allowed for the Course."
+      },
+      {
+        "placeholder": "%parkour_course_checkpoints_(course)%",
+        "output": "3",
+        "description": "The number of Checkpoints on the Course."
+      },
+      {
+        "placeholder": "%parkour_course_joinfee_(course)%",
+        "output": "10",
+        "description": "The economic joining fee when joining the Course."
+      },
+      {
+        "placeholder": "%parkour_course_ecoreward_(course)%",
+        "output": "100",
+        "description": "The economic reward for completing the Course."
+      },
+      {
+        "placeholder": "%parkour_course_players_(course)%",
+        "output": "3",
+        "description": "The number of online Parkour players on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_playerlist_(course)%",
+        "output": "A5H73Y, steve4744, notch",
+        "description": "The names of online Parkour players on the specified Course."
+      },
+      {
+        "placeholder": "%parkour_course_status_(course)%",
+        "output": "Active",
+        "description": "This is the current 'ready' status of the Course. The output can be customised in the strings.yml (PlaceholderAPI.CourseActive & PlaceholderAPI.CourseInactive)"
+      }
+    ]
+  },
+  {
+    "heading": "Current Course Placeholders",
+    "alias": "cu",
+    "description": "These are values with context to the provided Player and their current Course.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_current_course_name%",
+        "output": "easy1",
+        "description": "The name of the Course the Player is currently on."
+      },
+      {
+        "placeholder": "%parkour_current_course_displayname%",
+        "output": "&4Easy &6Course",
+        "description": "The display name of the Course the Player is currently on, falls back to course name if not set."
+      },
+      {
+        "placeholder": "%parkour_current_course_deaths%",
+        "output": "3",
+        "description": "The number of deaths accumulated by the Player so far while on the Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_timer%",
+        "output": "00:01:23",
+        "description": "The time accumulated by the Player so far while on the Course, presented in HH:MM:SS."
+      },
+      {
+        "placeholder": "%parkour_current_course_checkpoints%",
+        "output": "8",
+        "description": "The total number of checkpoints on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_completed%",
+        "output": "Yes",
+        "description": "Completion status for whether the Player completed the current Course. The output can be customised in the strings.yml (PlaceholderAPI.CurrentCourseCompleted & PlaceholderAPI.CurrentCourseNotCompleted)."
+      },
+      {
+        "placeholder": "%parkour_current_course_(Course Placeholder)%",
+        "output": "(dynamic)",
+        "description": "Replace (Course Placeholder) with any Placeholder found in the 'Course Placeholders' section for the Course detail to be displayed. For example '%parkour_current_course_creator%'."
+      },
+      {
+        "placeholder": "%parkour_current_course_record_time%",
+        "output": "00:01:23",
+        "description": "The global best time on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_record_milliseconds%",
+        "output": "123456",
+        "description": "The global best time, in milliseconds, on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_record_deaths%",
+        "output": "3",
+        "description": "The number of deaths accumulated for the global best time on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_record_player%",
+        "output": "A5H73Y",
+        "description": "The Player's name for the global best time on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_personal_best_time%",
+        "output": "00:01:23",
+        "description": "The Player's best time on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_personal_best_milliseconds%",
+        "output": "123456",
+        "description": "The Player's best time, in milliseconds, on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_personal_best_deaths%",
+        "output": "3",
+        "description": "The number of deaths accumulated for the Player's best time on the current Course."
+      },
+      {
+        "placeholder": "%parkour_current_course_remaining_deaths%",
+        "output": "3",
+        "description": "The amount of lives remaining on the Course (when a Course has a maximum deaths set)."
+      }
+    ]
+  },
+  {
+    "heading": "Current Checkpoint Placeholders",
+    "alias": "cc",
+    "description": "These are values with context to the provided Player and their current Checkpoint.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_current_checkpoint_number%",
+        "output": "3",
+        "description": "The number of checkpoints achieved by the Player so far while on the Course."
+      },
+      {
+        "placeholder": "%parkour_current_checkpoint_next%",
+        "output": "4",
+        "description": "The number of the next Checkpoint, if there isn't another Checkpoint the output will be blank."
+      },
+      {
+        "placeholder": "%parkour_current_checkpoint_hologram_(course)_(number)%",
+        "output": "Checkpoint 3",
+        "description": "Used for holograms to display the location of the next checkpoint. If the number provided matches the next checkpoint, the message will be displayed, otherwise blank. The output can be customised in the strings.yml (PlaceholderAPI.CheckpointHologram)"
+      }
+    ]
+  },
+  {
+    "heading": "Leaderboard Placeholders",
+    "alias": "lb",
+    "description": "Find the various leaderboard values.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_leaderboard_(course)_(position)_time%",
+        "output": "00:01:23",
+        "description": "The time on the specified Course, for the given leaderboard position."
+      },
+      {
+        "placeholder": "%parkour_leaderboard_(course)_(position)_milliseconds%",
+        "output": "123456",
+        "description": "The time, in milliseconds, on the specified Course, for the given leaderboard position."
+      },
+      {
+        "placeholder": "%parkour_leaderboard_(course)_(position)_deaths%",
+        "output": "3",
+        "description": "The number of deaths on the specified Course, given the leaderboard position."
+      },
+      {
+        "placeholder": "%parkour_leaderboard_(course)_(position)_player%",
+        "output": "A5H73Y",
+        "description": "The Player name on the specified Course, given the leaderboard position."
+      }
+    ]
+  },
+  {
+    "heading": "TopTen Placeholders",
+    "alias": "tt",
+    "description": "Display a summary of a leaderboard entry. 'TopTen' is a term just to quickly display a summary of the Course's leaderboards, and the position can exceed 10.",
+    "placeholders": [
+      {
+        "placeholder": "%parkour_topten_(course)_(position)%",
+        "output": "&f1) &bA5H73Y&f in &a00:01:23",
+        "description": "Display a summary of the global leaderboard entry. The output can be customised in the strings.yml (PlaceholderAPI.TopTenResult)"
+      }
+    ]
+  }
+]

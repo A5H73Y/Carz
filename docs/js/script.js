@@ -1,10 +1,10 @@
 function insertCommandsMarkup() {
-    fetch('files/carzCommands.json')
+    fetch('files/vehiclezCommands.json')
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            appendData(data, 'carz-commands', createCommandSummary);
+            appendData(data, 'vehiclez-commands', createCommandSummary);
         })
         .catch(function (err) {
             console.log(err);
@@ -12,12 +12,12 @@ function insertCommandsMarkup() {
 }
 
 function insertPlaceholdersMarkup() {
-    fetch('files/carzPlaceholders.json')
+    fetch('files/vehiclezPlaceholders.json')
         .then(function (response) {
             return response.json();
         })
         .then(function (data) {
-            appendData(data, 'carz-placeholders', createPlaceholderSummary);
+            appendData(data, 'vehiclez-placeholders', createPlaceholderSummary);
         })
         .catch(function (err) {
             console.log(err);

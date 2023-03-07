@@ -1,25 +1,25 @@
 Changelog
 ======
 
-Please note that each version of Carz is backwards compatible with the previous version and will automatically upgrade your config upon start up. There will be no manual intervention unless stated in breaking changes.
+Please note that each version of Vehiclez is backwards compatible with the previous version and will automatically upgrade your config upon start up. There will be no manual intervention unless stated in breaking changes.
 
-## Carz 7.3
+## Vehiclez 7.3
 - Added "Car" alias
 
-## Carz 7.2
-- Added "/carz list (blockType)"
-- Added "/carz give (player)"
-- Added "/carz help \[command\]"
+## Vehiclez 7.2
+- Added "/vehiclez list (blockType)"
+- Added "/vehiclez give (player)"
+- Added "/vehiclez help \[command\]"
 - Added support for 1.12+ (with a few limitations)
 - Various fixes
 
 
-## Carz 7.1
+## Vehiclez 7.1
 - Added ability to disable fall damage
 - Added ability to start car upon entry
 - Various fixes and improvements
 
-## Carz 7.0
+## Vehiclez 7.0
 - Improved Climbing blocks
 - Added Speed blocks
 - Added Launch blocks
