@@ -12,7 +12,7 @@ public class CarDetails {
 
 	private final double fuelUsage;
 
-	private String fillMaterialData;
+	private final String fillMaterialData;
 
 	/**
 	 * Car Details model.

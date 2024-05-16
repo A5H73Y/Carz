@@ -15,7 +15,7 @@ I have created a resource pack that replaces each colour of GLAZED_TERRACOTTA wi
 
 ![Carz Pack Picture](https://i.imgur.com/jODhG6j.png "Carz Pack Picture")
 
-In the `server.properties` set `resource-pack=https\://a5h73y.github.io/Carz/files/resource-packs/CarzPack_1.0.zip`.
+In the `server.properties` set `resource-pack=https://a5h73y.github.io/Carz/files/resource-packs/CarzPack_1.1.zip`.
 
 Now you can create any type of Car you want, then setting the Fill Material to (COLOUR)_GLAZED_TERRACOTTA.
 

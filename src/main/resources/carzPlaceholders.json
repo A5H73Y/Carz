@@ -1,0 +1,33 @@
+[
+  {
+    "heading": "Car Placeholders",
+    "description": "These are Placeholders relating to the Player's current vehicle.",
+    "placeholders": [
+      {
+        "placeholder": "%carz_fuelgauge%",
+        "output": "E |||||||||| F",
+        "description": "The current fuel gauge of the Car, coloured to display how much fuel is remaining. The presentation is configurable in the strings.yml"
+      },
+      {
+        "placeholder": "%carz_speed%",
+        "output": "30",
+        "description": "The current speed of the Vehicle. The speed will be calculated based on the vehicles base speed with any modifiers applied."
+      },
+      {
+        "placeholder": "%carz_fuel%",
+        "output": "200",
+        "description": "The amount of fuel remaining in the Vehicle."
+      },
+      {
+        "placeholder": "%carz_maxfuel%",
+        "output": "1000",
+        "description": "The total amount of fuel the Vehicle can store."
+      },
+      {
+        "placeholder": "%carz_cartype%",
+        "output": "default",
+        "description": "The name of the current car type."
+      }
+    ]
+  }
+]

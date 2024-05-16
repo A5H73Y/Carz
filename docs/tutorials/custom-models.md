@@ -17,7 +17,7 @@ This Resource pack replaces each colour of GLAZED_TERRACOTTA with a matching Car
 
 ![Carz Pack Picture](https://i.imgur.com/jODhG6j.png "Carz Pack Picture")
 
-Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/CarzPack_1.0.zip)
+Download: [Click Here](https://a5h73y.github.io/Carz/files/resource-packs/CarzPack_1.1.zip)
 
 Material: `(COLOUR)_GLAZED_TERRACOTTA`
 
