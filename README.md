@@ -1,9 +1,9 @@
-<p align="center"><img src="http://i.imgur.com/xPrxoVX.jpg" alt="Carz Logo"></p>
+![Carz Logo](https://repository-images.githubusercontent.com/127158446/ff4fb242-6432-40e7-9bb4-d117fbe2c353)
+
 
 [![discord server](https://img.shields.io/discord/328154925949517824.svg)](https://discord.gg/h9d2fSd)
-[![travis-ci](https://travis-ci.org/A5H73Y/Carz.svg?branch=master)](https://travis-ci.org/A5H73Y/Carz/branches)
-[![license: MIT](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://tldrlegal.com/license/mit-license)
 [![releases](https://img.shields.io/github/v/release/A5H73Y/Carz.svg?label=github%20release)](https://github.com/A5H73Y/Carz/releases/latest)
+[![license: MIT](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://tldrlegal.com/license/mit-license)
 
 Carz is a plugin that offers the ability to add drivable cars, car ownership, car upgrades, fuel and uses economy; offering an immersive role-playing experience to any server.<p />
 Add a whole new level of role-play to any server that uses roads, perfect for city servers. Carz signs can be placed to act as Car Showrooms, Mechanics and Fuel Stations.<p />
@@ -26,14 +26,14 @@ First released in July 2012, becoming my most downloaded plugin to date. Carz is
 ## Maven
 ```
 <repository>
-    <id>a5h73y-repo</id>
-    <url>https://dl.bintray.com/a5h73y/repo/</url>
+    <id>jitpack.io</id>
+    <url>https://jitpack.io</url>
 </repository>
 ```
 
 ```
 <dependency>
-    <groupId>io.github.a5h73y</groupId>
+    <groupId>com.github.A5H73Y</groupId>
     <artifactId>Carz</artifactId>
     <version>7.3</version>
     <type>jar</type>
@@ -45,11 +45,11 @@ First released in July 2012, becoming my most downloaded plugin to date. Carz is
 ```
 repositories { 
     maven { 
-        url "https://dl.bintray.com/a5h73y/repo"
+        url "https://jitpack.io"
     } 
 }
 ```
 
 ```
-compile 'io.github.a5h73y:Carz:7.3'
+compile 'com.github.A5H73Y:Carz:7.3'
 ```
