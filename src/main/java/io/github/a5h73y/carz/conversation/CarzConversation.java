@@ -36,7 +36,7 @@ public abstract class CarzConversation implements ConversationAbandonedListener 
     }
 
     public static void sendErrorMessage(ConversationContext context, String message) {
-        context.getForWhom().sendRawMessage(ChatColor.RED + message + ". Please try again...");
+        context.getForWhom().sendRawMessage(ChatColor.RED + message + " Please try again...");
     }
 
     @Override

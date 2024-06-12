@@ -311,7 +311,8 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Minecart minecart = (Minecart) event.getVehicle();
 
-        if (!carz.getCarDataPersistence().has(VEHICLE_OWNER, minecart)) {
+        if (!carz.getCarDataPersistence().has(VEHICLE_OWNER, minecart)
+                && Carz.getDefaultConfig().isUnownedCarFullDestroy()) {
             carz.getCarController().destroyCar(minecart);
             return;
         }

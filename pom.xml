@@ -10,6 +10,7 @@
 
     <name>Carz</name>
     <description>Drive in Minecraft.</description>
+    <inceptionYear>2012</inceptionYear>
     <url>https://a5h73y.github.io/Carz/</url>
 
     <properties>
@@ -90,7 +91,7 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.5</version>
+            <version>2.11.6</version>
             <scope>provided</scope>
         </dependency>
         <!-- Bountiful API -->
@@ -116,7 +117,7 @@
         <dependency>
             <groupId>de.themoep</groupId>
             <artifactId>inventorygui</artifactId>
-            <version>1.5-SNAPSHOT</version>
+            <version>1.6.2-SNAPSHOT</version>
         </dependency>
         <!-- Update to remove known vulnerabilities -->
         <dependency>
@@ -128,13 +129,13 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10.1</version>
+            <version>2.11.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>33.2.0-jre</version>
+            <version>33.2.1-jre</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
@@ -176,7 +177,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.5.3</version>
+                <version>3.6.0</version>
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <minimizeJar>true</minimizeJar>
@@ -242,7 +243,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
-                <version>3.3.1</version>
+                <version>3.4.0</version>
                 <configuration>
                     <configLocation>src/main/resources/carzCheckstyles.xml</configLocation>
                     <consoleOutput>true</consoleOutput>
@@ -253,7 +254,7 @@
                     <dependency>
                         <groupId>com.puppycrawl.tools</groupId>
                         <artifactId>checkstyle</artifactId>
-                        <version>10.12.6</version>
+                        <version>10.17.0</version>
                     </dependency>
                 </dependencies>
                 <executions>

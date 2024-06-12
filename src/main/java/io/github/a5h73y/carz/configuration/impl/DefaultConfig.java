@@ -60,6 +60,7 @@ public class DefaultConfig extends CarzConfiguration {
 		this.addDefault("Other.ControlCarsWhileFalling", true);
 		this.addDefault("Other.DamageEntities.Enabled", false);
 		this.addDefault("Other.DamageEntities.Damage", 5.0);
+		this.addDefault("Other.UnownedCarFullDestroy", true);
 		this.addDefault("Other.DestroyInLiquid", true);
 		this.addDefault("Other.DisableFallDamage", false);
 		this.addDefault("Other.OnlyOwnedCarsDrive", false);
@@ -99,6 +100,10 @@ public class DefaultConfig extends CarzConfiguration {
 
 	public boolean isDestroyInLiquid() {
 		return this.getBoolean("Other.DestroyInLiquid");
+	}
+
+	public boolean isUnownedCarFullDestroy() {
+		return this.getBoolean("Other.UnownedCarFullDestroy");
 	}
 
 	public boolean isOnlyOwnedCarsDrive() {

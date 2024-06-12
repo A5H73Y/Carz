@@ -79,7 +79,7 @@ public class Carz extends JavaPlugin {
 
         if (PluginUtils.getMinorServerVersion() < 14) {
             carDataPersistence = new CarDataMap();
-            PluginUtils.log("Depreciated server version, expect unintended behaviour.", 2);
+            PluginUtils.log("Deprecated server version, expect unintended behaviour.", 2);
         } else {
             carDataPersistence = new CarDataHolder();
         }
