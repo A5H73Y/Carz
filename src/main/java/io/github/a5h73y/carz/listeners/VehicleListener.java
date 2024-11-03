@@ -235,7 +235,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
 
         Vector vehicleVelocity = event.getVehicle().getVelocity();
         Vector playerLocationVelocity = player.getLocation().getDirection();
-        Block blockBelow = event.getVehicle().getLocation().subtract(0.0D, 0.8D, 0.0D).getBlock(); // Pea9e
+        Block blockBelow = event.getVehicle().getLocation().subtract(0.0D, 0.8D, 0.0D).getBlock();
         Material materialBelow = blockBelow.getType();
         BlocksConfig blocksConfig = (BlocksConfig) Carz.getConfig(BLOCKS);
 
@@ -258,7 +258,7 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         playerLocation.setPitch(0f);
 
         Location twoBlocksAhead = playerLocation.add(playerLocation.getDirection().multiply(2));
-        twoBlocksAhead.setY(Math.max(playerLocation.getY() + getBlockHeight(twoBlocksAhead.getBlock()), twoBlocksAhead.getY())); // Pdf95
+        twoBlocksAhead.setY(Math.max(playerLocation.getY() + getBlockHeight(twoBlocksAhead.getBlock()), twoBlocksAhead.getY()));
 
         // determine if the Car should start climbing
         boolean isClimbable = calculateIsClimbable(blockBelow, twoBlocksAhead, blocksConfig);
@@ -298,14 +298,13 @@ public class VehicleListener extends AbstractPluginReceiver implements Listener 
         return blocksConfig.getClimbBlocks().contains(twoBlocksAhead.getBlock().getType());
     }
 
-    private double getBlockHeight(Block block) { // Pc2f4
+    private double getBlockHeight(Block block) {
         switch (block.getType()) {
             case DIRT_PATH:
             case FARMLAND:
             case HONEY_BLOCK:
-                return 0.0625;
             case SOUL_SAND:
-                return 0.125;
+                return 0.47;
             default:
                 return 1.0;
         }
