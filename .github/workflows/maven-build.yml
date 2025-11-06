@@ -1,7 +1,7 @@
 name: Build
 
 env:
-  artifact_name: 'Carz-7.3'
+  artifact_name: 'Carz-7.4'
   release_type: '-RELEASE'
 
 on: push
