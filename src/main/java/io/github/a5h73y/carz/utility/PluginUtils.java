@@ -306,7 +306,12 @@ public class PluginUtils {
      * @return server version
      */
     public static int getMinorServerVersion() {
-        String version = Bukkit.getBukkitVersion().split("-")[0].split("\\.")[1];
-        return Integer.parseInt(version);
+        String[] versions = Bukkit.getBukkitVersion().split("-")[0].split("\\.");
+        // pre 26.X
+        if (versions[0].equals("1")) {
+            return Integer.parseInt(versions[1]);
+        } else {
+            return Integer.parseInt(versions[0]);
+        }
     }
 }

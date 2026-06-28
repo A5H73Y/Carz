@@ -35,7 +35,7 @@ First released in July 2012, becoming my most downloaded plugin to date. Carz is
 <dependency>
     <groupId>com.github.A5H73Y</groupId>
     <artifactId>Carz</artifactId>
-    <version>7.3</version>
+    <version>7.4</version>
     <type>jar</type>
     <scope>provided</scope>
 </dependency>
@@ -51,5 +51,5 @@ repositories {
 ```
 
 ```
-compile 'com.github.A5H73Y:Carz:7.3'
+compile 'com.github.A5H73Y:Carz:7.4'
 ```

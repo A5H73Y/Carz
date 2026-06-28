@@ -30,7 +30,6 @@ import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Player related Carz commands handling.
@@ -42,10 +41,10 @@ public class CarzCommands extends AbstractPluginReceiver implements CommandExecu
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender,
-                             @NotNull Command command,
-                             @NotNull String label,
-                             @NotNull String... args) {
+    public boolean onCommand(CommandSender sender,
+                             Command command,
+                             String label,
+                             String... args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(Carz.getPrefix() + "'/carz' is only available in game.");
             sender.sendMessage(Carz.getPrefix() + "Use '/carzc' for console commands.");
